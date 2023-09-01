@@ -1,0 +1,7 @@
+{
+  "id": "1",
+  "name": "Arnold",
+  "position": "Software Engineer",
+  "imageProfile": "/arnold.jpg",
+  "materias": ["Programacion de computadoras", "Orientacion a Objectos 2"]
+}
