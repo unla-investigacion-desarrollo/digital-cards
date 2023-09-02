@@ -11,13 +11,13 @@ import {
   Chip,
 } from "@nextui-org/react";
 
-async function getData(id: number) {
-  const response = await import("../../../mocks/profe_" + id + ".json");
+async function getData(idPage: string) {
+  const response = await import("../../../mocks/profe_" + idPage + ".json");
   return response;
 }
 
-const index = async ({ params }: { params: { id: number } }) => {
-  const data = await getData(params.id);
+const index = async ({ params }: { params: { idPage: string } }) => {
+  const data = await getData(params.idPage);
 
   return (
     <>

@@ -1,12 +1,14 @@
 {
-  "id": "1",
-  "name": "Amatrian",
-  "position": "Software Engineer",
+  "id": "2",
+  "idPage": "joan-laporte",
+  "name": "Joan Laporte",
+  "position": "Profesor universitario",
   "imageProfile": "/profe1.png",
   "materias": [
     "Programacion de computadoras",
-    "Orientacion a Objectos 2",
-    "Logica y estructura "
+    "Algoritmos",
+    "Scruum",
+    "Patrones de Diseño"
   ],
   "proyectosAcademico": [
     {
