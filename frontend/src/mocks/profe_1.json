@@ -1,7 +1,25 @@
 {
   "id": "1",
-  "name": "Arnold",
+  "name": "Amatrian",
   "position": "Software Engineer",
-  "imageProfile": "/arnold.jpg",
-  "materias": ["Programacion de computadoras", "Orientacion a Objectos 2"]
+  "imageProfile": "/profe1.png",
+  "materias": [
+    "Programacion de computadoras",
+    "Orientacion a Objectos 2",
+    "Logica y estructura "
+  ],
+  "proyectosAcademico": [
+    {
+      "nombre": "Inventigacion de nuevo patrones de diseño",
+      "description": "Inventigacion para la unla y dlldlfl",
+      "fecha": "11-23-42"
+    },
+    {
+      "nombre": "Inventigacion",
+      "description": "Inventigacion para la uni y dlldlfl",
+      "fecha": "15-23-42"
+    }
+  ],
+  "mail": "Amatrain@gmail.com",
+  "linkedin": "https://www.linkedin.com/in/pablo-vieyra/"
 }

@@ -2,6 +2,25 @@
   "id": "2",
   "name": "Joan Laporte",
   "position": "Profesor universitario",
-  "imageProfile": "/arnold.jpg",
-  "materias": ["Programacion de computadoras", "Algoritmos"]
+  "imageProfile": "/profe1.png",
+  "materias": [
+    "Programacion de computadoras",
+    "Algoritmos",
+    "Scruum",
+    "Patrones de Diseño"
+  ],
+  "proyectosAcademico": [
+    {
+      "nombre": "Inventigacion de nuevo patrones de diseño",
+      "description": "Inventigacion para la unla y dlldlfl",
+      "fecha": "11-23-42"
+    },
+    {
+      "nombre": "Inventigacion",
+      "description": "Inventigacion para la uni y dlldlfl",
+      "fecha": "15-23-42"
+    }
+  ],
+  "mail": "Amatrain@gmail.com",
+  "linkedin": "https://www.linkedin.com/in/pablo-vieyra/"
 }
