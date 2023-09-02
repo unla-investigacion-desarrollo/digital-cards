@@ -18,7 +18,7 @@ type Props = {
   mail: string;
 };
 
-const DigitalCard = ({
+const DigitalCardFull = ({
   name,
   position,
   imageProfile,
@@ -28,7 +28,7 @@ const DigitalCard = ({
 }: Props) => {
   return (
     <div className="flex flex-1 items-center justify-center  h-[80vh] ">
-      <Card className=" w-[500px] ">
+      <Card className=" w-[1200px] ">
         <CardHeader className="pb-0 pt-4 px-4 flex-row items-start  ">
           <div className="w-[200px] max-w-[200px]">
             <h4 className="font-bold text-3xl">{name}</h4>
@@ -83,4 +83,4 @@ const DigitalCard = ({
   );
 };
 
-export default DigitalCard;
+export default DigitalCardFull;

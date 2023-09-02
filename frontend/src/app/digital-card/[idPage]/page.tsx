@@ -1,8 +1,5 @@
-"use client";
-import Header from "@/components/Header";
-import React from "react";
-import { Switch } from "@nextui-org/react";
-import DigitalCard from "@/components/DigitalCard";
+/* eslint-disable react-hooks/rules-of-hooks */
+import DigitalCardPage from ".";
 
 async function getData(idPage: string) {
   const response = await import("../../../mocks/profe_" + idPage + ".json");
@@ -14,18 +11,7 @@ const index = async ({ params }: { params: { idPage: string } }) => {
 
   return (
     <>
-      <Header />
-      <Switch className="flex flex-1 items-center justify-center " size="sm">
-        Mode Complete
-      </Switch>
-      <DigitalCard
-        name={data.name}
-        position={data.position}
-        imageProfile={data.imageProfile}
-        materias={data.materias}
-        linkedin={data.linkedin}
-        mail={data.mail}
-      ></DigitalCard>
+      <DigitalCardPage data={data}></DigitalCardPage>
     </>
   );
 };
