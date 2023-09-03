@@ -1,7 +1,7 @@
 "use client";
 import DigitalCard from "@/components/DigitalCard";
 import Header from "@/components/Header";
-import { Switch } from "@nextui-org/react";
+import { Button, Switch } from "@nextui-org/react";
 import React from "react";
 import useDigitalCard from "../useDigitalCard";
 import DigitalCardFull from "@/components/DigitalCardFull";
@@ -21,6 +21,13 @@ const DigitalCardPage = ({ data }: any) => {
       >
         Complete Mode
       </Switch>
+      <Button
+        className="flex flex-1 items-center  mb-4 ml-[69%]"
+        color="default"
+        onClick={actions.exportPdf}
+      >
+        Descargar
+      </Button>
       {state.isCompletedMode ? (
         <DigitalCardFull
           name={data.name}

@@ -28,7 +28,7 @@ const DigitalCard = ({
 }: Props) => {
   return (
     <div className="flex flex-1 items-center justify-center  h-[80vh] ">
-      <Card className=" w-[550px] ">
+      <Card className=" w-[550px]  " id="digitalCard">
         <CardHeader className="p-6 flex-row items-start  ">
           <div className="w-[200px] max-w-[200px]">
             <h4 className="font-bold text-3xl">{name}</h4>
