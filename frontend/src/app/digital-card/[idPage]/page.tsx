@@ -2,7 +2,9 @@
 import DigitalCardPage from ".";
 
 async function getData(idPage: string) {
-  const response = await import("../../../mocks/profe_" + idPage + ".json");
+  const response = await import(
+    "../../../mocks/infoDigitalCard/profe_" + idPage + ".json"
+  );
   return response;
 }
 
