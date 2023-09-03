@@ -9,7 +9,12 @@
     "Orientacion a Objectos 2",
     "Logica y estructura "
   ],
-  "proyectosAcademico": [
+  "universidades": [
+    "Universidad Nacional de Lanus",
+    "Universidad Nacional de Lomas de Zamora",
+    "Universidad Catolica"
+  ],
+  "proyectosAcademicosAndInvestigaciones": [
     {
       "nombre": "Inventigacion de nuevo patrones de diseño",
       "description": "Inventigacion para la unla y dlldlfl",

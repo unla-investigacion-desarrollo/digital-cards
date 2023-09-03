@@ -12,8 +12,9 @@ const DigitalCardPage = ({ data }: any) => {
   return (
     <>
       <Header />
+
       <Switch
-        className="flex flex-1 items-center justify-center "
+        className="flex flex-1 items-center justify-center mb-4 ml-[66%]  "
         size="sm"
         isSelected={state.isCompletedMode}
         onChange={actions.changeMode}
@@ -28,6 +29,10 @@ const DigitalCardPage = ({ data }: any) => {
           materias={data.materias}
           linkedin={data.linkedin}
           mail={data.mail}
+          universidades={data.universidades}
+          proyectosAcademicosAndInvestigaciones={
+            data.proyectosAcademicosAndInvestigaciones
+          }
         ></DigitalCardFull>
       ) : (
         <DigitalCard

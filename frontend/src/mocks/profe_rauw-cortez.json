@@ -5,7 +5,12 @@
   "position": "Profesor universitario | Tester",
   "imageProfile": "/profe1.png",
   "materias": ["Redes", "Sistemas y Organizaciones", "Proyecto de Software"],
-  "proyectosAcademico": [
+  "universidades": [
+    "Universidad Nacional de Lanus",
+    "Universidad Nacional de Lomas de Zamora",
+    "Universidad Catolica"
+  ],
+  "proyectosAcademicosAndInvestigaciones": [
     {
       "nombre": "Inventigacion de nuevo patrones de diseño",
       "description": "Inventigacion para la unla y dlldlfl",

@@ -8,17 +8,28 @@
     "Programacion de computadoras",
     "Algoritmos",
     "Scruum",
-    "Patrones de Diseño"
+    "Patrones de Diseño",
+    "Seminario de justicia y derechos humanos "
   ],
-  "proyectosAcademico": [
+  "universidades": [
+    "Universidad Nacional de Lanus",
+    "Universidad Nacional de Lomas de Zamora",
+    "Universidad Catolica"
+  ],
+  "proyectosAcademicosAndInvestigaciones": [
     {
-      "nombre": "Inventigacion de nuevo patrones de diseño",
-      "description": "Inventigacion para la unla y dlldlfl",
+      "nombre": "Investigacion de nuevo patrones de diseño",
+      "description": "Esta investigación de software se enfoca en el desarrollo y mejora de algoritmos de detección de vulnerabilidades de seguridad en aplicaciones web.",
       "fecha": "11-23-42"
     },
     {
-      "nombre": "Inventigacion",
-      "description": "Inventigacion para la uni y dlldlfl",
+      "nombre": "Investigacion",
+      "description": "Esta investigación de software se enfoca en el desarrollo y mejora de algoritmos de detección de vulnerabilidades de seguridad en aplicaciones web.",
+      "fecha": "15-23-42"
+    },
+    {
+      "nombre": "Investigacion de Parametros",
+      "description": "Esta investigación de software se enfoca en el desarrollo y mejora de algoritmos de detección de vulnerabilidades de seguridad en aplicaciones web.",
       "fecha": "15-23-42"
     }
   ],

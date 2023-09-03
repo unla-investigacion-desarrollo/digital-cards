@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 const useDigitalCard = () => {
-  const [isCompletedMode, setIsCompletedMode] = useState(false);
+  const [isCompletedMode, setIsCompletedMode] = useState(true);
 
   const changeMode = () => {
     setIsCompletedMode(!isCompletedMode);
