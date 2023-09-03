@@ -6,12 +6,12 @@ async function getData(idUser: number) {
   const response = await import(
     "../../mocks/infoHomeUser/profe_" + idUser + ".json"
   );
-  return response;
+  return response.data;
 }
 
 const index = async () => {
   const data = await getData(1);
-  console.log(data);
+
   return (
     <>
       <Header />

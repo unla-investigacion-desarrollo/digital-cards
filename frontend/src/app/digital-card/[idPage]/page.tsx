@@ -5,7 +5,7 @@ async function getData(idPage: string) {
   const response = await import(
     "../../../mocks/infoDigitalCard/profe_" + idPage + ".json"
   );
-  return response;
+  return response.data;
 }
 
 const index = async ({ params }: { params: { idPage: string } }) => {

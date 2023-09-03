@@ -1,38 +1,42 @@
 {
-  "id": "2",
-  "idPage": "joan-laporte",
-  "name": "Joan Laporte",
-  "position": "Profesor universitario",
-  "imageProfile": "/profe2.png",
-  "materias": [
-    "Programacion de computadoras",
-    "Algoritmos",
-    "Scruum",
-    "Patrones de Diseño",
-    "Seminario de justicia y derechos humanos "
-  ],
-  "universidades": [
-    "Universidad Nacional de Lanus",
-    "Universidad Nacional de Lomas de Zamora",
-    "Universidad Catolica"
-  ],
-  "proyectosAcademicosAndInvestigaciones": [
-    {
-      "nombre": "Investigacion de nuevo patrones de diseño",
-      "description": "Esta investigación de software se enfoca en el desarrollo y mejora de algoritmos de detección de vulnerabilidades de seguridad en aplicaciones web.",
-      "fecha": "11-23-42"
-    },
-    {
-      "nombre": "Investigacion",
-      "description": "Esta investigación de software se enfoca en el desarrollo y mejora de algoritmos de detección de vulnerabilidades de seguridad en aplicaciones web.",
-      "fecha": "15-23-42"
-    },
-    {
-      "nombre": "Investigacion de Parametros",
-      "description": "Esta investigación de software se enfoca en el desarrollo y mejora de algoritmos de detección de vulnerabilidades de seguridad en aplicaciones web.",
-      "fecha": "15-23-42"
-    }
-  ],
-  "mail": "Joan@gmail.com",
-  "linkedin": "https://www.linkedin.com/in/pablo-vieyra/"
+  "status": "ok",
+  "status_code": 200,
+  "data": {
+    "id": "2",
+    "idPage": "joan-laporte",
+    "name": "Joan Laporte",
+    "position": "Profesor universitario",
+    "imageProfile": "/profe2.png",
+    "materias": [
+      "Programacion de computadoras",
+      "Algoritmos",
+      "Scruum",
+      "Patrones de Diseño",
+      "Seminario de justicia y derechos humanos "
+    ],
+    "universidades": [
+      "Universidad Nacional de Lanus",
+      "Universidad Nacional de Lomas de Zamora",
+      "Universidad Catolica"
+    ],
+    "proyectosAcademicosAndInvestigaciones": [
+      {
+        "nombre": "Investigacion de nuevo patrones de diseño",
+        "description": "Esta investigación de software se enfoca en el desarrollo y mejora de algoritmos de detección de vulnerabilidades de seguridad en aplicaciones web.",
+        "fecha": "11-23-42"
+      },
+      {
+        "nombre": "Investigacion",
+        "description": "Esta investigación de software se enfoca en el desarrollo y mejora de algoritmos de detección de vulnerabilidades de seguridad en aplicaciones web.",
+        "fecha": "15-23-42"
+      },
+      {
+        "nombre": "Investigacion de Parametros",
+        "description": "Esta investigación de software se enfoca en el desarrollo y mejora de algoritmos de detección de vulnerabilidades de seguridad en aplicaciones web.",
+        "fecha": "15-23-42"
+      }
+    ],
+    "mail": "Joan@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/pablo-vieyra/"
+  }
 }

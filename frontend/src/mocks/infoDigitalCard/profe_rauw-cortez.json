@@ -1,27 +1,31 @@
 {
-  "id": "3",
-  "idPage": "rauw-cortez",
-  "name": "Rauw Cortez",
-  "position": "Profesor universitario | Tester",
-  "imageProfile": "/profe3.png",
-  "materias": ["Redes", "Sistemas y Organizaciones", "Proyecto de Software"],
-  "universidades": [
-    "Universidad Nacional de Lanus",
-    "Universidad Nacional de Lomas de Zamora",
-    "Universidad Catolica"
-  ],
-  "proyectosAcademicosAndInvestigaciones": [
-    {
-      "nombre": "Inventigacion de nuevo patrones de diseño",
-      "description": "Inventigacion para la unla y dlldlfl",
-      "fecha": "11-23-42"
-    },
-    {
-      "nombre": "Inventigacion",
-      "description": "Inventigacion para la uni y dlldlfl",
-      "fecha": "15-23-42"
-    }
-  ],
-  "mail": "rauwn@gmail.com",
-  "linkedin": "https://www.linkedin.com/in/pablo-vieyra/"
+  "status": "ok",
+  "status_code": 200,
+  "data": {
+    "id": "3",
+    "idPage": "rauw-cortez",
+    "name": "Rauw Cortez",
+    "position": "Profesor universitario | Tester",
+    "imageProfile": "/profe3.png",
+    "materias": ["Redes", "Sistemas y Organizaciones", "Proyecto de Software"],
+    "universidades": [
+      "Universidad Nacional de Lanus",
+      "Universidad Nacional de Lomas de Zamora",
+      "Universidad Catolica"
+    ],
+    "proyectosAcademicosAndInvestigaciones": [
+      {
+        "nombre": "Inventigacion de nuevo patrones de diseño",
+        "description": "Inventigacion para la unla y dlldlfl",
+        "fecha": "11-23-42"
+      },
+      {
+        "nombre": "Inventigacion",
+        "description": "Inventigacion para la uni y dlldlfl",
+        "fecha": "15-23-42"
+      }
+    ],
+    "mail": "rauwn@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/pablo-vieyra/"
+  }
 }
