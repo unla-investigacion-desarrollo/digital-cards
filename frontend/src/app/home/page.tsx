@@ -15,13 +15,16 @@ const index = async () => {
   return (
     <>
       <Header />
-      <div className="flex flex-1 items-center justify-center flex">
-        <CardQR
-          name={data.name}
-          position={data.position}
-          qr={data.qr}
-          imageProfile={data.imageProfile}
-        />
+      <div className="flex items-center justify-center ">
+        <div className="flex flex-col sw-[1200px] h-[75vh] mt-5 items-center justify-center">
+          <h4 className="font-bold text-3xl mb-20"> Bienvenido {data.name}</h4>
+          <CardQR
+            name={data.name}
+            position={data.position}
+            qr={data.qr}
+            imageProfile={data.imageProfile}
+          />
+        </div>
       </div>
     </>
   );
