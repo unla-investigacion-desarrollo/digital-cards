@@ -1,26 +1,34 @@
+import UserService from "@/core/UserService";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 type inputsValues = {
-  email: string;
+  userName: string;
   password: string;
 };
 
 const useLogin = () => {
   const [inputsValues, setInputsValues] = useState<inputsValues>({
-    email: "",
+    userName: "",
     password: "",
   });
+  const router = useRouter();
 
   const [isVisiblePassword, setIsVisiblePassword] = useState<Boolean>(false);
 
   const toggleVisibility = () => setIsVisiblePassword(!isVisiblePassword);
 
-  const onChangeEmail = (value: string) => {
-    setInputsValues((prevstate) => ({ ...prevstate, email: value }));
+  const onChangeUserName = (value: string) => {
+    setInputsValues((prevstate) => ({ ...prevstate, userName: value }));
   };
 
   const onChangePassword = (value: string) => {
     setInputsValues((prevstate) => ({ ...prevstate, password: value }));
+  };
+
+  const handleSubmit = async () => {
+    UserService.loginRequest(inputsValues.userName, inputsValues.password);
+    router.push("/home");
   };
 
   return {
@@ -29,9 +37,10 @@ const useLogin = () => {
       isVisiblePassword,
     },
     actions: {
-      onChangeEmail,
+      onChangeUserName,
       onChangePassword,
       toggleVisibility,
+      handleSubmit,
     },
   };
 };

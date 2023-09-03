@@ -1,14 +1,12 @@
 "use client";
 import Image from "next/image";
 import React from "react";
-import { Button, Input, Link } from "@nextui-org/react";
+import { Button, Input } from "@nextui-org/react";
 import useLogin from "./useLogin";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 
 const index = () => {
   const { actions, state } = useLogin();
-
-  console.log(state);
 
   return (
     <div className="flex items-center justify-centerflex flex-col  px-6 py-12  mt-48 lg:px-8  sm:mt-26">
@@ -30,9 +28,9 @@ const index = () => {
           <div>
             <div className="mt-2">
               <Input
-                label="Email"
-                value={state.inputsValues.email}
-                onValueChange={actions.onChangeEmail}
+                label="UserName"
+                value={state.inputsValues.userName}
+                onValueChange={actions.onChangeUserName}
               />
             </div>
           </div>
@@ -65,10 +63,8 @@ const index = () => {
           <div>
             <Button
               className="w-full bg-[#AE3B57]"
-              href="/home"
-              as={Link}
+              onClick={actions.handleSubmit}
               color="primary"
-              showAnchorIcon
               variant="solid"
             >
               Sign in

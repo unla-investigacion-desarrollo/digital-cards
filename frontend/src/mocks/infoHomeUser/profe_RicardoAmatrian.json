@@ -1,0 +1,10 @@
+{
+  "status": "ok",
+  "status_code": 200,
+  "data": {
+    "name": "Ricardo Amatrian",
+    "position": "Software Engineer",
+    "qr": "/qrPageUnla.png",
+    "imageProfile": "/profe1.png"
+  }
+}
