@@ -28,13 +28,13 @@ const DigitalCard = ({
 }: Props) => {
   return (
     <div className="flex flex-1 items-center justify-center  h-[80vh] ">
-      <Card className=" w-[500px] ">
-        <CardHeader className="pb-0 pt-4 px-4 flex-row items-start  ">
+      <Card className=" w-[550px] ">
+        <CardHeader className="p-6 flex-row items-start  ">
           <div className="w-[200px] max-w-[200px]">
             <h4 className="font-bold text-3xl">{name}</h4>
             <p className="text-lg font-bold  ">{position}</p>
           </div>
-          <div className="ml-[150px]">
+          <div className="ml-[188px]">
             <Image
               alt="Card background"
               className="object-cover rounded-xl grid justify-items-end"
@@ -44,9 +44,9 @@ const DigitalCard = ({
           </div>
         </CardHeader>
 
-        <CardBody className="overflow-visible py-2 ">
+        <CardBody className="overflow-visible py-2 grid grid-cols-2 mb-4">
           <div>
-            <small className="text-sm font-semibold mt-3">Materias :</small>
+            <small className="text-sm font-semibold mt-3">Materias</small>
             <ul className="flex flex-col">
               {materias.map((materia: string) => {
                 return (
@@ -68,14 +68,14 @@ const DigitalCard = ({
             <Chip radius="sm" className="text-sm ">
               {mail}
             </Chip>
-            <div className="grid justify-items-end ">
-              <Image
-                alt="Card background"
-                className="object-cover rounded-xl grid justify-items-end"
-                src="/logoUnla.jpeg"
-                width={40}
-              />
-            </div>
+          </div>
+          <div className="grid justify-items-end content-end ">
+            <Image
+              alt="Card background"
+              className="object-cover rounded-xl grid justify-items-end"
+              src="/logoUnla.jpeg"
+              width={40}
+            />
           </div>
         </CardBody>
       </Card>
