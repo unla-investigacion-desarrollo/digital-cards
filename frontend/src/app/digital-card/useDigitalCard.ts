@@ -8,7 +8,7 @@ const useDigitalCard = () => {
 
   const exportPdf = () => {
     const idElement = isCompletedMode ? "digitalCardFull" : "digitalCard";
-    const elementCard = document.getElementById(idElement);
+    const elementCard = document.getElementById(idElement) as HTMLElement;
     html2canvas(elementCard, {
       logging: true,
       letterRendering: 1,
