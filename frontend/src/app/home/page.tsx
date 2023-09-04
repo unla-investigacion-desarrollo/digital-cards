@@ -26,7 +26,12 @@ const index = () => {
                   imageProfile={state.userInfo.imageProfile}
                 />
               ) : (
-                <></>
+                <CardQR
+                  name={"Este usuario no tiene QR"}
+                  position={"hablar con soporte"}
+                  qr={"/logoUnla.jpeg"}
+                  imageProfile={"/logoUnla.jpeg"}
+                />
               )}
             </div>
           </div>

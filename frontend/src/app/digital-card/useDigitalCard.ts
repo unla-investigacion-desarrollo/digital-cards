@@ -4,7 +4,7 @@ import jsPDF from "jspdf";
 import { useState } from "react";
 
 const useDigitalCard = () => {
-  const [isCompletedMode, setIsCompletedMode] = useState(true);
+  const [isCompletedMode, setIsCompletedMode] = useState(false);
 
   const exportPdf = () => {
     const idElement = isCompletedMode ? "digitalCardFull" : "digitalCard";

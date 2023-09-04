@@ -27,7 +27,7 @@ const DigitalCard = ({
   mail,
 }: Props) => {
   return (
-    <div className="flex flex-1 items-center justify-center  h-[80vh] ">
+    <div className="flex flex-1 items-center justify-center  h-[80vh] max-sm:h-[60vh]">
       <Card
         className="max-sm:w-[340px] max-sm:h-[340px]   w-[550px]"
         id="digitalCard"
