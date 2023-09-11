@@ -1,0 +1,10 @@
+{
+  "status": "ok",
+  "status_code": 200,
+  "data": {
+    "name": "Joan Laporte",
+    "position": "Software Engineer",
+    "qr": "/qrProfe2.png",
+    "imageProfile": "/profe2.png"
+  }
+}

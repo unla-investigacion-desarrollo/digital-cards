@@ -1,0 +1,10 @@
+{
+  "status": "ok",
+  "status_code": 200,
+  "data": {
+    "name": "Rauw Cortez",
+    "position": "Software Engineer",
+    "qr": "/qrProfe3.png",
+    "imageProfile": "/profe3.png"
+  }
+}
