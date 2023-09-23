@@ -3,9 +3,10 @@ import Header from "@/components/Header";
 import React from "react";
 import CardQR from "@/components/CardQR";
 import useHome from "./useHome";
+import { Button } from "@nextui-org/react";
 
 const index = () => {
-  const { state } = useHome();
+  const { state, actions } = useHome();
   return (
     <>
       {state.isLoading ? (
@@ -26,12 +27,7 @@ const index = () => {
                   imageProfile={state.userInfo.imageProfile}
                 />
               ) : (
-                <CardQR
-                  name={"Este usuario no tiene QR"}
-                  position={"hablar con soporte"}
-                  qr={"/logoUnla.jpeg"}
-                  imageProfile={"/logoUnla.jpeg"}
-                />
+                <Button onClick={actions.generateQr}> Generate Qr</Button>
               )}
             </div>
           </div>

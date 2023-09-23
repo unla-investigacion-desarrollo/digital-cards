@@ -1,11 +1,13 @@
 import GetInfoHome from "@/core/GetInfoHome";
 import { useEffect, useState } from "react";
+import QRCode from "qrcode";
 
 type userInfo = {
   name: string;
   position: string;
   qr: string;
   imageProfile: string;
+  idPage: string;
 };
 
 const useHome = () => {
@@ -16,6 +18,7 @@ const useHome = () => {
     position: "",
     qr: "",
     imageProfile: "",
+    idPage: "",
   });
 
   const getInfoHome = () => {
@@ -27,10 +30,27 @@ const useHome = () => {
       .then((response) => {
         setUserInfo(response);
         setIsLoading(false);
-        setIsQr(true);
+        setIsQr(false);
       })
       .catch(() => {
         setIsLoading(false);
+        setIsQr(false);
+      });
+  };
+
+  const generateQr = () => {
+    QRCode.toDataURL(
+      `https://digital-cards-five.vercel.app/digital-card/${userInfo.idPage}`
+    )
+      .then((image) => {
+        setUserInfo((prevState) => ({
+          ...prevState,
+          qr: image,
+        }));
+        setIsQr(true);
+      })
+      .catch((err) => {
+        console.error(err);
         setIsQr(false);
       });
   };
@@ -44,6 +64,9 @@ const useHome = () => {
       isLoading,
       userInfo,
       isQr,
+    },
+    actions: {
+      generateQr,
     },
   };
 };
