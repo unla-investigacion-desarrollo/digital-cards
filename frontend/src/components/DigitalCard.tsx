@@ -47,8 +47,8 @@ const DigitalCard = ({
           </div>
         </CardHeader>
 
-        <CardBody className=" overflow-visible py-2 grid grid-cols-2 mb-4">
-          <div>
+        <CardBody className=" overflow-visible py-2 grid grid-cols-2 max-sm:grid-cols-6 mb-4">
+          <div className="max-sm:col-span-5 max-sm:h-[2px]">
             <small className="max-sm:text-xs text-sm font-semibold mt-3">
               Materias
             </small>
@@ -64,18 +64,20 @@ const DigitalCard = ({
                 );
               })}
             </ul>
-            <Link
-              isExternal
-              showAnchorIcon
-              href={linkedin}
-              color="foreground"
-              className="text-sm mt-3"
-            >
-              Linkedlin
-            </Link>
-            <Chip radius="sm" className="text-sm ">
-              {mail}
-            </Chip>
+            <div className="grid  content-end ">
+              <Link
+                isExternal
+                showAnchorIcon
+                href={linkedin}
+                color="foreground"
+                className="text-sm"
+              >
+                Linkedlin
+              </Link>
+              <Chip radius="sm" className="text-sm ">
+                {mail}
+              </Chip>
+            </div>
           </div>
           <div className="grid justify-items-end content-end ">
             <Image
