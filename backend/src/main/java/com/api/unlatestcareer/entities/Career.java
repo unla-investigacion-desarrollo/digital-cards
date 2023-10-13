@@ -9,10 +9,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 @Table(name="career")
 public class Career implements Serializable{
 	
