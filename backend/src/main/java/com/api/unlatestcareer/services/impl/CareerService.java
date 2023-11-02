@@ -53,7 +53,6 @@ public class CareerService implements ICareerService {
 		return careers.stream().map(career -> mapper.map(career, CareerModel.class)).collect(Collectors.toList());
 	}
 
-	// fix this
 	@Override
 	public boolean deleteById(int id) {
 		try {

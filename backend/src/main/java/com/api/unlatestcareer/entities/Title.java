@@ -32,21 +32,21 @@ public class Title implements Serializable {
 	@Column(name = "createdAt")
 	private LocalDate createdAt;
 
-	@Column(name = "updatedAt")
-	private LocalDate updatedAt;
+	@Column(name = "updateAt")
+	private LocalDate updateAt;
 
 	public Title(String name, LocalDate createdAt, LocalDate updateAt) {
 		super();
 		this.name = name;
 		this.createdAt = createdAt;
-		this.updatedAt = updateAt;
+		this.updateAt = updateAt;
 	}
 
 	public Title(TitleModel titleModel) {
 		this.id = titleModel.getId();
 		this.name = titleModel.getName();
 		this.createdAt = titleModel.getCreatedAt();
-		this.updatedAt = titleModel.getUpdatedAt();
+		this.updateAt = titleModel.getUpdateAt();
 	}
 
 }
