@@ -79,7 +79,7 @@ public class TitleService implements ITitleService {
 			Title titleExisting = titleRepository.findById(title.getId()).orElse(null);
 
 			if (titleExisting == null) {
-				titleExisting = new Title(title.getName(), title.getCreatedAt(), title.getUpdatedAt());
+				titleExisting = new Title(title.getName(), title.getCreatedAt(), title.getUpdateAt());
 
 			} else {
 				titleExisting = new Title(title);
