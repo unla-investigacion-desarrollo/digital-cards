@@ -32,6 +32,11 @@ public class ProfileCustomController {
         this.profileService = profileService;
     }
 
+    private boolean hasRole(String role) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return authentication != null && authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(role));
+	}
+    
     @PostMapping("")
     public ResponseEntity<?> createProfile(@RequestBody ProfileModel model) {
         try {
@@ -63,11 +68,7 @@ public class ProfileCustomController {
     @GetMapping("/{id}")
     public ResponseEntity<?> findProfileById(@PathVariable int id) {
         try {
-            // Asegurarse de que el usuario tenga el rol "ADMIN"
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication != null
-                    && authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-                // El usuario tiene el rol "ADMIN", realiza la lógica aquí
+            if (hasRole(ViewRouteHelper.ADMIN_ROLE)) {
                 ProfileModel profile = profileService.findById(id);
                 if (profile != null) {
                     return ResponseEntity.status(HttpStatus.OK).body(profile);
@@ -85,11 +86,7 @@ public class ProfileCustomController {
     @GetMapping("")
     public ResponseEntity<?> getAllProfiles() {
         try {
-            // Verificar si el usuario actual tiene el rol "ADMIN"
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication != null
-                    && authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-                // El usuario tiene el rol "ADMIN", realiza la lógica aquí
+        	if (hasRole(ViewRouteHelper.ADMIN_ROLE)) {
                 List<ProfileModel> profiles = profileService.getAll();
                 return ResponseEntity.ok(profiles);
             } else {
@@ -115,9 +112,7 @@ public class ProfileCustomController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
         }
     }
-    
-    //Aca ya tiene que existir el title y career
-    
+        
     @PostMapping("/{profileId}/titles/{titleId}")
     public ResponseEntity<?> addTitleToProfile(@PathVariable int profileId, @PathVariable int titleId) {
         ProfileModel profileModel = profileService.addTitleToProfile(profileId, titleId);
@@ -142,7 +137,6 @@ public class ProfileCustomController {
         return ResponseEntity.status(HttpStatus.OK).body(profileModel);
     }
     
-    // Cuando lo quiero crear en el momento
     @PostMapping("/{profileId}/careers")
     public ResponseEntity<?> addCareerToProfile(@PathVariable int profileId, @RequestBody CareerModel careerModel) {
         ProfileModel profileModel = profileService.addCareerToProfile(profileId, careerModel);
@@ -154,5 +148,4 @@ public class ProfileCustomController {
         ProfileModel profileModel = profileService.addTitleToProfile(profileId, titleModel);
         return ResponseEntity.status(HttpStatus.OK).body(profileModel);
     }
-
 }

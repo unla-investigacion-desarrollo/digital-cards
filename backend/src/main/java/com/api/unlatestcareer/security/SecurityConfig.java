@@ -28,13 +28,9 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(withDefaults())
                 .authorizeHttpRequests(requests -> requests
-                        // dont authenticate this particular request
                         .requestMatchers("/usuario/login").permitAll()
-                        // all other requests need to be authenticated
                         .anyRequest().authenticated()).sessionManagement(management -> management
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)).csrf(AbstractHttpConfigurer::disable);
-
-        // Add a filter to validate the tokens with every request
         httpSecurity.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
@@ -44,4 +40,3 @@ public class SecurityConfig {
         return (web) -> web.ignoring().requestMatchers("/usuario/login");
     }
 }
-

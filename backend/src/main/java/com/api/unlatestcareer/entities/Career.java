@@ -52,5 +52,4 @@ public class Career implements Serializable{
 		this.createdAt = careerModel.getCreatedAt();
 		this.updateAt = careerModel.getUpdateAt();
 	}
-	
 }

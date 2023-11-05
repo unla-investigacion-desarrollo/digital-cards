@@ -27,7 +27,5 @@ public class Carga implements CommandLineRunner {
 					LocalDate.now());
 			userRepository.save(defaultUser);
 		}
-
 	}
-
 }

@@ -30,11 +30,15 @@ public class TitleController {
 		this.titleService = titleService;
 	}
 
+	private boolean hasRole(String role) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return authentication != null && authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(role));
+	}
+	
 	@PostMapping("")
 	public ResponseEntity<?> createTitle(@RequestBody TitleModel model) {
 		try {
 			TitleModel savedTitle = titleService.save(model);
-
 			if (savedTitle != null) {
 				return ResponseEntity.status(HttpStatus.OK).body(savedTitle);
 			} else {
@@ -62,11 +66,7 @@ public class TitleController {
 	@GetMapping("/{id}")
 	public ResponseEntity<?> findById(@PathVariable int id) {
 		try {
-			// esto fue lo que agregue el if de la autenticacion.
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			if (authentication != null
-					&& authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-				// El usuario tiene el rol "ADMIN", realiza la lógica aquí
+			if (hasRole(ViewRouteHelper.ADMIN_ROLE)) {
 				return ResponseEntity.status(HttpStatus.OK).body(titleService.findById(id));
 			} else {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
@@ -79,11 +79,7 @@ public class TitleController {
 	@GetMapping("")
 	public ResponseEntity<?> getAll() {
 		try {
-			// Verifica si el usuario actual tiene el rol "ADMIN"
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			if (authentication != null
-					&& authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-				// El usuario tiene el rol "ADMIN", realiza la lógica aquí
+			if (hasRole(ViewRouteHelper.ADMIN_ROLE)) {
 				List<TitleModel> titles = titleService.getAll();
 				return ResponseEntity.ok(titles);
 			} else {
@@ -109,5 +105,4 @@ public class TitleController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
 		}
 	}
-
 }

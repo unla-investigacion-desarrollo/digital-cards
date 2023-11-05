@@ -9,5 +9,4 @@ class UnlaTestCareerApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

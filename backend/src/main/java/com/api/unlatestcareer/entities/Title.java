@@ -48,5 +48,4 @@ public class Title implements Serializable {
 		this.createdAt = titleModel.getCreatedAt();
 		this.updateAt = titleModel.getUpdateAt();
 	}
-
 }

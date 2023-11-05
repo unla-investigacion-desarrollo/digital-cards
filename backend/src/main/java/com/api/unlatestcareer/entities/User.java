@@ -20,10 +20,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "user")
 public class User implements Serializable {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -68,5 +64,4 @@ public class User implements Serializable {
 		this.createdAt = createdAt;
 		this.updateAt = updateAt;
 	}
-
 }

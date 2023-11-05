@@ -25,10 +25,8 @@ public class TitleService implements ITitleService {
 
 	@Override
 	public TitleModel findById(int id) {
-
 		try {
 			Optional<Title> optionalTitle = titleRepository.findById(id);
-
 			if (optionalTitle.isPresent()) {
 				Title title = optionalTitle.get();
 				TitleModel titleModel = mapper.map(title, TitleModel.class);
@@ -103,5 +101,4 @@ public class TitleService implements ITitleService {
 			return null;
 		}
 	}
-
 }

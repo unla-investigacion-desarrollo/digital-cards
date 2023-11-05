@@ -21,26 +21,17 @@ public class UserSecurity implements UserDetailsService {
 	@Autowired
 	@Qualifier("userRepository")
 	private IUserRepository userRepository;
-	
-	//private ModelMapper mapper = new ModelMapper();
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
 		User user = userRepository.findByUsername(username).get();
 				
-		//UserModel userAux = mapper.map(user, UserModel.class);
-		//User user = new User(userAux);
-		
 		String Role = "ROLE_" + user.getRole();
 
 		List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
 		roles.add(new SimpleGrantedAuthority(Role));
-
 		UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getUsername(),
 				user.getPassword(), roles);
-
 		return userDetails;
 	}
-
 }
