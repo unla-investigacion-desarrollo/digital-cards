@@ -1,16 +1,16 @@
 package com.api.unlatestcareer.models;
 
 import java.time.LocalDate;
-import lombok.*;
+
+import lombok.Data;
 
 @Data
-public class CareerModel {
-	
+public class TitleModel {
+
 	private int id;
 	private String name;
-	private boolean enabled;
-	private String link;
 	private LocalDate createdAt;
-	private LocalDate updateAt;
+	private LocalDate updatedAt;
+	
 	
 }

@@ -1,8 +1,7 @@
 package com.api.unlatestcareer.controllers;
 
-import com.api.unlatestcareer.exception.CustomNotFoundException;
-import com.api.unlatestcareer.helpers.ViewRouteHelper;
 import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -16,25 +15,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.unlatestcareer.models.CareerModel;
-import com.api.unlatestcareer.services.impl.CareerService;
+import com.api.unlatestcareer.exception.CustomNotFoundException;
+import com.api.unlatestcareer.helpers.ViewRouteHelper;
+import com.api.unlatestcareer.models.TitleModel;
+import com.api.unlatestcareer.services.impl.TitleService;
 
 @RestController
-@RequestMapping(path = "/careers")
-public class CareerController {
+@RequestMapping(path = "/titles")
+public class TitleController {
 
-	private CareerService careerService;
+	private TitleService titleService;
 
-	public CareerController(CareerService careerService) {
-		this.careerService = careerService;
+	public TitleController(TitleService titleService) {
+		this.titleService = titleService;
 	}
 
 	@PostMapping("")
-	public ResponseEntity<?> createCareer(@RequestBody CareerModel model) {
+	public ResponseEntity<?> createTitle(@RequestBody TitleModel model) {
 		try {
-			CareerModel savedCareer = careerService.save(model);
-			if (savedCareer != null) {
-				return ResponseEntity.status(HttpStatus.OK).body(savedCareer);
+			TitleModel savedTitle = titleService.save(model);
+
+			if (savedTitle != null) {
+				return ResponseEntity.status(HttpStatus.OK).body(savedTitle);
 			} else {
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_CREATE);
 			}
@@ -44,11 +46,11 @@ public class CareerController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateCareer(@PathVariable int id, @RequestBody CareerModel model) {
+	public ResponseEntity<?> updateTitle(@PathVariable int id, @RequestBody TitleModel model) {
 		try {
-			CareerModel updatedCareer = careerService.update(model, id);
-			if (updatedCareer != null) {
-				return ResponseEntity.status(HttpStatus.OK).body(updatedCareer);
+			TitleModel updatedTitle = titleService.update(model, id);
+			if (updatedTitle != null) {
+				return ResponseEntity.status(HttpStatus.OK).body(updatedTitle);
 			} else {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
 			}
@@ -65,7 +67,7 @@ public class CareerController {
 			if (authentication != null
 					&& authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
 				// El usuario tiene el rol "ADMIN", realiza la lógica aquí
-				return ResponseEntity.status(HttpStatus.OK).body(careerService.findById(id));
+				return ResponseEntity.status(HttpStatus.OK).body(titleService.findById(id));
 			} else {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
 			}
@@ -74,7 +76,6 @@ public class CareerController {
 		}
 	}
 
-	//Este funciona
 	@GetMapping("")
 	public ResponseEntity<?> getAll() {
 		try {
@@ -83,21 +84,20 @@ public class CareerController {
 			if (authentication != null
 					&& authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
 				// El usuario tiene el rol "ADMIN", realiza la lógica aquí
-				List<CareerModel> careers = careerService.getAll();
-				return ResponseEntity.ok(careers);
+				List<TitleModel> titles = titleService.getAll();
+				return ResponseEntity.ok(titles);
 			} else {
-				return ResponseEntity.status(HttpStatus.FORBIDDEN)
-						.body(ViewRouteHelper.ACCESS_DENIED);
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ViewRouteHelper.ACCESS_DENIED);
 			}
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
 		}
 	}
-
+	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteCareer(@PathVariable int id) {
+	public ResponseEntity<?> deleteTitle(@PathVariable int id) {
 		try {
-			boolean deleted = careerService.deleteById(id);
+			boolean deleted = titleService.deleteById(id);
 			if (deleted) {
 				return ResponseEntity.status(HttpStatus.OK).body(ViewRouteHelper.SUCCESS_DELETE);
 			} else {
@@ -109,4 +109,5 @@ public class CareerController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
 		}
 	}
+
 }
