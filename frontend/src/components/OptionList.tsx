@@ -17,9 +17,9 @@ export default function OptionList() {
       href: "form-card",
     },
     {
-      title: "Vista completa de credencial",
+      title: "Nueva peticion de cambio de credential",
       img: "/logoUnla.jpeg",
-      href: "digital-card/joan-laporte",
+      href: "form-card",
     },
     {
       title: "Cambiar Password",
@@ -27,9 +27,9 @@ export default function OptionList() {
       href: "change-password",
     },
     {
-      title: "Recomendaciones para tu perfil",
+      title: "Vista completa de credencial",
       img: "/logoUnla.jpeg",
-      href: "change-password",
+      href: "digital-card/joan-laporte",
     },
   ];
 
