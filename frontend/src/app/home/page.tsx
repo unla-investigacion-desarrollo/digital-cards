@@ -24,7 +24,7 @@ const index = () => {
       {state.isLoading ? (
         <h1> is Loading ..</h1>
       ) : (
-        <div className="flex flex-row sw-[1200px] h-[75vh]  ">
+        <div className="flex flex-row  sw-[1200px] h-[80vh] items-center justify-center  ">
           <div className="flex flex-col w-1/2 mt-5 items-center justify-center">
             <h4 className="font-bold text-3xl mb-20">
               Bienvenido {state?.userInfo?.name}

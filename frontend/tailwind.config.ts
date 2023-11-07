@@ -23,6 +23,7 @@ const config: Config = {
       },
       colors: {
         unlaLogo: "#AE3B57",
+        bgHeader: "#202124",
       },
     },
   },
@@ -41,7 +42,9 @@ const config: Config = {
         },
         dark: {
           layout: {}, // dark theme layout tokens
-          colors: {}, // dark theme colors
+          colors: {
+            background: "#18191A",
+          }, // dark theme colors
         },
         // ... custom themes
       },

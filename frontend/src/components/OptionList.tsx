@@ -1,5 +1,11 @@
 import React from "react";
-import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
+import {
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Image,
+} from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 
 export default function OptionList() {
@@ -20,31 +26,34 @@ export default function OptionList() {
       img: "/logoUnla.jpeg",
       href: "change-password",
     },
+    {
+      title: "Recomendaciones para tu perfil",
+      img: "/logoUnla.jpeg",
+      href: "change-password",
+    },
   ];
 
   return (
-    <div className="gap-2 grid justify-items-center  grid-cols-2 ">
+    <div className="gap-2 grid justify-items-center  grid-cols-2 max-w-[1000px]   ">
       {list.map((item, index) => (
         <Card
-          shadow="sm"
+          className="py-4 w-[100%]"
           key={index}
           isPressable
           onPress={() => router.push(item.href)}
         >
-          <CardBody className="overflow-visible p-0">
+          <CardHeader className="pb-0 pt-2 px-4 flex-col items-center">
+            <h4 className="font-bold text-large">{item.title}</h4>
+          </CardHeader>
+          <CardBody className="flex items-center justify-center overflow-visible py-2 w-[100%]">
             <Image
-              shadow="sm"
-              radius="lg"
-              width="100%"
-              alt={item.title}
-              className="w-full object-cover h-[140px]"
+              alt="Card background"
+              className="object-cover rounded-xl "
               src={item.img}
+              width={"100%"}
+              height={"100%"}
             />
           </CardBody>
-          <CardFooter className="text-small justify-between">
-            <b>{item.title}</b>
-            <p className="text-default-500">{item.price}</p>
-          </CardFooter>
         </Card>
       ))}
     </div>
