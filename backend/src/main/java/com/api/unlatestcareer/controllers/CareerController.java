@@ -1,12 +1,9 @@
 package com.api.unlatestcareer.controllers;
 
-import com.api.unlatestcareer.exception.CustomNotFoundException;
-import com.api.unlatestcareer.helpers.ViewRouteHelper;
 import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.api.unlatestcareer.exception.CustomNotFoundException;
+import com.api.unlatestcareer.helpers.ViewRouteHelper;
 import com.api.unlatestcareer.models.CareerModel;
 import com.api.unlatestcareer.services.impl.CareerService;
+import com.api.unlatestcareer.services.impl.UtilService;
 
 @RestController
 @RequestMapping(path = "/careers")
@@ -29,11 +29,6 @@ public class CareerController {
 		this.careerService = careerService;
 	}
 	
-	private boolean hasRole(String role) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		return authentication != null && authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(role));
-	}
-
 	@PostMapping("")
 	public ResponseEntity<?> createCareer(@RequestBody CareerModel model) {
 		try {
@@ -65,7 +60,7 @@ public class CareerController {
 	@GetMapping("/{id}")
 	public ResponseEntity<?> findById(@PathVariable int id) {
 		try {
-			if (hasRole(ViewRouteHelper.ADMIN_ROLE)) {
+			if (UtilService.hasRole(ViewRouteHelper.ADMIN_ROLE)) {
 				return ResponseEntity.status(HttpStatus.OK).body(careerService.findById(id));
 			} else {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
@@ -78,7 +73,7 @@ public class CareerController {
 	@GetMapping("")
 	public ResponseEntity<?> getAll() {
 		try {
-			if (hasRole(ViewRouteHelper.ADMIN_ROLE)) {
+			if (UtilService.hasRole(ViewRouteHelper.ADMIN_ROLE)) {
 				List<CareerModel> careers = careerService.getAll();
 				return ResponseEntity.ok(careers);
 			} else {

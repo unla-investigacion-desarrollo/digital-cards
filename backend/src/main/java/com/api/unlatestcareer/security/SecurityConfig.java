@@ -23,7 +23,7 @@ public class SecurityConfig {
 	JwtAuthorizationFilter jwtAuthorizationFilter() {
 	    return new JwtAuthorizationFilter();
 	}
-	//Tengo un error en la solicitud get ahora :) 
+
     @Bean
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(withDefaults())
