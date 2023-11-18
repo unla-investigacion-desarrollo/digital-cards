@@ -6,9 +6,7 @@ import com.api.unlatestcareer.entities.User;
 import com.api.unlatestcareer.models.UserModel;
 import com.api.unlatestcareer.models.UserView;
 
-
 public interface IUserService {
-	
 	UserModel findById(int id);
 
 	UserModel findByName(String username);
@@ -21,6 +19,5 @@ public interface IUserService {
 	
 	UserModel update(UserModel user, int userId);
 
-	UserView userAuthenticate(User request);
-	
+	UserView userAuthenticate(User request);	
 }

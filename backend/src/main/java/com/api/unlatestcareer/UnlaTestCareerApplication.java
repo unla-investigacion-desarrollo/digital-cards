@@ -9,5 +9,4 @@ public class UnlaTestCareerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(UnlaTestCareerApplication.class, args);
 	}
-
 }

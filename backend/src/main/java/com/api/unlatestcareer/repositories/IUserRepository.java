@@ -9,6 +9,6 @@ import com.api.unlatestcareer.entities.User;
 
 @Repository("userRepository")
 public interface IUserRepository extends JpaRepository<User, Integer> {
-	//@Query("SELECT u FROM User u WHERE u.username = :username")
+	
 	public Optional<User> findByUsername(String username);
 }

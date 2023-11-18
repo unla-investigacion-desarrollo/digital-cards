@@ -5,7 +5,6 @@ import java.util.List;
 import com.api.unlatestcareer.models.TitleModel;
 
 public interface ITitleService {
-
 	TitleModel findById(int id);
 
 	TitleModel findByName(String name);
@@ -17,7 +16,4 @@ public interface ITitleService {
 	TitleModel save(TitleModel title);
 	
 	TitleModel update(TitleModel title, int titleId);
-	
-	
-	
 }

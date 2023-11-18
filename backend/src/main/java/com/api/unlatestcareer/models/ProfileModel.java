@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProfileModel {
-	
 	private int id;
 	private byte[] photo;
 	private boolean current;
@@ -29,5 +28,4 @@ public class ProfileModel {
 	private String moreInfo;
 	private LocalDate createdAt;
 	private LocalDate updateAt;
-	
 }
