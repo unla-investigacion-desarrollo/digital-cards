@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import com.api.unlatestcareer.models.UserModel;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,23 +23,12 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private int id;
-	
-	@Column(name="username")
+
 	private String username;
-
-	@Column(name="role")
 	private String role;
-
-	@Column(name="password")
 	private String password;
-
-	@Column(nullable = true)
 	private boolean enabled;
-
-	@Column(nullable = true)
 	private LocalDate createdAt;
-
-	@Column(nullable = true)
 	private LocalDate updateAt;
 	
 	public User(UserModel user) {

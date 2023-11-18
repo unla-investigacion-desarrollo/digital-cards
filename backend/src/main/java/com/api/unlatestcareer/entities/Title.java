@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import com.api.unlatestcareer.models.TitleModel;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,14 +23,8 @@ public class Title implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-
-	@Column(name = "name")
 	private String name;
-
-	@Column(name = "createdAt")
 	private LocalDate createdAt;
-
-	@Column(name = "updateAt")
 	private LocalDate updateAt;
 
 	public Title(String name, LocalDate createdAt, LocalDate updateAt) {

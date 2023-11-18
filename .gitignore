@@ -1,1 +1,26 @@
 /.metadata/
+
+# Ignorar archivos y carpetas generados por el IDE
+.idea/
+*.iml
+
+# Ignorar archivos compilados y carpetas de salida
+bin/
+target/
+out/
+
+# Ignorar archivos de configuración específicos de tu IDE
+*.classpath
+*.project
+
+# Ignorar archivos de compilación y log
+*.class
+*.jar
+*.war
+*.ear
+hs_err_pid*
+
+# MacOs system files
+.DS_Store
+.AppleDouble
+.LSOverride

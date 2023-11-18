@@ -6,8 +6,6 @@ import java.util.List;
 
 import com.api.unlatestcareer.helpers.ProfileStatus;
 import com.api.unlatestcareer.models.ProfileModel;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,11 +28,7 @@ public class Profile implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
-	@Column(name="photo")
 	private byte[] photo;
-	
-	@Column(name="current")
 	private boolean current;
 	
 	@ManyToMany
@@ -53,34 +47,15 @@ public class Profile implements Serializable{
 		)
 	List<Career> careers;
 	
-	@Column(name="status")
 	private ProfileStatus status;
-	
-	@Column(name="courses")
 	private String courses;
-	
-	@Column(name="name")
 	private String name;
-	
-	@Column(name="lastname")
 	private String lastname;
-	
-	@Column(name="urlLinkedin")
 	private String urlLinkedin;
-	
-	@Column(name="mail")
 	private String mail;
-	
-	@Column(name="phone")
 	private String phone;
-	
-	@Column(name="moreInfo")
 	private String moreInfo;
-	
-	@Column(name="createdAt")
 	private LocalDate createdAt;
-	
-	@Column(name="updateAt")
 	private LocalDate updateAt;
 	
 	public Profile(ProfileModel profile) {
@@ -116,3 +91,4 @@ public class Profile implements Serializable{
 		this.updateAt = updateAt;
 	}
 }
+
