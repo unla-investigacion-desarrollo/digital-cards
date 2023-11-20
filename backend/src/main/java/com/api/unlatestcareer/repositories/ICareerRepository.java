@@ -6,6 +6,5 @@ import com.api.unlatestcareer.models.CareerModel;
 
 public interface ICareerRepository extends JpaRepository<Career, Integer> {
 
-	public abstract CareerModel findByName(String name);
-	
+	public abstract CareerModel findByName(String name);	
 }

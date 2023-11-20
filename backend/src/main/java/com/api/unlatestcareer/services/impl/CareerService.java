@@ -93,7 +93,6 @@ public class CareerService implements ICareerService {
 		try {
 			Career careerExisting = careerRepository.findById(careerId)
 					.orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
-
 			careerExisting.setName(career.getName());
 			careerRepository.save(careerExisting);
 			return mapper.map(careerExisting, CareerModel.class);
@@ -101,5 +100,4 @@ public class CareerService implements ICareerService {
 			return null;
 		}
 	}
-
 }

@@ -109,17 +109,14 @@ public class UserService implements IUserService {
 		try {
 			User userExisting = userRepository.findById(userId)
 					.orElseThrow(() -> new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND));
-
 			userExisting.setUsername(user.getUsername());
 			userExisting.setRole(user.getRole());
 			userExisting.setEnabled(user.isEnabled());
 			userExisting.setUpdateAt(user.getUpdateAt());
 			userExisting.setCreatedAt(user.getCreatedAt());
-
 			if (user.getPassword() != null && !user.getPassword().isEmpty()) {
 				userExisting.setPassword(encoder.encode(user.getPassword()));
 			}
-
 			userRepository.save(userExisting);
 			return mapper.map(userExisting, UserModel.class);
 		} catch (Exception e) {
@@ -148,4 +145,3 @@ public class UserService implements IUserService {
 		return response;
 	}
 }
-

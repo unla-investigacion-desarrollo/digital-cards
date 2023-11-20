@@ -5,7 +5,6 @@ import java.util.List;
 import com.api.unlatestcareer.models.CareerModel;
 
 public interface ICareerService {
-	
 	CareerModel findById(int id);
 
 	CareerModel findByName(String name);
@@ -17,5 +16,4 @@ public interface ICareerService {
 	CareerModel save(CareerModel career);
 	
 	CareerModel update(CareerModel career, int careerId);
-	
 }

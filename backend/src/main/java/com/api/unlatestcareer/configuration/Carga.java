@@ -27,7 +27,11 @@ public class Carga implements CommandLineRunner {
 					LocalDate.now());
 			userRepository.save(defaultUser);
 		}
-
+		
+		if(userRepository.findByUsername("user@gmail.com").orElse(null) == null) {
+			User testUser = new User("user@gmail.com", "USER", encoder.encode("user123"), true, LocalDate.now(),
+					LocalDate.now());
+			userRepository.save(testUser);
+		}
 	}
-
 }

@@ -19,20 +19,11 @@ public class Career implements Serializable{
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private int id;
-	
-	@Column(name="name")
+
 	private String name;
-	
-	@Column(name="enabled")
 	private boolean enabled;
-	
-	@Column(name="link")
 	private String link;
-	
-	@Column(name="createdAt")
 	private LocalDate createdAt;
-	
-	@Column(name="updateAt")
 	private LocalDate updateAt;
 
 	public Career(String name, String link, LocalDate createdAt, LocalDate updateAt, boolean enabled) {
@@ -52,5 +43,4 @@ public class Career implements Serializable{
 		this.createdAt = careerModel.getCreatedAt();
 		this.updateAt = careerModel.getUpdateAt();
 	}
-	
 }

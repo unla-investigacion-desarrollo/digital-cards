@@ -8,5 +8,4 @@ import com.api.unlatestcareer.models.TitleModel;
 public interface ITitleRepository extends JpaRepository<Title, Integer> {
 
 	public abstract TitleModel findByName(String name);
-
 }

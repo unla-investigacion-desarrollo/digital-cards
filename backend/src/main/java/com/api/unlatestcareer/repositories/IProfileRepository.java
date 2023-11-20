@@ -8,6 +8,4 @@ import com.api.unlatestcareer.models.ProfileModel;
 public interface IProfileRepository extends JpaRepository<Profile, Integer>{
 
 	public abstract ProfileModel findByName(String name);
-	
-	
 }
