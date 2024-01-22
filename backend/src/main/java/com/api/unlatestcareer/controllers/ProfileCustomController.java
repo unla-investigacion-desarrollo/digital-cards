@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.unlatestcareer.exception.CustomNotFoundException;
 import com.api.unlatestcareer.helpers.ViewRouteHelper;
-import com.api.unlatestcareer.models.CareerModel;
 import com.api.unlatestcareer.models.ProfileModel;
-import com.api.unlatestcareer.models.TitleModel;
 import com.api.unlatestcareer.services.impl.ProfileService;
 import com.api.unlatestcareer.services.impl.UtilService;
 
@@ -100,78 +98,6 @@ public class ProfileCustomController {
 			} else {
 				throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
 			}
-		} catch (CustomNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
-		}
-	}
-
-	@PostMapping("/{profileId}/titles/{titleId}")
-	public ResponseEntity<?> addTitleToProfile(@PathVariable int profileId, @PathVariable int titleId) {
-		try {
-			ProfileModel profileModel = profileService.addTitleToProfile(profileId, titleId);
-			return ResponseEntity.status(HttpStatus.OK).body(profileModel);
-		} catch (CustomNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
-		}
-	}
-
-	@DeleteMapping("/{profileId}/titles/{titleId}")
-	public ResponseEntity<?> removeTitleFromProfile(@PathVariable int profileId, @PathVariable int titleId) {
-		try {
-			ProfileModel profileModel = profileService.removeTitleFromProfile(profileId, titleId);
-			return ResponseEntity.status(HttpStatus.OK).body(profileModel);
-		} catch (CustomNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
-		}
-	}
-
-	@PostMapping("/{profileId}/careers/{careerId}")
-	public ResponseEntity<?> addCareerToProfile(@PathVariable int profileId, @PathVariable int careerId) {
-		try {
-			ProfileModel profileModel = profileService.addCareerToProfile(profileId, careerId);
-			return ResponseEntity.status(HttpStatus.OK).body(profileModel);
-		} catch (CustomNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
-		}
-	}
-
-	@DeleteMapping("/{profileId}/careers/{careerId}")
-	public ResponseEntity<?> removeCareerFromProfile(@PathVariable int profileId, @PathVariable int careerId) {
-		try {
-			ProfileModel profileModel = profileService.removeCareerFromProfile(profileId, careerId);
-			return ResponseEntity.status(HttpStatus.OK).body(profileModel);
-		} catch (CustomNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
-		}
-	}
-
-	@PostMapping("/{profileId}/careers")
-	public ResponseEntity<?> addCareerToProfile(@PathVariable int profileId, @RequestBody CareerModel careerModel) {
-		try {
-			ProfileModel profileModel = profileService.addCareerToProfile(profileId, careerModel);
-			return ResponseEntity.status(HttpStatus.OK).body(profileModel);
-		} catch (CustomNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
-		}
-	}
-
-	@PostMapping("/{profileId}/titles")
-	public ResponseEntity<?> addTitleToProfile(@PathVariable int profileId, @RequestBody TitleModel titleModel) {
-		try {
-			ProfileModel profileModel = profileService.addTitleToProfile(profileId, titleModel);
-			return ResponseEntity.status(HttpStatus.OK).body(profileModel);
 		} catch (CustomNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		} catch (Exception e) {

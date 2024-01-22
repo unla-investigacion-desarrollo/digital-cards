@@ -18,10 +18,6 @@ public interface IProfileService {
 
 	ProfileModel update(ProfileModel profile, int profileId);
 
-	ProfileModel addTitleToProfile(int profileId, int titleId);
-
-	ProfileModel removeTitleFromProfile(int profileId, int titleId);
-
 	ProfileModel addCareerToProfile(int profileId, int careerId);
 
 	ProfileModel removeCareerFromProfile(int profileId, int careerId);

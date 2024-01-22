@@ -33,14 +33,6 @@ public class Profile implements Serializable{
 	
 	@ManyToMany
 	@JoinTable(
-		name="profile_title",
-		joinColumns = @JoinColumn (name="profile_id"),
-		inverseJoinColumns = @JoinColumn (name="title_id")
-	)
-	List<Title> titles;
-	
-	@ManyToMany
-	@JoinTable(
 			name="profile_career",
 			joinColumns = @JoinColumn (name="profile_id"),
 			inverseJoinColumns = @JoinColumn (name="career_id")
@@ -49,6 +41,7 @@ public class Profile implements Serializable{
 	
 	private ProfileStatus status;
 	private String courses;
+	private List<String> titles;
 	private String name;
 	private String lastname;
 	private String urlLinkedin;
@@ -64,6 +57,7 @@ public class Profile implements Serializable{
 		this.current = profile.isCurrent();
 		this.status = profile.getStatus();
 		this.courses = profile.getCourses();
+		this.titles = profile.getTitles();
 		this.name = profile.getName();
 		this.lastname = profile.getLastname();
 		this.urlLinkedin = profile.getUrlLinkedin();
@@ -75,13 +69,14 @@ public class Profile implements Serializable{
 	}
 
 	public Profile(byte[] photo, boolean current, ProfileStatus status, String courses, String name,
-			String lastname, String urlLinkedin, String mail, String phone, String moreInfo, LocalDate createdAt,
+			String lastname, String urlLinkedin, String mail, String phone, String moreInfo, LocalDate createdAt,List<String>titles,
 			LocalDate updateAt) {
 		this.photo = photo;
 		this.current = current;
 		this.status = status;
 		this.courses = courses;
 		this.name = name;
+		this.titles = titles;
 		this.lastname = lastname;
 		this.urlLinkedin = urlLinkedin;
 		this.mail = mail;

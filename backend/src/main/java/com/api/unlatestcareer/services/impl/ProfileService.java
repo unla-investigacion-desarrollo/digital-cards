@@ -10,12 +10,9 @@ import org.springframework.stereotype.Service;
 import com.api.unlatestcareer.entities.*;
 import com.api.unlatestcareer.exception.CustomNotFoundException;
 import com.api.unlatestcareer.helpers.ViewRouteHelper;
-import com.api.unlatestcareer.models.CareerModel;
 import com.api.unlatestcareer.models.ProfileModel;
-import com.api.unlatestcareer.models.TitleModel;
 import com.api.unlatestcareer.repositories.ICareerRepository;
 import com.api.unlatestcareer.repositories.IProfileRepository;
-import com.api.unlatestcareer.repositories.ITitleRepository;
 import com.api.unlatestcareer.services.IProfileService;
 
 @Service("profileService")
@@ -25,10 +22,6 @@ public class ProfileService implements IProfileService {
 
 	@Autowired
 	private IProfileRepository profileRepository;
-	
-	@Autowired 
-	private ITitleRepository titleRepository;
-	
 	@Autowired
 	private ICareerRepository careerRepository;
 
@@ -87,7 +80,7 @@ public class ProfileService implements IProfileService {
 			if (profileExisting == null) {
 				profileExisting = new Profile(profile.getPhoto(), profile.isCurrent(), profile.getStatus(),
 						profile.getCourses(), profile.getName(), profile.getLastname(), profile.getUrlLinkedin(),
-						profile.getMail(), profile.getPhone(), profile.getMoreInfo(), profile.getCreatedAt(),
+						profile.getMail(), profile.getPhone(), profile.getMoreInfo(), profile.getCreatedAt(),profile.getTitles(),
 						profile.getUpdateAt());
 			} else {
 				profileExisting = new Profile(profile);
@@ -111,31 +104,7 @@ public class ProfileService implements IProfileService {
 		}
 	}
 
-	 @Override
-	    public ProfileModel addTitleToProfile(int profileId, int titleId) {
-		 Profile profileExisting = profileRepository.findById(profileId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
-	        Title titleExisting = titleRepository.findById(titleId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));      
-	        if (profileExisting != null && titleExisting != null) {
-	            if (!profileExisting.getTitles().contains(titleExisting)) {
-	                profileExisting.getTitles().add(titleExisting);
-	            }
-	            profileRepository.save(profileExisting);
-	        }
-	        return mapper.map(profileExisting, ProfileModel.class);
-	    }
 
-	@Override
-	public ProfileModel removeTitleFromProfile(int profileId, int titleId) {
-		Profile profileExisting = profileRepository.findById(profileId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
-        Title titleExisting = titleRepository.findById(titleId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));      
-        if (profileExisting != null && titleExisting != null) {
-            if (profileExisting.getTitles().contains(titleExisting)) {
-                profileExisting.getTitles().remove(titleExisting);
-            }
-            profileRepository.save(profileExisting);
-        }
-        return mapper.map(profileExisting, ProfileModel.class);
-    }
 
 	@Override
 	public ProfileModel addCareerToProfile(int profileId, int careerId) {
@@ -162,33 +131,6 @@ public class ProfileService implements IProfileService {
 	        }
 	        return mapper.map(profileExisting, ProfileModel.class);
 	}
-	
-	public ProfileModel addCareerToProfile(int profileId, CareerModel careerModel) {
-	    Profile profileExisting = profileRepository.findById(profileId)
-	            .orElseThrow(() -> new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND));
-	    Career career = new Career();
-	    career.setName(careerModel.getName());
-	    career.setLink(careerModel.getLink());
-	    career.setCreatedAt(careerModel.getCreatedAt());
-	    career.setUpdateAt(careerModel.getUpdateAt());
-	    career.setEnabled(careerModel.isEnabled());
-	    profileExisting.getCareers().add(career);
-	    
-	    //Preguntar si hace falta que se guarde en este caso. 
-	    careerRepository.save(career);
 
-	    // Guarda el perfil actualizado en la base de datos
-	    profileRepository.save(profileExisting);
 
-	    return mapper.map(profileExisting, ProfileModel.class);
-	}
-
-	public ProfileModel addTitleToProfile (int profileId, TitleModel titleModel) {
-		Profile profileExisting = profileRepository.findById(profileId).orElseThrow(() -> new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND));			
-		Title title = new Title(titleModel.getName(), titleModel.getCreatedAt(),titleModel.getUpdateAt());
-		profileExisting.getTitles().add(title);
-		titleRepository.save(title);
-		profileRepository.save(profileExisting);
-		return mapper.map(profileExisting, ProfileModel.class);
-	}
 }

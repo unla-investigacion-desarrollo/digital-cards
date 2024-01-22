@@ -16,8 +16,8 @@ public class ProfileModel {
 	private int id;
 	private byte[] photo;
 	private boolean current;
-	private List<TitleModel> titles;
-	private List<CareerModel> careers;
+	private List<String> titles;
+	private int idCareer;
 	private ProfileStatus status;
 	private String courses;
 	private String name;
