@@ -1,7 +1,6 @@
 package com.api.unlatestcareer.services;
 
 import java.util.List;
-
 import com.api.unlatestcareer.models.ProfileModel;
 
 public interface IProfileService {

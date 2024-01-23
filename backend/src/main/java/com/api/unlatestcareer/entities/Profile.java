@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.api.unlatestcareer.helpers.ProfileStatus;
 import com.api.unlatestcareer.models.ProfileModel;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,34 +15,33 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name="profile")
-public class Profile implements Serializable{
-	
+@Table(name = "profile")
+@AllArgsConstructor
+public class Profile implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private byte[] photo;
 	private boolean current;
-	
+
+	private String title;
+
 	@ManyToMany
-	@JoinTable(
-			name="profile_career",
-			joinColumns = @JoinColumn (name="profile_id"),
-			inverseJoinColumns = @JoinColumn (name="career_id")
-		)
+	@JoinTable(name = "profile_career", joinColumns = @JoinColumn(name = "profile_id"), inverseJoinColumns = @JoinColumn(name = "career_id", nullable = true))
 	List<Career> careers;
-	
+
 	private ProfileStatus status;
 	private String courses;
-	private List<String> titles;
 	private String name;
 	private String lastname;
 	private String urlLinkedin;
@@ -50,14 +50,14 @@ public class Profile implements Serializable{
 	private String moreInfo;
 	private LocalDate createdAt;
 	private LocalDate updateAt;
-	
+
 	public Profile(ProfileModel profile) {
 		this.id = profile.getId();
 		this.photo = profile.getPhoto();
 		this.current = profile.isCurrent();
+		this.title = profile.getTitle();
 		this.status = profile.getStatus();
 		this.courses = profile.getCourses();
-		this.titles = profile.getTitles();
 		this.name = profile.getName();
 		this.lastname = profile.getLastname();
 		this.urlLinkedin = profile.getUrlLinkedin();
@@ -68,15 +68,15 @@ public class Profile implements Serializable{
 		this.updateAt = profile.getUpdateAt();
 	}
 
-	public Profile(byte[] photo, boolean current, ProfileStatus status, String courses, String name,
-			String lastname, String urlLinkedin, String mail, String phone, String moreInfo, LocalDate createdAt,List<String>titles,
+	public Profile(byte[] photo, boolean current, String title, ProfileStatus status, String courses, String name,
+			String lastname, String urlLinkedin, String mail, String phone, String moreInfo, LocalDate createdAt,
 			LocalDate updateAt) {
 		this.photo = photo;
 		this.current = current;
+		this.title = title;
 		this.status = status;
 		this.courses = courses;
 		this.name = name;
-		this.titles = titles;
 		this.lastname = lastname;
 		this.urlLinkedin = urlLinkedin;
 		this.mail = mail;
@@ -86,4 +86,3 @@ public class Profile implements Serializable{
 		this.updateAt = updateAt;
 	}
 }
-

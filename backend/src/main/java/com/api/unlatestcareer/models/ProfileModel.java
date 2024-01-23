@@ -1,8 +1,6 @@
 package com.api.unlatestcareer.models;
 
 import java.time.LocalDate;
-import java.util.List;
-
 import com.api.unlatestcareer.helpers.ProfileStatus;
 
 import lombok.AllArgsConstructor;
@@ -16,7 +14,7 @@ public class ProfileModel {
 	private int id;
 	private byte[] photo;
 	private boolean current;
-	private List<String> titles;
+	private String title;
 	private int idCareer;
 	private ProfileStatus status;
 	private String courses;

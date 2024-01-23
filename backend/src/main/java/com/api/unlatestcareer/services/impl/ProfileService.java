@@ -7,7 +7,9 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.api.unlatestcareer.entities.*;
+
+import com.api.unlatestcareer.entities.Career;
+import com.api.unlatestcareer.entities.Profile;
 import com.api.unlatestcareer.exception.CustomNotFoundException;
 import com.api.unlatestcareer.helpers.ViewRouteHelper;
 import com.api.unlatestcareer.models.ProfileModel;
@@ -78,10 +80,10 @@ public class ProfileService implements IProfileService {
 		try {
 			Profile profileExisting = profileRepository.findById(profile.getId()).orElse(null);
 			if (profileExisting == null) {
-				profileExisting = new Profile(profile.getPhoto(), profile.isCurrent(), profile.getStatus(),
-						profile.getCourses(), profile.getName(), profile.getLastname(), profile.getUrlLinkedin(),
-						profile.getMail(), profile.getPhone(), profile.getMoreInfo(), profile.getCreatedAt(),profile.getTitles(),
-						profile.getUpdateAt());
+				profileExisting = new Profile(profile.getPhoto(), profile.isCurrent(), profile.getTitle(),
+						profile.getStatus(), profile.getCourses(), profile.getName(), profile.getLastname(),
+						profile.getUrlLinkedin(), profile.getMail(), profile.getPhone(), profile.getMoreInfo(),
+						profile.getCreatedAt(), profile.getUpdateAt());
 			} else {
 				profileExisting = new Profile(profile);
 			}
@@ -94,43 +96,41 @@ public class ProfileService implements IProfileService {
 
 	@Override
 	public ProfileModel update(ProfileModel profile, int profileId) {
-		try {
-			Profile profileExisting = profileRepository.findById(profileId)
-					.orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
-			profileExisting.setName(profile.getName());
-			return mapper.map(profileExisting, ProfileModel.class);
-		} catch (Exception e) {
-			return null;
-		}
+		Profile profileExisting = profileRepository.findById(profileId)
+				.orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
+		profileExisting.setName(profile.getName());
+		return mapper.map(profileExisting, ProfileModel.class);
+
 	}
-
-
 
 	@Override
 	public ProfileModel addCareerToProfile(int profileId, int careerId) {
-		 Profile profileExisting = profileRepository.findById(profileId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
-		 Career careerExisting = careerRepository.findById(careerId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));	 
-		 if (profileExisting != null && careerExisting != null) {
-			 if(profileExisting.getTitles().contains(careerExisting)) {
-				 profileExisting.getTitles().remove(careerExisting);
-			 }
-			 profileRepository.save(profileExisting);
-		 }
-		 return mapper.map(profileExisting, ProfileModel.class);
-	}	 
+		Profile profileExisting = profileRepository.findById(profileId)
+				.orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
+		Career careerExisting = careerRepository.findById(careerId)
+				.orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
+		if (profileExisting != null && careerExisting != null) {
+			if (profileExisting.getCareers().contains(careerExisting)) {
+				profileExisting.getCareers().add(careerExisting);
+			}
+			profileRepository.save(profileExisting);
+		}
+		return mapper.map(profileExisting, ProfileModel.class);
+	}
 
 	@Override
 	public ProfileModel removeCareerFromProfile(int profileId, int careerId) {
-		 Profile profileExisting = profileRepository.findById(profileId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
-		 Career careerExisting = careerRepository.findById(careerId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
-		 if (profileExisting != null && careerExisting != null) {
-	            if (profileExisting.getTitles().contains(careerExisting)) {
-	                profileExisting.getTitles().remove(careerExisting);
-	            }
-	            profileRepository.save(profileExisting);
-	        }
-	        return mapper.map(profileExisting, ProfileModel.class);
+		Profile profileExisting = profileRepository.findById(profileId)
+				.orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
+		Career careerExisting = careerRepository.findById(careerId)
+				.orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
+		if (profileExisting != null && careerExisting != null) {
+			if (profileExisting.getCareers().contains(careerExisting)) {
+				profileExisting.getCareers().remove(careerExisting);
+			}
+			profileRepository.save(profileExisting);
+		}
+		return mapper.map(profileExisting, ProfileModel.class);
 	}
-
 
 }

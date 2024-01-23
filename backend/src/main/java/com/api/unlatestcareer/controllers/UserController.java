@@ -30,7 +30,7 @@ public class UserController {
 
 	@Autowired
 	JwtTokenUtil jwtService;
-	
+
 	public UserController(UserService userService) {
 		this.userService = userService;
 	}
@@ -66,12 +66,19 @@ public class UserController {
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getUserById(@PathVariable int id) {
 		try {
+		/* Revisar para obtener los APPROVED	
+		 * UserModel user = userService.findById(id);
+			user.getProfiles().stream().filter(p->p.getStatus()== ProfileStatus.APPROVED); */
+			//Con esto obtengo el usuario logueado...
+			//String userAux = SecurityContextHolder.getContext().getAuthentication().getName();
+	
 			return ResponseEntity.status(HttpStatus.OK).body(userService.findById(id));
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
 		}
 	}
 
+	
 	@GetMapping("")
 	public ResponseEntity<?> getAllUsers() {
 		try {
@@ -97,9 +104,36 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
 		}
 	}
-	
+
 	@PostMapping("/login")
 	public UserView autenticarUsuario(@RequestBody User request) {
 		return userService.userAuthenticate(request);
 	}
-}
+	
+	@PostMapping("/{userName}/profiles/{profileId}")
+	public ResponseEntity<?> addProfileToUser(@PathVariable String username, @PathVariable int profileId) {
+		try {
+			UserModel userModel = userService.addProfileToUser(username, profileId);
+			return ResponseEntity.status(HttpStatus.OK).body(userModel);
+		} catch (CustomNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
+		}
+	}
+
+	@DeleteMapping("/{userId}/profiles/{profileId}")
+	public ResponseEntity<?> removeProfileToUser(@PathVariable int userId, @PathVariable int profileId) {
+		try {
+			UserModel userModel = userService.removeProfileFromUser(userId, profileId);
+			return ResponseEntity.status(HttpStatus.OK).body(userModel);
+		} catch (CustomNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
+		}
+	}
+	
+	
+	
+	}
