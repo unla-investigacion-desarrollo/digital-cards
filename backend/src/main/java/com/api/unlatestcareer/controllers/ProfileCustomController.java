@@ -2,8 +2,10 @@ package com.api.unlatestcareer.controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.unlatestcareer.exception.CustomNotFoundException;
 import com.api.unlatestcareer.helpers.ViewRouteHelper;
-import com.api.unlatestcareer.models.CareerModel;
 import com.api.unlatestcareer.models.ProfileModel;
-import com.api.unlatestcareer.models.TitleModel;
 import com.api.unlatestcareer.services.impl.ProfileService;
+import com.api.unlatestcareer.services.impl.UserService;
 import com.api.unlatestcareer.services.impl.UtilService;
 
 @RestController
@@ -26,23 +27,33 @@ import com.api.unlatestcareer.services.impl.UtilService;
 public class ProfileCustomController {
 
 	private ProfileService profileService;
-
+	
+	@Autowired
+	private UserService userService;
+	
+	
 	public ProfileCustomController(ProfileService profileService) {
 		this.profileService = profileService;
 	}
+	
 
 	@PostMapping("")
 	public ResponseEntity<?> createProfile(@RequestBody ProfileModel model) {
-		try {
-			ProfileModel savedProfile = profileService.save(model);
-			if (savedProfile != null) {
-				return ResponseEntity.status(HttpStatus.OK).body(savedProfile);
-			} else {
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_CREATE);
-			}
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ViewRouteHelper.ERROR_REQUEST);
-		}
+	    try {
+	  
+	        ProfileModel savedProfile = profileService.save(model);
+	        if (savedProfile != null) {
+	    
+	            userService.addProfileToUser(SecurityContextHolder.getContext().getAuthentication().getName(), savedProfile.getId());
+	            
+	            return ResponseEntity.status(HttpStatus.OK).body("Perfil agregado exitosamente al usuario: "+ SecurityContextHolder.getContext().getAuthentication().getName());
+	        } else {
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_CREATE);
+	        }
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ViewRouteHelper.ERROR_REQUEST);
+	    }
 	}
 
 	@PutMapping("/{id}")
@@ -107,30 +118,6 @@ public class ProfileCustomController {
 		}
 	}
 
-	@PostMapping("/{profileId}/titles/{titleId}")
-	public ResponseEntity<?> addTitleToProfile(@PathVariable int profileId, @PathVariable int titleId) {
-		try {
-			ProfileModel profileModel = profileService.addTitleToProfile(profileId, titleId);
-			return ResponseEntity.status(HttpStatus.OK).body(profileModel);
-		} catch (CustomNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
-		}
-	}
-
-	@DeleteMapping("/{profileId}/titles/{titleId}")
-	public ResponseEntity<?> removeTitleFromProfile(@PathVariable int profileId, @PathVariable int titleId) {
-		try {
-			ProfileModel profileModel = profileService.removeTitleFromProfile(profileId, titleId);
-			return ResponseEntity.status(HttpStatus.OK).body(profileModel);
-		} catch (CustomNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
-		}
-	}
-
 	@PostMapping("/{profileId}/careers/{careerId}")
 	public ResponseEntity<?> addCareerToProfile(@PathVariable int profileId, @PathVariable int careerId) {
 		try {
@@ -154,28 +141,5 @@ public class ProfileCustomController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
 		}
 	}
-
-	@PostMapping("/{profileId}/careers")
-	public ResponseEntity<?> addCareerToProfile(@PathVariable int profileId, @RequestBody CareerModel careerModel) {
-		try {
-			ProfileModel profileModel = profileService.addCareerToProfile(profileId, careerModel);
-			return ResponseEntity.status(HttpStatus.OK).body(profileModel);
-		} catch (CustomNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
-		}
-	}
-
-	@PostMapping("/{profileId}/titles")
-	public ResponseEntity<?> addTitleToProfile(@PathVariable int profileId, @RequestBody TitleModel titleModel) {
-		try {
-			ProfileModel profileModel = profileService.addTitleToProfile(profileId, titleModel);
-			return ResponseEntity.status(HttpStatus.OK).body(profileModel);
-		} catch (CustomNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
-		}
-	}
+	
 }

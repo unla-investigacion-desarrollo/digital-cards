@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.api.unlatestcareer.helpers.ProfileStatus;
 import com.api.unlatestcareer.models.ProfileModel;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,6 +23,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Table(name="profile")
+@AllArgsConstructor
 public class Profile implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -31,19 +34,14 @@ public class Profile implements Serializable{
 	private byte[] photo;
 	private boolean current;
 	
-	@ManyToMany
-	@JoinTable(
-		name="profile_title",
-		joinColumns = @JoinColumn (name="profile_id"),
-		inverseJoinColumns = @JoinColumn (name="title_id")
-	)
-	List<Title> titles;
+	
+	private String title;
 	
 	@ManyToMany
 	@JoinTable(
 			name="profile_career",
 			joinColumns = @JoinColumn (name="profile_id"),
-			inverseJoinColumns = @JoinColumn (name="career_id")
+			inverseJoinColumns = @JoinColumn (name="career_id", nullable = true)
 		)
 	List<Career> careers;
 	
@@ -58,10 +56,12 @@ public class Profile implements Serializable{
 	private LocalDate createdAt;
 	private LocalDate updateAt;
 	
+	
 	public Profile(ProfileModel profile) {
 		this.id = profile.getId();
 		this.photo = profile.getPhoto();
 		this.current = profile.isCurrent();
+		this.title = profile.getTitle();
 		this.status = profile.getStatus();
 		this.courses = profile.getCourses();
 		this.name = profile.getName();
@@ -74,11 +74,12 @@ public class Profile implements Serializable{
 		this.updateAt = profile.getUpdateAt();
 	}
 
-	public Profile(byte[] photo, boolean current, ProfileStatus status, String courses, String name,
+	public Profile(byte[] photo, boolean current,String title, ProfileStatus status, String courses, String name,
 			String lastname, String urlLinkedin, String mail, String phone, String moreInfo, LocalDate createdAt,
 			LocalDate updateAt) {
 		this.photo = photo;
 		this.current = current;
+		this.title = title;
 		this.status = status;
 		this.courses = courses;
 		this.name = name;
