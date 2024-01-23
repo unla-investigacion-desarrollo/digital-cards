@@ -14,7 +14,7 @@ const DigitalCardPage = ({ data }: any) => {
       <Header />
 
       <Switch
-        className="flex flex-1 items-center justify-center mb-4 ml-[66%]  max-xl:hidden "
+        className="flex flex-1 items-center justify-center mb-4 ml-[66%]  max-xl:hidden"
         size="sm"
         isSelected={state.isCompletedMode}
         onChange={actions.changeMode}

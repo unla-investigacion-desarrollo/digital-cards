@@ -24,7 +24,6 @@ public class ProfileService implements IProfileService {
 
 	@Autowired
 	private IProfileRepository profileRepository;
-
 	@Autowired
 	private ICareerRepository careerRepository;
 
@@ -133,6 +132,5 @@ public class ProfileService implements IProfileService {
 		}
 		return mapper.map(profileExisting, ProfileModel.class);
 	}
-
 
 }

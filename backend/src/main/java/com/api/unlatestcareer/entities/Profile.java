@@ -22,29 +22,24 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name="profile")
+@Table(name = "profile")
 @AllArgsConstructor
-public class Profile implements Serializable{
-	
+public class Profile implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private byte[] photo;
 	private boolean current;
-	
-	
+
 	private String title;
-	
+
 	@ManyToMany
-	@JoinTable(
-			name="profile_career",
-			joinColumns = @JoinColumn (name="profile_id"),
-			inverseJoinColumns = @JoinColumn (name="career_id", nullable = true)
-		)
+	@JoinTable(name = "profile_career", joinColumns = @JoinColumn(name = "profile_id"), inverseJoinColumns = @JoinColumn(name = "career_id", nullable = true))
 	List<Career> careers;
-	
+
 	private ProfileStatus status;
 	private String courses;
 	private String name;
@@ -55,8 +50,7 @@ public class Profile implements Serializable{
 	private String moreInfo;
 	private LocalDate createdAt;
 	private LocalDate updateAt;
-	
-	
+
 	public Profile(ProfileModel profile) {
 		this.id = profile.getId();
 		this.photo = profile.getPhoto();
@@ -74,7 +68,7 @@ public class Profile implements Serializable{
 		this.updateAt = profile.getUpdateAt();
 	}
 
-	public Profile(byte[] photo, boolean current,String title, ProfileStatus status, String courses, String name,
+	public Profile(byte[] photo, boolean current, String title, ProfileStatus status, String courses, String name,
 			String lastname, String urlLinkedin, String mail, String phone, String moreInfo, LocalDate createdAt,
 			LocalDate updateAt) {
 		this.photo = photo;
@@ -92,4 +86,3 @@ public class Profile implements Serializable{
 		this.updateAt = updateAt;
 	}
 }
-

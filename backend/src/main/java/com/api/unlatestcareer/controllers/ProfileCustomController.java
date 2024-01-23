@@ -27,33 +27,33 @@ import com.api.unlatestcareer.services.impl.UtilService;
 public class ProfileCustomController {
 
 	private ProfileService profileService;
-	
+
 	@Autowired
 	private UserService userService;
-	
-	
+
 	public ProfileCustomController(ProfileService profileService) {
 		this.profileService = profileService;
 	}
-	
 
 	@PostMapping("")
 	public ResponseEntity<?> createProfile(@RequestBody ProfileModel model) {
-	    try {
-	  
-	        ProfileModel savedProfile = profileService.save(model);
-	        if (savedProfile != null) {
-	    
-	            userService.addProfileToUser(SecurityContextHolder.getContext().getAuthentication().getName(), savedProfile.getId());
-	            
-	            return ResponseEntity.status(HttpStatus.OK).body("Perfil agregado exitosamente al usuario: "+ SecurityContextHolder.getContext().getAuthentication().getName());
-	        } else {
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_CREATE);
-	        }
-	    } catch (Exception e) {
-	    	e.printStackTrace();
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ViewRouteHelper.ERROR_REQUEST);
-	    }
+		try {
+
+			ProfileModel savedProfile = profileService.save(model);
+			if (savedProfile != null) {
+
+				userService.addProfileToUser(SecurityContextHolder.getContext().getAuthentication().getName(),
+						savedProfile.getId());
+
+				return ResponseEntity.status(HttpStatus.OK).body("Perfil agregado exitosamente al usuario: "
+						+ SecurityContextHolder.getContext().getAuthentication().getName());
+			} else {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_CREATE);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ViewRouteHelper.ERROR_REQUEST);
+		}
 	}
 
 	@PutMapping("/{id}")
@@ -141,5 +141,5 @@ public class ProfileCustomController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
 		}
 	}
-	
+
 }
