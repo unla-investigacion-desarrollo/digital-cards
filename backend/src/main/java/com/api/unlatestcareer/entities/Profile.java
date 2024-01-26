@@ -42,13 +42,14 @@ public class Profile implements Serializable {
 	List<Career> careers;
 
 	private ProfileStatus status;
-	private String courses;
+	private List<String> courses;
 	private String name;
-	private String lastname;
+	private String projects;
 	private String urlLinkedin;
 	private String mail;
 	private String phone;
 	private String moreInfo;
+	private List<String> institutions;
 	private LocalDate createdAt;
 	private LocalDate updateAt;
 
@@ -57,34 +58,35 @@ public class Profile implements Serializable {
 		this.photo = profile.getPhoto();
 		this.current = profile.isCurrent();
 		this.title = profile.getTitle();
-		this.status = profile.getStatus();
+		this.status = ProfileStatus.PENDING;
 		this.courses = profile.getCourses();
 		this.name = profile.getName();
-		this.lastname = profile.getLastname();
 		this.urlLinkedin = profile.getUrlLinkedin();
 		this.mail = profile.getMail();
 		this.phone = profile.getPhone();
+		this.institutions = profile.getInstitutions();
 		this.moreInfo = profile.getMoreInfo();
-		this.createdAt = profile.getCreatedAt();
-		this.updateAt = profile.getUpdateAt();
+		this.createdAt = LocalDate.now();
+		this.updateAt = LocalDate.now();
+		this.projects = profile.getProjects();
 	}
 
-	public Profile(byte[] photo, boolean current, String title, ProfileStatus status, String courses, String name,
-			String lastname, String urlLinkedin, String mail, String phone, String moreInfo, LocalDate createdAt,
-			LocalDate updateAt) {
+	public Profile(byte[] photo, boolean current, String title, ProfileStatus status, List<String> courses,List<String> institutions, String name,
+			 String urlLinkedin, String mail, String phone, String moreInfo,String projects) {
 		this.photo = photo;
 		this.current = current;
 		this.title = title;
-		this.status = status;
+		this.status = ProfileStatus.PENDING;
 		this.courses = courses;
 		this.name = name;
-		this.lastname = lastname;
 		this.urlLinkedin = urlLinkedin;
 		this.mail = mail;
 		this.phone = phone;
 		this.moreInfo = moreInfo;
-		this.createdAt = createdAt;
-		this.updateAt = updateAt;
+		this.institutions = institutions;
+		this.createdAt = LocalDate.now();
+		this.updateAt = LocalDate.now();
 		this.careers = new ArrayList<>();
+		this.projects = projects;
 	}
 }

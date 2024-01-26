@@ -15,6 +15,7 @@ type InputsState = {
   university: string[];
   newUniversity: string;
   careerId: number | null;
+  phone: string;
 };
 
 type Careers = {
@@ -36,6 +37,7 @@ const useFormCard = () => {
     university: [],
     newUniversity: "",
     careerId: null,
+    phone: "",
   });
 
   const [careers, setCareers] = useState<Careers[]>([] as any);

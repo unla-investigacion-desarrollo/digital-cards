@@ -81,9 +81,8 @@ public class ProfileService implements IProfileService {
 			Profile profileExisting = profileRepository.findById(profile.getId()).orElse(null);
 			if (profileExisting == null) {
 				profileExisting = new Profile(profile.getPhoto(), profile.isCurrent(), profile.getTitle(),
-						profile.getStatus(), profile.getCourses(), profile.getName(), profile.getLastname(),
-						profile.getUrlLinkedin(), profile.getMail(), profile.getPhone(), profile.getMoreInfo(),
-						profile.getCreatedAt(), profile.getUpdateAt());
+						profile.getStatus(), profile.getCourses(), profile.getInstitutions(),profile.getName(),
+						profile.getUrlLinkedin(), profile.getMail(), profile.getPhone(), profile.getMoreInfo(), profile.getProjects());
 			} else {
 				profileExisting = new Profile(profile);
 			}
