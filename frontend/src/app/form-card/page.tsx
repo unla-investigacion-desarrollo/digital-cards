@@ -36,6 +36,13 @@ const index = () => {
                 }
                 placeholder="Escribe tu Linkedlin"
               />
+              <Input
+                type="number"
+                label="Phone"
+                value={state.inputs.phone}
+                onChange={(e) => actions.handleInputs(e.target.value, "phone")}
+                placeholder="Escribe tu Phone"
+              />
               <SelectCustom
                 label="Select Career"
                 options={state.careers}

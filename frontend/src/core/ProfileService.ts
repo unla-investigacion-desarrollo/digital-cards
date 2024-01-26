@@ -7,16 +7,17 @@ class ProfileService {
         `http://localhost:8080/profiles`,
         {
           name: profile.name,
-          lastname: profile.name,
-          titles: profile.subtitle,
+          title: profile.subtitle,
           photo: "",
           current: true,
-          courses: "sasa",
+          courses: profile.subjects,
+          institutions: profile.university,
           urlLinkedin: profile.linkedlin,
           mail: profile.correo,
-          phone: "1150349032",
+          phone: profile.phone,
           moreInfo: profile.aboutMe,
           idCareer: profile.careerId,
+          projects: profile.projects,
         },
         {
           headers: {
