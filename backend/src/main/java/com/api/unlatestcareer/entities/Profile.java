@@ -2,6 +2,7 @@ package com.api.unlatestcareer.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.api.unlatestcareer.helpers.ProfileStatus;
@@ -84,5 +85,6 @@ public class Profile implements Serializable {
 		this.moreInfo = moreInfo;
 		this.createdAt = createdAt;
 		this.updateAt = updateAt;
+		this.careers = new ArrayList<>();
 	}
 }

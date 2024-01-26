@@ -110,7 +110,7 @@ public class ProfileService implements IProfileService {
 		Career careerExisting = careerRepository.findById(careerId)
 				.orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
 		if (profileExisting != null && careerExisting != null) {
-			if (profileExisting.getCareers().contains(careerExisting)) {
+			if (!profileExisting.getCareers().contains(careerExisting)) {
 				profileExisting.getCareers().add(careerExisting);
 			}
 			profileRepository.save(profileExisting);

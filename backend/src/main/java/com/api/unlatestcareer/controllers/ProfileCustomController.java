@@ -41,7 +41,8 @@ public class ProfileCustomController {
 
 			ProfileModel savedProfile = profileService.save(model);
 			if (savedProfile != null) {
-
+				//TODO: agregar expection si no se puede agregar career
+				profileService.addCareerToProfile(savedProfile.getId(), model.getIdCareer());
 				userService.addProfileToUser(SecurityContextHolder.getContext().getAuthentication().getName(),
 						savedProfile.getId());
 

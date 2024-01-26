@@ -75,7 +75,7 @@ const useFormCard = () => {
   };
 
   const handleCareer = (change: any) => {
-    handleInputs(change.value, "careerId");
+    handleInputs(change.target.value, "careerId");
   };
 
   const onClickNewProfile = async () => {
