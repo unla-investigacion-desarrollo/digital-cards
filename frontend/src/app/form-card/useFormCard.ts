@@ -1,6 +1,8 @@
-import { useState } from "react";
+import CareerService from "@/core/CareerService";
+import ProfileService from "@/core/ProfileService";
+import { useState, useEffect } from "react";
 
-type inputsState = {
+type InputsState = {
   name: string;
   subtitle: string;
   linkedlin: string;
@@ -12,10 +14,16 @@ type inputsState = {
   newSubjects: string;
   university: string[];
   newUniversity: string;
+  careerId: number | null;
+};
+
+type Careers = {
+  id: string;
+  name: string;
 };
 
 const useFormCard = () => {
-  const [inputs, setInputs] = useState<inputsState>({
+  const [inputs, setInputs] = useState<InputsState>({
     name: "",
     subtitle: "",
     linkedlin: "",
@@ -27,7 +35,10 @@ const useFormCard = () => {
     newSubjects: "",
     university: [],
     newUniversity: "",
+    careerId: null,
   });
+
+  const [careers, setCareers] = useState<Careers[]>([] as any);
 
   const handleInputs = async (
     value: string | string[] | Blob,
@@ -63,16 +74,45 @@ const useFormCard = () => {
     handleInputs(updatedItems, "university");
   };
 
+  const handleCareer = (change: any) => {
+    handleInputs(change.value, "careerId");
+  };
+
+  const onClickNewProfile = async () => {
+    await ProfileService.newProfile(inputs).then((response) => {
+      console.log(response);
+      alert(response);
+    });
+  };
+
+  useEffect(() => {
+    request();
+  }, []);
+
+  const request = async () => {
+    await CareerService.getAll().then((data) => {
+      data.forEach((career: any) => {
+        setCareers((prevState) => [
+          ...prevState,
+          { id: career.id, name: career.name },
+        ]);
+      });
+    });
+  };
+
   return {
     state: {
       inputs,
+      careers,
     },
     actions: {
       handleInputs,
+      handleCareer,
       handleAddSubjectsItem,
       handleRemoveSubjectsItem,
       handleAddUniversityItem,
       handleRemoveUniversityItem,
+      onClickNewProfile,
     },
   };
 };

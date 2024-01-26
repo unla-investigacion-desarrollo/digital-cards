@@ -2,6 +2,7 @@
 import React from "react";
 import { Input, Textarea, Button, Chip, Avatar } from "@nextui-org/react";
 import useFormCard from "./useFormCard";
+import SelectCustom from "@/components/SelectCustom";
 
 const index = () => {
   const { state, actions } = useFormCard();
@@ -33,7 +34,12 @@ const index = () => {
                 onChange={(e) =>
                   actions.handleInputs(e.target.value, "linkedlin")
                 }
-                placeholder="Escribe tu subtítulo o cargo"
+                placeholder="Escribe tu Linkedlin"
+              />
+              <SelectCustom
+                label="Select Career"
+                options={state.careers}
+                onChangeValue={actions.handleCareer}
               />
               <Input
                 label="Correo Electronico"
@@ -166,7 +172,7 @@ const index = () => {
       <Button
         className="mt-4 ml-4"
         type="submit"
-        onClick={() => console.log(state.inputs)}
+        onClick={() => actions.onClickNewProfile()}
       >
         Enviar
       </Button>
