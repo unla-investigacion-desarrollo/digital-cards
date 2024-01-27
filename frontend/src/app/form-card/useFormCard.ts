@@ -46,10 +46,20 @@ const useFormCard = () => {
     value: string | string[] | Blob,
     name: string
   ) => {
+    if (name == "image") value = await convertToBase64(value);
     setInputs((prevState) => ({
       ...prevState,
       [name]: value,
     }));
+  };
+
+  const convertToBase64 = (file: any): string => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
   };
 
   const handleAddSubjectsItem = () => {

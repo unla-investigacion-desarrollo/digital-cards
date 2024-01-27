@@ -115,10 +115,7 @@ const index = () => {
             />
 
             {state.inputs.image ? (
-              <Avatar
-                src={URL.createObjectURL(state.inputs.image)}
-                className="w-14 h-14"
-              />
+              <Avatar src={state.inputs.image} className="w-14 h-14" />
             ) : (
               <></>
             )}
