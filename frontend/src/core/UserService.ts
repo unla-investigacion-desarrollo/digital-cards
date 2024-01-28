@@ -21,9 +21,6 @@ class UserService {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("userId", response.data.userId);
         return response.data;
-      })
-      .catch((response) => {
-        return response;
       });
   }
 

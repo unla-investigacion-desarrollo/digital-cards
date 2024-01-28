@@ -18,7 +18,6 @@ import com.api.unlatestcareer.entities.User;
 import com.api.unlatestcareer.exception.CustomNotFoundException;
 import com.api.unlatestcareer.helpers.ViewRouteHelper;
 import com.api.unlatestcareer.models.UserModel;
-import com.api.unlatestcareer.models.UserView;
 import com.api.unlatestcareer.security.JwtTokenUtil;
 import com.api.unlatestcareer.services.impl.UserService;
 
@@ -106,8 +105,12 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
-	public UserView autenticarUsuario(@RequestBody User request) {
-		return userService.userAuthenticate(request);
+	public ResponseEntity<?> autenticarUsuario(@RequestBody User request) {
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body( userService.userAuthenticate(request));
+		} catch (CustomNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		}
 	}
 	
 	@PostMapping("/{userName}/profiles/{profileId}")

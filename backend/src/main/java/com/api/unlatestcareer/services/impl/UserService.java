@@ -160,10 +160,10 @@ public class UserService implements IUserService {
 					response.setToken(token);
 				}
 			}
+			return response;
 		} catch (Exception e) {
-			System.out.println("System Error: " + e.getMessage());
+			throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
 		}
-		return response;
 	}
 	
 	public UserModel addProfileToUser(String username, int profileId) {

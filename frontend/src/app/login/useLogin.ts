@@ -1,6 +1,7 @@
 import UserService from "@/core/UserService";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 type inputsValues = {
   userName: string;
@@ -32,7 +33,11 @@ const useLogin = () => {
         if (data.username) router.push("/home");
       })
       .catch((error) => {
-        console.error("Error en la petición:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Error en la petición:",
+          text: error.response.data,
+        });
       });
   };
 
