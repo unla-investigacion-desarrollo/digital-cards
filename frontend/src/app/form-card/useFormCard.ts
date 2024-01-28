@@ -92,7 +92,6 @@ const useFormCard = () => {
 
   const onClickNewProfile = async () => {
     await ProfileService.newProfile(inputs).then((response) => {
-      console.log(response);
       alert(response);
     });
   };

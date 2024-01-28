@@ -19,6 +19,7 @@ class UserService {
       .then((response) => {
         localStorage.setItem("username", response.data.username);
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userId", response.data.userId);
         return response.data;
       })
       .catch((response) => {

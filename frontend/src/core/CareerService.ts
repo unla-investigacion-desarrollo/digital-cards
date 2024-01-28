@@ -11,7 +11,6 @@ class CareerService {
         },
       })
       .then((response) => {
-        console.log(response);
         return response.data;
       })
       .catch((response) => {

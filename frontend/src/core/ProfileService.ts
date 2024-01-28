@@ -34,6 +34,22 @@ class ProfileService {
         return response;
       });
   }
+
+  public static async getCurrentProfile(userId: string) {
+    return axios
+      .get(`http://localhost:8080/profiles/live/${userId}`, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .catch((response) => {
+        return response;
+      });
+  }
 }
 
 export default ProfileService;

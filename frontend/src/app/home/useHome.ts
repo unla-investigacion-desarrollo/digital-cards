@@ -24,7 +24,6 @@ const useHome = () => {
   const getInfoHome = () => {
     setIsLoading(true);
     let idUser = localStorage.getItem("username");
-    console.log(idUser);
 
     GetInfoHome.getData(idUser || "")
       .then((response) => {
@@ -40,7 +39,9 @@ const useHome = () => {
 
   const generateQr = () => {
     QRCode.toDataURL(
-      `https://digital-cards-five.vercel.app/digital-card/${userInfo.idPage}`
+      `https://digital-cards-five.vercel.app/digital-card/${localStorage.getItem(
+        "userId"
+      )}`
     )
       .then((image) => {
         setUserInfo((prevState) => ({

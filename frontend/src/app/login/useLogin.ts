@@ -29,7 +29,6 @@ const useLogin = () => {
   const handleSubmit = async () => {
     await UserService.loginRequest(inputsValues.userName, inputsValues.password)
       .then((data) => {
-        console.log("Respuesta:", data);
         if (data.username) router.push("/home");
       })
       .catch((error) => {

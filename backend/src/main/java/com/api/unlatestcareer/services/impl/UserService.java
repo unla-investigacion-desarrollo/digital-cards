@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.api.unlatestcareer.models.ProfileModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -54,6 +55,17 @@ public class UserService implements IUserService {
 			} else {
 				throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
 			}
+		} catch (Exception e) {
+			throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
+		}
+	}
+
+	@Override
+	public Profile getCurrentProfileByUserId(int userId) {
+		try {
+			Profile profile  = userRepository.getCurrentProfileByUserId(userId);
+
+			return profile;
 		} catch (Exception e) {
 			throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
 		}
@@ -141,6 +153,7 @@ public class UserService implements IUserService {
 			if (userDetails.getPassword() != null) {
 				if (encoder.matches(request.getPassword(), userDetails.getPassword())) {
 					String token = jwtService.generateToken(userDetails.getUsername());
+					response.setUserId(username.getId());
 					response.setUsername(userDetails.getUsername());
 					response.setCreatedAt(username.getCreatedAt());
 					response.setUpdateAt(username.getUpdateAt());

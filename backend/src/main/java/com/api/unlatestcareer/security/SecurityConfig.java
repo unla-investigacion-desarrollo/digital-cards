@@ -30,6 +30,7 @@ public class SecurityConfig {
         httpSecurity.csrf(withDefaults())
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/usuario/login").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/profiles/live/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "**").permitAll()
                         .anyRequest().authenticated()).sessionManagement(management -> management
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)).csrf(AbstractHttpConfigurer::disable);
@@ -41,6 +42,7 @@ public class SecurityConfig {
     WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
                 .requestMatchers("/usuario/login")
+                .requestMatchers(HttpMethod.GET,"/profiles/live/**")
                 .requestMatchers(HttpMethod.OPTIONS, "**");
     }
 }

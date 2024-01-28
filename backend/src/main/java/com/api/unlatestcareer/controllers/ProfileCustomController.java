@@ -2,6 +2,7 @@ package com.api.unlatestcareer.controllers;
 
 import java.util.List;
 
+import com.api.unlatestcareer.entities.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -84,6 +85,18 @@ public class ProfileCustomController {
 			} else {
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ViewRouteHelper.ACCESS_DENIED);
 			}
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
+		}
+	}
+
+	@GetMapping("/live/{userId}")
+	public ResponseEntity<?> findProfileByUserIdAndEnabled(@PathVariable int userId) {
+		try {
+
+				Profile profile = userService.getCurrentProfileByUserId(userId);
+				return ResponseEntity.ok(profile);
+
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
 		}

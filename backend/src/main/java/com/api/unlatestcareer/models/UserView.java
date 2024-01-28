@@ -18,4 +18,5 @@ public class UserView {
 	private LocalDate createdAt;
 	private LocalDate updateAt;
 	private String token;
+	private int userId;
 }
