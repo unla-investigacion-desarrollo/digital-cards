@@ -5,7 +5,7 @@ import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 
 export const getServerSideProps = (async (id: string) => {
   let repo = {};
-  await ProfileService.getCurrentProfile("1").then((response) => {
+  await ProfileService.getCurrentProfile(id).then((response) => {
     repo = {
       id: response.id,
       name: response.name,
@@ -16,6 +16,7 @@ export const getServerSideProps = (async (id: string) => {
       proyectosAcademicosAndInvestigaciones: response.projects,
       mail: response.mail,
       linkedin: response.urlLinkedin,
+      moreInfo: response.moreInfo,
     };
   });
   return repo;

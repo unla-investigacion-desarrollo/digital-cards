@@ -21,6 +21,7 @@ type Props = {
   mail: string;
   universidades: string[];
   proyectosAcademicosAndInvestigaciones: any;
+  moreInfo: string;
 };
 
 const DigitalCardFull = ({
@@ -32,6 +33,7 @@ const DigitalCardFull = ({
   mail,
   universidades,
   proyectosAcademicosAndInvestigaciones,
+  moreInfo,
 }: Props) => {
   return (
     <div className="flex flex-1 items-center justify-center  ">
@@ -104,40 +106,15 @@ const DigitalCardFull = ({
             <div className="grid grid-colum ">
               <small className="text-lg font-semibold ">Sobre mi</small>
               <small className="text-default-500 mt-1  w-[600px] max-h-[120px] text-justify">
-                Soy un profesor universitario especializado en sistemas y
-                algoritmia. Mi pasión es compartir conocimientos y experiencias
-                en el mundo de la informática con mis estudiantes. A lo largo de
-                años de enseñanza, he desarrollado un enfoque pedagógico que
-                combina la teoría sólida con aplicaciones prácticas. Mi objetivo
-                es preparar a los estudiantes para enfrentar los desafíos
-                tecnológicos del siglo XXI, inculcando un profundo entendimiento
-                de la ciencia de la computación y las habilidades necesarias
-                para la resolución de problemas complejos. Además, mi compromiso
-                con la investigación me mantiene actualizado en las tendencias
-                tecnológicas más recientes. Espero tener la oportunidad de
-                trabajar juntos en esta emocionante travesía educativa.
+                {moreInfo}
               </small>
             </div>
-            <ScrollShadow hideScrollBar className="w-[600px] max-h-[230px]">
-              <div id="proyectos-academicos/investigaciones" className="mt-4  ">
-                {proyectosAcademicosAndInvestigaciones.map((item) => {
-                  return (
-                    <div key={item.nombre}>
-                      <div className="space-y-0.5">
-                        <h4 className="text-small font-medium">
-                          {item.nombre}
-                        </h4>
-                        <p className="text-xs text-default-400 text-justify">
-                          {item.description}
-                        </p>
-                        <div className="text-xs">{item.fecha}</div>
-                      </div>
-                      <Divider className="my-4" />
-                    </div>
-                  );
-                })}
-              </div>
-            </ScrollShadow>
+            <div className="grid grid-colum mt-12">
+              <small className="text-lg font-semibold ">Projects</small>
+              <small className="text-default-500 mt-1  w-[600px] max-h-[120px] text-justify">
+                {proyectosAcademicosAndInvestigaciones}
+              </small>
+            </div>
           </div>
         </CardBody>
         <div className="text-center text-small text-default-400 font-medium">
