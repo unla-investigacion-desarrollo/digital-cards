@@ -40,7 +40,5 @@ public class Career implements Serializable{
 		this.name = careerModel.getName();
 		this.enabled = careerModel.isEnabled();
 		this.link = careerModel.getLink();
-		this.createdAt = careerModel.getCreatedAt();
-		this.updateAt = careerModel.getUpdateAt();
 	}
 }

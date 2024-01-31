@@ -14,7 +14,5 @@ public class UserModel {
 	private String role;
 	private String password;
 	private boolean enabled;
-	private LocalDate createdAt;
-	private LocalDate updateAt;
 	private Set<Profile> profiles;
 }

@@ -9,6 +9,4 @@ public class CareerModel {
 	private String name;
 	private boolean enabled;
 	private String link;
-	private LocalDate createdAt;
-	private LocalDate updateAt;
 }

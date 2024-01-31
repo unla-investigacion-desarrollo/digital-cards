@@ -15,8 +15,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserView {
 	private String username;
-	private LocalDate createdAt;
-	private LocalDate updateAt;
 	private String token;
 	private int userId;
 }
