@@ -76,8 +76,7 @@ public class CareerService implements ICareerService {
 			Career careerExisting = careerRepository.findById(career.getId()).orElse(null);
 
 			if (careerExisting == null) {
-				careerExisting = new Career(career.getName(), career.getLink(), career.getCreatedAt(),
-						career.getUpdateAt(), career.isEnabled());
+				careerExisting = new Career(career.getName(), career.getLink(),null, null, career.isEnabled());
 			} else {
 				careerExisting = new Career(career);
 			}

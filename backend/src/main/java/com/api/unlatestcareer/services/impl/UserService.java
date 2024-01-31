@@ -112,7 +112,7 @@ public class UserService implements IUserService {
 			User userExisting = userRepository.findById(user.getId()).orElse(null);
 			if (userExisting == null) {
 				userExisting = new User(user.getUsername(), user.getRole(), encoder.encode(user.getPassword()),
-						user.isEnabled(), user.getUpdateAt(), user.getCreatedAt(),user.getProfiles());
+						user.isEnabled(), null, null,user.getProfiles());
 			} else {
 				userExisting = new User(user);
 			}
@@ -131,8 +131,6 @@ public class UserService implements IUserService {
 			userExisting.setUsername(user.getUsername());
 			userExisting.setRole(user.getRole());
 			userExisting.setEnabled(user.isEnabled());
-			userExisting.setUpdateAt(user.getUpdateAt());
-			userExisting.setCreatedAt(user.getCreatedAt());
 			userExisting.setProfiles(user.getProfiles());
 			if (user.getPassword() != null && !user.getPassword().isEmpty()) {
 				userExisting.setPassword(encoder.encode(user.getPassword()));
@@ -155,8 +153,6 @@ public class UserService implements IUserService {
 					String token = jwtService.generateToken(userDetails.getUsername());
 					response.setUserId(username.getId());
 					response.setUsername(userDetails.getUsername());
-					response.setCreatedAt(username.getCreatedAt());
-					response.setUpdateAt(username.getUpdateAt());
 					response.setToken(token);
 				}
 			}

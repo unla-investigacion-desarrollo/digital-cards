@@ -7,6 +7,6 @@ import lombok.*;
 public class CareerModel {
 	private int id;
 	private String name;
-	private boolean enabled;
 	private String link;
+	private boolean enabled;
 }
