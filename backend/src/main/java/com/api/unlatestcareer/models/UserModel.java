@@ -1,6 +1,5 @@
 package com.api.unlatestcareer.models;
 
-import java.time.LocalDate;
 import java.util.Set;
 
 import com.api.unlatestcareer.entities.Profile;

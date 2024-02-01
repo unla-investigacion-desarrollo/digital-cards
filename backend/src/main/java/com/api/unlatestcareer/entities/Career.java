@@ -34,6 +34,13 @@ public class Career implements Serializable{
 		this.createdAt = createdAt;
 		this.updateAt = updateAt;
 	}
+	public Career(String name, String link,  LocalDate updateAt, boolean enabled) {
+		super();
+		this.name = name;
+		this.enabled = enabled;
+		this.link = link;
+		this.updateAt = updateAt;
+	}
 	
 	public Career(CareerModel careerModel) {
 		super();

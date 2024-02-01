@@ -1,5 +1,6 @@
 package com.api.unlatestcareer.services.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -76,7 +77,7 @@ public class CareerService implements ICareerService {
 			Career careerExisting = careerRepository.findById(career.getId()).orElse(null);
 
 			if (careerExisting == null) {
-				careerExisting = new Career(career.getName(), career.getLink(),null, null, career.isEnabled());
+				careerExisting = new Career(career.getName(), career.getLink(),LocalDate.now(), LocalDate.now(), career.isEnabled());
 			} else {
 				careerExisting = new Career(career);
 			}

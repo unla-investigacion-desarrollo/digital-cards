@@ -1,6 +1,5 @@
 package com.api.unlatestcareer.models;
 
-import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
