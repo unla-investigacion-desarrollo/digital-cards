@@ -41,12 +41,21 @@ public class CareerService implements ICareerService {
 	}
 
 	public CareerModel findByName(String name) {
-		CareerModel careerModel = careerRepository.findByName(name);
-		if (careerModel != null) {
+		try {
+		Optional<Career> optionalCareer = careerRepository.findByName(name);
+		
+		if(optionalCareer.isPresent()) {
+			Career career = optionalCareer.get();
+			CareerModel careerModel = mapper.map(career, CareerModel.class);
 			return careerModel;
+		} else { 
+			throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
 		}
-		return null;
+	} catch (Exception e) {
+		throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
+		}
 	}
+	
 
 	@Override
 	public List<CareerModel> getAll() {

@@ -3,8 +3,6 @@ package com.api.unlatestcareer.services.impl;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import com.api.unlatestcareer.models.ProfileModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
