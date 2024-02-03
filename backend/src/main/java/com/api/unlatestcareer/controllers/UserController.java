@@ -83,6 +83,7 @@ public class UserController {
 		try {
 			List<UserModel> users = userService.getAll();
 			return ResponseEntity.ok(users);
+			
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
 		}

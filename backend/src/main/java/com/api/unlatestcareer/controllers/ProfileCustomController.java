@@ -35,7 +35,7 @@ public class ProfileCustomController {
 	public ProfileCustomController(ProfileService profileService) {
 		this.profileService = profileService;
 	}
-
+ 
 	@PostMapping("")
 	public ResponseEntity<?> createProfile(@RequestBody ProfileModel model) {
 		try {

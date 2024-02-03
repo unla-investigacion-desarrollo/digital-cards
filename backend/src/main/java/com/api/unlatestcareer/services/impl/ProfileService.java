@@ -131,5 +131,4 @@ public class ProfileService implements IProfileService {
 		}
 		return mapper.map(profileExisting, ProfileModel.class);
 	}
-
 }

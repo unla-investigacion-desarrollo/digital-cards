@@ -25,4 +25,5 @@ public interface IUserService {
 
 	UserView userAuthenticate(User request);	
 
+	void setLastProfileFalse (User user);
 }
