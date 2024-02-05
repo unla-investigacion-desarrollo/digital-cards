@@ -14,7 +14,7 @@ const CardQR = ({ name, position, qr, imageProfile }: Props) => {
       <div className="w-[382px] h-[376px] max-w-xs  bg-[#AE3B57] rounded-lg shadow-lg dark:bg-gray-800 flex  flex flex-col items-center relative">
         <Image
           className="object-cover rounded-[200%] absolute -top-10 left-[42%] z-[9999] w-[60px] h-[60px]"
-          src={imageProfile}
+          src={imageProfile ? imageProfile : "/defaultProfeImage.png"}
           alt="avatar"
           width={60}
           height={60}

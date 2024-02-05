@@ -8,7 +8,7 @@ type inputsValues = {
   password: string;
 };
 
-const useLogin = () => {
+const useLogin = (cookiesLogin: any) => {
   const [inputsValues, setInputsValues] = useState<inputsValues>({
     userName: "",
     password: "",
@@ -30,6 +30,7 @@ const useLogin = () => {
   const handleSubmit = async () => {
     await UserService.loginRequest(inputsValues.userName, inputsValues.password)
       .then((data) => {
+        cookiesLogin(data.token);
         if (data.username) router.push("/home");
       })
       .catch((error) => {
