@@ -1,6 +1,5 @@
 package com.api.unlatestcareer.models;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import com.api.unlatestcareer.helpers.ProfileStatus;

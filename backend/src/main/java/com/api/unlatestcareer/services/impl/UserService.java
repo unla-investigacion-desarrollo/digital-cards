@@ -3,8 +3,6 @@ package com.api.unlatestcareer.services.impl;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import com.api.unlatestcareer.models.ProfileModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -63,7 +61,7 @@ public class UserService implements IUserService {
 	@Override
 	public Profile getCurrentProfileByUserId(int userId) {
 		try {
-			Profile profile  = userRepository.getCurrentProfileByUserId(userId);
+			Profile profile = userRepository.getCurrentProfileByUserId(userId);
 
 			return profile;
 		} catch (Exception e) {
@@ -72,16 +70,15 @@ public class UserService implements IUserService {
 	}
 
 	public UserModel findByName(String username) {
-	    Optional<User> userOptional = userRepository.findByUsername(username);
-	    
-	    if (userOptional.isPresent()) {
-	        User user = userOptional.get();
-	        return mapper.map(user, UserModel.class);
-	    } else {
-	        throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
-	    }
-	}
+		Optional<User> userOptional = userRepository.findByUsername(username);
 
+		if (userOptional.isPresent()) {
+			User user = userOptional.get();
+			return mapper.map(user, UserModel.class);
+		} else {
+			throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
+		}
+	}
 
 	@Override
 	public List<UserModel> getAll() {
@@ -112,7 +109,7 @@ public class UserService implements IUserService {
 			User userExisting = userRepository.findById(user.getId()).orElse(null);
 			if (userExisting == null) {
 				userExisting = new User(user.getUsername(), user.getRole(), encoder.encode(user.getPassword()),
-						user.isEnabled(), user.getUpdateAt(), user.getCreatedAt(),user.getProfiles());
+						user.isEnabled(), null, null, user.getProfiles());
 			} else {
 				userExisting = new User(user);
 			}
@@ -131,8 +128,6 @@ public class UserService implements IUserService {
 			userExisting.setUsername(user.getUsername());
 			userExisting.setRole(user.getRole());
 			userExisting.setEnabled(user.isEnabled());
-			userExisting.setUpdateAt(user.getUpdateAt());
-			userExisting.setCreatedAt(user.getCreatedAt());
 			userExisting.setProfiles(user.getProfiles());
 			if (user.getPassword() != null && !user.getPassword().isEmpty()) {
 				userExisting.setPassword(encoder.encode(user.getPassword()));
@@ -155,8 +150,6 @@ public class UserService implements IUserService {
 					String token = jwtService.generateToken(userDetails.getUsername());
 					response.setUserId(username.getId());
 					response.setUsername(userDetails.getUsername());
-					response.setCreatedAt(username.getCreatedAt());
-					response.setUpdateAt(username.getUpdateAt());
 					response.setToken(token);
 				}
 			}
@@ -165,28 +158,27 @@ public class UserService implements IUserService {
 			throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
 		}
 	}
-	
+
 	public UserModel addProfileToUser(String username, int profileId) {
-	    try {
-	        User userExisting = userRepository.findByUsername(username)
-	                .orElseThrow(() -> new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND));
+		try {
+			User userExisting = userRepository.findByUsername(username)
+					.orElseThrow(() -> new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND));
 
-	        Profile profileExisting = profileRepository.findById(profileId)
-	                .orElseThrow(() -> new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND));
+			Profile profileExisting = profileRepository.findById(profileId)
+					.orElseThrow(() -> new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND));
 
-	        if (userExisting != null && profileExisting != null) {
-	            userExisting.getProfiles().add(profileExisting);
-	            userRepository.save(userExisting);
-	            System.out.println("Perfil agregado exitosamente al usuario: " + username);
-	        }
-	        return mapper.map(userExisting, UserModel.class);
-	    } catch (Exception e) {
-	        System.out.println("Error al agregar perfil al usuario: " + e.getMessage());
-	        throw e;
-	    }
+			if (userExisting != null && profileExisting != null) {
+				setLastProfileFalse(userExisting);
+				userExisting.getProfiles().add(profileExisting);
+				userRepository.save(userExisting);
+			}
+			return mapper.map(userExisting, UserModel.class);
+		} catch (Exception e) {
+			System.out.println("Error al agregar perfil al usuario: " + e.getMessage());
+			throw e;
+		}
 	}
 
-	
 	public UserModel removeProfileFromUser(int userId, int profileId) {
 		User userExisting = userRepository.findById(userId)
 				.orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
@@ -204,5 +196,17 @@ public class UserService implements IUserService {
 		return mapper.map(userExisting, UserModel.class);
 	}
 
-	
+	@Override
+	public void setLastProfileFalse(User user) {
+		Profile lastProfile = null;
+		for (Profile profile : user.getProfiles()) {
+			if (lastProfile == null || profile.getId() > lastProfile.getId()) {
+				lastProfile = profile;
+			}
+		}
+		if (lastProfile != null) {
+			lastProfile.setCurrent(false);
+		}
 	}
+
+}

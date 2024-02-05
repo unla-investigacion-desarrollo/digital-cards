@@ -46,8 +46,6 @@ public class User implements Serializable {
 		this.role = user.getRole();
 		this.password = user.getPassword();
 		this.enabled = user.isEnabled();
-		this.createdAt = user.getCreatedAt();
-		this.updateAt = user.getUpdateAt();
 		this.profiles = user.getProfiles();
 	}
 
