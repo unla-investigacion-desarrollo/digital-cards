@@ -73,12 +73,29 @@ public class ProfileCustomController {
 	}
 
 	@PutMapping("disable/{id}")
-	public ResponseEntity<?> setFalseProfile(@PathVariable int id){
+	public ResponseEntity<?> disableProfile(@PathVariable int id){
 		try {
 			ProfileModel model = profileService.findById(id);
 			
 			if(model != null) {
 				model.setCurrent(false);
+				profileService.save(model);
+				return ResponseEntity.status(HttpStatus.OK).body(model);
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
+			} 
+		} catch (Exception e) {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
+		}
+	}
+	
+	@PutMapping("enable/{id}")
+	public ResponseEntity<?> enableProfile(@PathVariable int id){
+		try {
+			ProfileModel model = profileService.findById(id);
+			
+			if(model != null) {
+				model.setCurrent(true);
 				profileService.save(model);
 				return ResponseEntity.status(HttpStatus.OK).body(model);
 			} else {
