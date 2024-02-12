@@ -1,8 +1,9 @@
 "use server";
 import { cookies } from "next/headers";
 
-async function cookiesLogin(token: string) {
+async function cookiesLogin(token: string, role: string) {
   cookies().set("token", token);
+  cookies().set("role", role);
   return "";
 }
 
@@ -12,4 +13,10 @@ async function getCookieUserToken() {
   return token;
 }
 
-export { cookiesLogin, getCookieUserToken };
+function getCookieUserRole() {
+  const role = cookies().get("role")?.value;
+  console.log(role);
+  return role;
+}
+
+export { cookiesLogin, getCookieUserToken, getCookieUserRole };

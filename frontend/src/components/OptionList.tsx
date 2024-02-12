@@ -29,7 +29,9 @@ export default function OptionList() {
     {
       title: "Vista completa de credencial",
       img: "/logoUnla.jpeg",
-      href: "digital-card/joan-laporte",
+      href: `https://digital-cards-five.vercel.app/digital-card/${localStorage.getItem(
+        "userId"
+      )}`,
     },
   ];
 

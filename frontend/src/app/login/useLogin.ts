@@ -30,7 +30,7 @@ const useLogin = (cookiesLogin: any) => {
   const handleSubmit = async () => {
     await UserService.loginRequest(inputsValues.userName, inputsValues.password)
       .then((data) => {
-        cookiesLogin(data.token);
+        cookiesLogin(data.token, data.role);
         if (data.username) router.push("/home");
       })
       .catch((error) => {
