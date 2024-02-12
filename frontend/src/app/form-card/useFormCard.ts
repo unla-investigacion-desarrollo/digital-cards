@@ -53,10 +53,14 @@ const useFormCard = () => {
     }));
   };
 
-  const convertToBase64 = (file: any): string => {
+  const convertToBase64 = (file: any) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
+      reader.onload = () => {
+        // Eliminar el prefijo "data:image/png;base64,"
+        const base64Content = reader?.result?.split(",")[1];
+        resolve(base64Content);
+      };
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });

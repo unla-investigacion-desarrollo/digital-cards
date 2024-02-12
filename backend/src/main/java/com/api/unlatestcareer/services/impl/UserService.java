@@ -151,6 +151,8 @@ public class UserService implements IUserService {
 					response.setUserId(username.getId());
 					response.setUsername(userDetails.getUsername());
 					response.setToken(token);
+				}else{
+					throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
 				}
 			}
 			return response;
