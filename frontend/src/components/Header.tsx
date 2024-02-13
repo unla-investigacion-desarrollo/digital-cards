@@ -1,8 +1,10 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { getCookieUserRole } from "@/app/login/cookies";
 
 const Header = () => {
+  const isAdmin = getCookieUserRole() == "ADMIN";
   return (
     <>
       <header className="bg-bgHeader">
@@ -26,7 +28,34 @@ const Header = () => {
               />
             </a>
           </div>
-          <div className="lg:flex lg:flex-1 lg:justify-end"></div>
+          <div className="lg:flex lg:flex-1 lg:justify-end">
+            <ul className="flex space-x-4">
+              <li>
+                <a
+                  href="#"
+                  className="text-s font-small text-gray-200 hover:text-white transition-colors duration-300 hover:border-b-2 border-white"
+                >
+                  Peticiones actualizacion
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/home"
+                  className="text-s font-small text-gray-200 hover:text-white transition-colors duration-300 hover:border-b-2 border-white"
+                >
+                  Home
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="text-s font-small text-red-500 hover:text-red-700 transition-colors duration-300 hover:border-b-2 border-red-500"
+                >
+                  Logout
+                </a>
+              </li>
+            </ul>
+          </div>
         </nav>
       </header>
     </>
