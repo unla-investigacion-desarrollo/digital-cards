@@ -4,7 +4,7 @@ import React from "react";
 import { Button, Input } from "@nextui-org/react";
 import useLogin from "./useLogin";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
-import { cookiesLogin } from "./cookies";
+import { cookiesLogin } from "../../utils/cookies";
 
 const index = () => {
   const { actions, state } = useLogin(cookiesLogin);

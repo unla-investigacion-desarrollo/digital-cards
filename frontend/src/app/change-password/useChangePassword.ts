@@ -12,7 +12,6 @@ const useChangePassword = () => {
     password: "",
     oldPassword: "",
   });
-  const router = useRouter();
 
   const [isVisiblePassword, setIsVisiblePassword] = useState<Boolean>(false);
   const [isVisibleOldPassword, setIsVisibleOldPassword] =
@@ -33,8 +32,8 @@ const useChangePassword = () => {
   };
 
   const handleSubmit = async () => {
-    //UserService.loginRequest(inputsValues.userName, inputsValues.password);
-    //router.push("/home");
+    // deleteCookies();
+    // router.push("/home");
   };
 
   return {

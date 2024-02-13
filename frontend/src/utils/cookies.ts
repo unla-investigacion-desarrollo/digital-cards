@@ -19,4 +19,9 @@ function getCookieUserRole() {
   return role;
 }
 
-export { cookiesLogin, getCookieUserToken, getCookieUserRole };
+function deleteCookies() {
+  cookies().delete("role");
+  cookies().delete("token");
+}
+
+export { cookiesLogin, getCookieUserToken, getCookieUserRole, deleteCookies };

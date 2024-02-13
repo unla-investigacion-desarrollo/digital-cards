@@ -1,10 +1,11 @@
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { getCookieUserRole } from "@/app/login/cookies";
+import { deleteCookies } from "@/utils/cookies";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
-  const isAdmin = getCookieUserRole() == "ADMIN";
+  const router = useRouter();
+
   return (
     <>
       <header className="bg-bgHeader">
@@ -48,7 +49,10 @@ const Header = () => {
               </li>
               <li>
                 <a
-                  href="#"
+                  onClick={() => {
+                    deleteCookies();
+                    router.push("/login");
+                  }}
                   className="text-s font-small text-red-500 hover:text-red-700 transition-colors duration-300 hover:border-b-2 border-red-500"
                 >
                   Logout

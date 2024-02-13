@@ -1,5 +1,5 @@
 import React from "react";
-import { getCookieUserRole } from "../login/cookies";
+import { getCookieUserRole } from "../../utils/cookies";
 import AdminPage from "./pages/AdminPage";
 import UserPage from "./pages/UserPage";
 

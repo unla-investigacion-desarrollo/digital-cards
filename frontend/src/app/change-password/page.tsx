@@ -22,7 +22,7 @@ const index = () => {
           <form className="space-y-6" action="#" method="POST">
             <div>
               <div className="mt-2">
-                <h1>Name del user</h1>
+                <h1>{localStorage.getItem("username")}</h1>
               </div>
             </div>
 

@@ -49,14 +49,33 @@ const AdminPage = () => {
           </div>
 
           <div className="flex flex-row gap-[3%]">
-            <ChipMenu image="./historial.png" text="Peticiones actualizacion" />
+            <ChipMenu
+              image="./historial.png"
+              text="Peticiones actualizacion"
+              href="/form-card"
+            />
             <ChipMenu
               image="./form.png"
               text="Formulario cambio de credential"
+              href="/form-card"
             />
-            <ChipMenu image="./changePassword.png" text="Cambiar Password" />
-            <ChipMenu image="./credential.png" text="Visualizar Crendencial" />
-            <ChipMenu image="./newUser.png" text="Crear nuevo Usuario" />
+            <ChipMenu
+              image="./changePassword.png"
+              text="Cambiar Password"
+              href="/change-password"
+            />
+            <ChipMenu
+              image="./credential.png"
+              text="Visualizar Crendencial"
+              href={`https://digital-cards-five.vercel.app/digital-card/${localStorage.getItem(
+                "userId"
+              )}`}
+            />
+            <ChipMenu
+              image="./newUser.png"
+              text="Crear nuevo Usuario"
+              href="/new-user"
+            />
           </div>
         </div>
       )}
