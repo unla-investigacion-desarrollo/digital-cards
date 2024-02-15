@@ -52,17 +52,17 @@ const UserPage = () => {
             <ChipMenu
               image="./historial.png"
               text="Peticiones actualizacion"
-              href="form-card"
+              href="/dashboard"
             />
             <ChipMenu
               image="./form.png"
               text="Formulario cambio de credential"
-              href="form-card"
+              href="/form-card"
             />
             <ChipMenu
               image="./changePassword.png"
               text="Cambiar Password"
-              href="change-password"
+              href="/change-password"
             />
             <ChipMenu
               image="./credential.png"

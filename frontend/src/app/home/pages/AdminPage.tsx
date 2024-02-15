@@ -52,7 +52,7 @@ const AdminPage = () => {
             <ChipMenu
               image="./historial.png"
               text="Peticiones actualizacion"
-              href="/form-card"
+              href="dashboard"
             />
             <ChipMenu
               image="./form.png"
