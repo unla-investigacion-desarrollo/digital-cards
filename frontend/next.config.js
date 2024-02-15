@@ -8,6 +8,7 @@ const nextConfig = {
   },
   experimental: {
     serverActions: true,
+    outputStandalone: true,
   },
 };
 

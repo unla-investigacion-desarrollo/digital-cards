@@ -3,7 +3,7 @@ import ProfileService from "@/core/ProfileService";
 import DigitalCardPage from ".";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 
-export const getServerSideProps = (async (id: string) => {
+const getData = async (id: string) => {
   let repo = {};
   await ProfileService.getCurrentProfile(id).then((response) => {
     repo = {
@@ -20,10 +20,10 @@ export const getServerSideProps = (async (id: string) => {
     };
   });
   return repo;
-}) satisfies GetServerSideProps<{ repo: any }>;
+};
 
 const index = async ({ params }: { params: { idPage: string } }) => {
-  const data = await getServerSideProps(params.idPage);
+  const data = await getData(params.idPage);
 
   return (
     <>
