@@ -24,6 +24,9 @@ const useHome = () => {
   const getInfoHome = () => {
     setIsLoading(true);
     let idUser = localStorage.getItem("username");
+    setUserInfo(
+      (prevState) => ({ ...prevState, name: idUser?.split("@")[0] } as userInfo)
+    );
 
     GetInfoHome.getData(idUser || "")
       .then((response) => {

@@ -33,7 +33,7 @@ const Header = () => {
             <ul className="flex space-x-4">
               <li>
                 <a
-                  href="#"
+                  href="/dashboard"
                   className="text-s font-small text-gray-200 hover:text-white transition-colors duration-300 hover:border-b-2 border-white"
                 >
                   Peticiones actualizacion
