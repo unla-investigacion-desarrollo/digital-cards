@@ -8,7 +8,7 @@ class ProfileService {
         {
           name: profile.name,
           title: profile.subtitle,
-          photo: "",
+          photo: profile.image,
           current: true,
           courses: profile.subjects,
           institutions: profile.university,

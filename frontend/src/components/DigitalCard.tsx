@@ -41,7 +41,11 @@ const DigitalCard = ({
             <Image
               alt="Card background"
               className="object-cover rounded-xl grid justify-items-end "
-              src={imageProfile ? imageProfile : "/defaultProfeImage.png"}
+              src={
+                imageProfile
+                  ? `data:image/png;base64,${imageProfile}`
+                  : "/defaultProfeImage.png"
+              }
               width={120}
             />
           </div>
