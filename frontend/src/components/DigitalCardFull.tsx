@@ -37,7 +37,10 @@ const DigitalCardFull = ({
 }: Props) => {
   return (
     <div className="flex flex-1 items-center justify-center  ">
-      <Card className=" w-[1200px] h-[75vh] p-[1%] " id="digitalCardFull">
+      <Card
+        className=" w-[1200px] h-[75vh] p-[1%] bg-bgHeader/60 dark:bg-default-100/50 "
+        id="digitalCardFull"
+      >
         <CardHeader className="p-8 flex-row items-start  ">
           <div className="w-[600px] max-w-[600px]">
             <h4 className="font-bold text-4xl">{name}</h4>
@@ -58,31 +61,33 @@ const DigitalCardFull = ({
             <div className="mb-3" id={"materias"}>
               <small className="text-lg font-semibold ">Materias</small>
               <ul className="flex flex-col">
-                {materias.map((materia: string) => {
-                  return (
-                    <small
-                      className="text-default-500 mt-1 text-sm"
-                      key={materia}
-                    >
-                      {materia}
-                    </small>
-                  );
-                })}
+                {materias &&
+                  materias.map((materia: string) => {
+                    return (
+                      <small
+                        className="text-default-500 mt-1 text-sm"
+                        key={materia}
+                      >
+                        {materia}
+                      </small>
+                    );
+                  })}
               </ul>
             </div>
             <div className="mb-3" id={"proyectos-academicos"}>
               <small className="text-lg font-semibold ">Universidades</small>
               <ul className="flex flex-col">
-                {universidades.map((universidad: string) => {
-                  return (
-                    <small
-                      className="text-default-500 mt-1 text-sm"
-                      key={universidad}
-                    >
-                      {universidad}
-                    </small>
-                  );
-                })}
+                {universidades &&
+                  universidades.map((universidad: string) => {
+                    return (
+                      <small
+                        className="text-default-500 mt-1 text-sm"
+                        key={universidad}
+                      >
+                        {universidad}
+                      </small>
+                    );
+                  })}
               </ul>
             </div>
 

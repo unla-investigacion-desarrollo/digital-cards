@@ -42,7 +42,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      API_URL: http://localhost:8089
+      NEXT_PUBLIC_SERVER_URL: http://localhost:8089
     deploy:
       resources:
         limits:

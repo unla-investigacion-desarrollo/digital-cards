@@ -29,7 +29,7 @@ const DigitalCard = ({
   return (
     <div className="flex flex-1 items-center justify-center  h-[80vh] max-sm:h-[60vh]">
       <Card
-        className="max-sm:w-[340px] max-sm:h-[340px]   w-[550px]"
+        className="max-sm:w-[340px] max-sm:h-[340px] bg-bgHeader/60 dark:bg-default-100/50  w-[550px]"
         id="digitalCard"
       >
         <CardHeader className="max-sm:p-4 p-6 flex-row items-start  ">
@@ -41,28 +41,29 @@ const DigitalCard = ({
             <Image
               alt="Card background"
               className="object-cover rounded-xl grid justify-items-end "
-              src={imageProfile}
+              src={imageProfile ? imageProfile : "/defaultProfeImage.png"}
               width={120}
             />
           </div>
         </CardHeader>
 
-        <CardBody className=" overflow-visible py-2 grid grid-cols-2 max-sm:grid-cols-6 mb-4">
-          <div className="max-sm:col-span-5 max-sm:h-[2px]">
+        <CardBody className=" overflow-visible py-2 grid grid-cols-2 max-sm:grid-cols-6 mb-4 ">
+          <div className="max-sm:col-span-5 max-sm:h-[2px] gap-4">
             <small className="max-sm:text-xs text-sm font-semibold mt-3">
               Materias
             </small>
             <ul className="flex flex-col">
-              {materias.map((materia: string) => {
-                return (
-                  <small
-                    className=" max-sm:text-xs  text-default-500 mt-1"
-                    key={materia}
-                  >
-                    {materia}
-                  </small>
-                );
-              })}
+              {materias &&
+                materias.map((materia: string) => {
+                  return (
+                    <small
+                      className=" max-sm:text-xs  text-default-500 mt-1"
+                      key={materia}
+                    >
+                      {materia}
+                    </small>
+                  );
+                })}
             </ul>
             <div className="grid  content-end ">
               <Link

@@ -4,7 +4,7 @@ class UserService {
   public static async loginRequest(username: string, password: string) {
     return axios
       .post(
-        `http://localhost:8080/usuario/login`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/usuario/login`,
         {
           username: username,
           password: password,
@@ -26,7 +26,7 @@ class UserService {
 
   public static async userRequest() {
     return axios
-      .get(`http://localhost:8080/usuario/1`, {
+      .get(`${process.env.NEXT_PUBLIC_SERVER_URL}/usuario/1`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Access-Control-Allow-Origin": "*",

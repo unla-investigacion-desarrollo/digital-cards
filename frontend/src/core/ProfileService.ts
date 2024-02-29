@@ -4,7 +4,7 @@ class ProfileService {
   public static async newProfile(profile: any) {
     return axios
       .post(
-        `http://localhost:8080/profiles`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/profiles`,
         {
           name: profile.name,
           title: profile.subtitle,
@@ -37,7 +37,7 @@ class ProfileService {
 
   public static async getCurrentProfile(userId: string) {
     return axios
-      .get(`http://localhost:8080/profiles/live/${userId}`, {
+      .get(`${process.env.NEXT_PUBLIC_SERVER_URL}/profiles/live/${userId}`, {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",

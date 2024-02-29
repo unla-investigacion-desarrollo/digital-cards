@@ -12,7 +12,7 @@ import React from "react";
 const CardReview = () => {
   return (
     <div className=" mt-5 items-center justify-center ">
-      <Card className="max-w-[600px]">
+      <Card className="max-w-[600px] bg-bgHeader/60 dark:bg-default-100/50">
         <h2 className="font-bold text-2xl mt-3 text-center">
           Ultimo feedback de peticion
         </h2>
