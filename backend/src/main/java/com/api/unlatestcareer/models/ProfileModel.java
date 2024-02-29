@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProfileModel {
 	private int id;
-	private byte[] photo;
+	private String photo;
 	private boolean current;
 	private String title;
 	private int idCareer;
