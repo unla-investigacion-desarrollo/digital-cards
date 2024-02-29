@@ -32,7 +32,7 @@ public class Profile implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private byte[] photo;
+	private String photo;
 	private boolean current;
 
 	private String title;
@@ -71,7 +71,7 @@ public class Profile implements Serializable {
 		this.projects = profile.getProjects();
 	}
 
-	public Profile(byte[] photo, boolean current, String title, ProfileStatus status, List<String> courses,List<String> institutions, String name,
+	public Profile(String photo, boolean current, String title, ProfileStatus status, List<String> courses,List<String> institutions, String name,
 			 String urlLinkedin, String mail, String phone, String moreInfo,String projects) {
 		this.photo = photo;
 		this.current = current;
