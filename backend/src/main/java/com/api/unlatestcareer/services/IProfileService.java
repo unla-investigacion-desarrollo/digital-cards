@@ -21,4 +21,6 @@ public interface IProfileService {
 
 	ProfileModel removeCareerFromProfile(int profileId, int careerId);
 
+	public void disableAllProfiles();
+
 }

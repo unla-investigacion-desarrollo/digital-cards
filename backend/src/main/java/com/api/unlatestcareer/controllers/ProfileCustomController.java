@@ -35,14 +35,14 @@ public class ProfileCustomController {
 	public ProfileCustomController(ProfileService profileService) {
 		this.profileService = profileService;
 	}
- 
+
 	@PostMapping("")
 	public ResponseEntity<?> createProfile(@RequestBody ProfileModel model) {
 		try {
 
 			ProfileModel savedProfile = profileService.save(model);
 			if (savedProfile != null) {
-				//TODO: agregar expection si no se puede agregar career
+				// TODO: agregar expection si no se puede agregar career
 				profileService.addCareerToProfile(savedProfile.getId(), model.getIdCareer());
 				userService.addProfileToUser(SecurityContextHolder.getContext().getAuthentication().getName(),
 						savedProfile.getId());
@@ -73,39 +73,40 @@ public class ProfileCustomController {
 	}
 
 	@PutMapping("disable/{id}")
-	public ResponseEntity<?> disableProfile(@PathVariable int id){
+	public ResponseEntity<?> disableProfile(@PathVariable int id) {
 		try {
 			ProfileModel model = profileService.findById(id);
-			
-			if(model != null) {
+
+			if (model != null) {
 				model.setCurrent(false);
 				profileService.save(model);
 				return ResponseEntity.status(HttpStatus.OK).body(model);
 			} else {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
-			} 
+			}
 		} catch (Exception e) {
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
 		}
 	}
-	
+
 	@PutMapping("enable/{id}")
-	public ResponseEntity<?> enableProfile(@PathVariable int id){
+	public ResponseEntity<?> enableProfile(@PathVariable int id) {
 		try {
+			profileService.disableAllProfiles();
 			ProfileModel model = profileService.findById(id);
 			
-			if(model != null) {
+			if (model != null) {
 				model.setCurrent(true);
 				profileService.save(model);
 				return ResponseEntity.status(HttpStatus.OK).body(model);
 			} else {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
-			} 
+			}
 		} catch (Exception e) {
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
 		}
 	}
-	
+
 	@GetMapping("/{id}")
 	public ResponseEntity<?> findProfileById(@PathVariable int id) {
 		try {
@@ -128,8 +129,8 @@ public class ProfileCustomController {
 	public ResponseEntity<?> findProfileByUserIdAndEnabled(@PathVariable int userId) {
 		try {
 
-				Profile profile = userService.getCurrentProfileByUserId(userId);
-				return ResponseEntity.ok(profile);
+			Profile profile = userService.getCurrentProfileByUserId(userId);
+			return ResponseEntity.ok(profile);
 
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
