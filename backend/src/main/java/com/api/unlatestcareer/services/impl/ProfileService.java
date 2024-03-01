@@ -131,4 +131,13 @@ public class ProfileService implements IProfileService {
 		}
 		return mapper.map(profileExisting, ProfileModel.class);
 	}
+	
+	public void disableAllProfiles() {
+		List<ProfileModel> profiles = this.getAll();
+		
+		for (ProfileModel profile : profiles) {
+			profile.setCurrent(false);
+			this.save(profile);
+		}
+	}
 }
