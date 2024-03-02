@@ -32,6 +32,7 @@ public class SecurityConfig {
                         .requestMatchers("/usuario/login").permitAll()
                         .requestMatchers(HttpMethod.GET,"/profiles/live/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "**").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/usuario").permitAll()
                         .anyRequest().authenticated()).sessionManagement(management -> management
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)).csrf(AbstractHttpConfigurer::disable);
         httpSecurity.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);

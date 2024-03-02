@@ -56,7 +56,7 @@ public class User implements Serializable {
 		this.role = role;
 		this.password = password;
 		this.enabled = enabled;
-		this.createdAt = createdAt;
+		this.createdAt = LocalDate.now();
 		this.updateAt = updateAt;
 		this.profiles = profiles;
 	}

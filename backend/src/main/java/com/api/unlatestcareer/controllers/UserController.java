@@ -26,7 +26,8 @@ import com.api.unlatestcareer.services.impl.UserService;
 public class UserController {
 
 	private UserService userService;
-
+	
+	
 	@Autowired
 	JwtTokenUtil jwtService;
 
@@ -37,6 +38,9 @@ public class UserController {
 	@PostMapping("")
 	public ResponseEntity<?> createUser(@RequestBody UserModel model) {
 		try {
+			model.setRole("USER");
+			model.setEnabled(true);
+			model.setProfiles(null);
 			UserModel savedUser = userService.save(model);
 			if (savedUser != null) {
 				return ResponseEntity.status(HttpStatus.OK).body(savedUser);
