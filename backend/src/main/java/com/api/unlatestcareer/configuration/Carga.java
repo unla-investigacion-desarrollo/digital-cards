@@ -15,6 +15,7 @@ import com.api.unlatestcareer.repositories.IUserRepository;
 
 @Component
 public class Carga implements CommandLineRunner {
+	
 	@Autowired
 	private BCryptPasswordEncoder encoder;
 
