@@ -1,19 +1,8 @@
 "use client";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Divider,
-  Link,
-  Image,
-  Chip,
-} from "@nextui-org/react";
 import Header from "@/components/Header";
 import React from "react";
 import CardQR from "@/components/CardQR";
 import { Button } from "@nextui-org/react";
-import OptionList from "@/components/OptionList";
 import useHome from "../useHome";
 import ChipMenu from "@/components/ChipMenu";
 import CardReview from "@/components/CardReview";
@@ -67,9 +56,9 @@ const AdminPage = () => {
             <ChipMenu
               image="./credential.png"
               text="Visualizar Crendencial"
-              href={`https://digital-cards-five.vercel.app/digital-card/${localStorage.getItem(
-                "userId"
-              )}`}
+              href={`${
+                window.location.origin
+              }/digital-card/${localStorage.getItem("userId")}`}
             />
             <ChipMenu
               image="./newUser.png"

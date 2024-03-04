@@ -42,9 +42,7 @@ const useHome = () => {
 
   const generateQr = () => {
     QRCode.toDataURL(
-      `https://digital-cards-five.vercel.app/digital-card/${localStorage.getItem(
-        "userId"
-      )}`
+      `${window.location.origin}/digital-card/${localStorage.getItem("userId")}`
     )
       .then((image) => {
         setUserInfo((prevState) => ({
