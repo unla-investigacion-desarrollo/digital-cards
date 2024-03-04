@@ -66,13 +66,8 @@ public class CareerController {
 	@GetMapping("")
 	public ResponseEntity<?> getAll() {
 		try {
-			if (UtilService.hasRole(ViewRouteHelper.ADMIN_ROLE)) {
-				List<CareerModel> careers = careerService.getAll();
-				return ResponseEntity.ok(careers);
-			} else {
-				return ResponseEntity.status(HttpStatus.FORBIDDEN)
-						.body(ViewRouteHelper.ACCESS_DENIED);
-			}
+			List<CareerModel> careers = careerService.getAll();
+			return ResponseEntity.ok(careers);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
 		}
