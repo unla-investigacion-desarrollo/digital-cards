@@ -1,5 +1,6 @@
 package com.api.unlatestcareer.services.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -128,7 +129,7 @@ public class UserService implements IUserService {
 			userExisting.setUsername(user.getUsername());
 			userExisting.setRole(user.getRole());
 			userExisting.setEnabled(user.isEnabled());
-			userExisting.setProfiles(user.getProfiles());
+			userExisting.setUpdateAt(LocalDate.now());
 			if (user.getPassword() != null && !user.getPassword().isEmpty()) {
 				userExisting.setPassword(encoder.encode(user.getPassword()));
 			}
@@ -138,7 +139,6 @@ public class UserService implements IUserService {
 			throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
 		}
 	}
-
 	@Override
 	public UserView userAuthenticate(User request) {
 		UserView response = new UserView();

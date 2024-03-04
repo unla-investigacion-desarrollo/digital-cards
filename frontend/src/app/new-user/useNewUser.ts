@@ -28,19 +28,24 @@ const useNewUser = (cookiesLogin: any) => {
   };
 
   const handleSubmit = async () => {
-    console.log(inputsValues);
-    // await UserService.loginRequest(inputsValues.userName, inputsValues.password)
-    //   .then((data) => {
-    //     cookiesLogin(data.token, data.role);
-    //     if (data.username) router.push("/home");
-    //   })
-    //   .catch((error) => {
-    //     Swal.fire({
-    //       icon: "error",
-    //       title: "Error en la petición:",
-    //       text: error.response.data,
-    //     });
-    //   });
+    await UserService.createNewUserRequest(
+      inputsValues.userName,
+      inputsValues.password
+    )
+      .then((data) => {
+        Swal.fire({
+          icon: "success",
+          title: "Usuario Creado",
+          text: `User: ${data.username}`,
+        });
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Error en la petición:",
+          text: error.response.data,
+        });
+      });
   };
 
   return {
