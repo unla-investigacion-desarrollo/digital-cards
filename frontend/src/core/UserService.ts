@@ -4,13 +4,14 @@ class UserService {
   public static async loginRequest(username: string, password: string) {
     return axios
       .post(
-        `http://localhost:8080/usuario/login`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/usuario/login`,
         {
           username: username,
           password: password,
         },
         {
           headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
             "Access-Control-Allow-Origin": "*",
             "Content-Type": "application/json",
           },
@@ -24,9 +25,49 @@ class UserService {
       });
   }
 
+  public static async createNewUserRequest(username: string, password: string) {
+    return axios
+      .post(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/usuario`,
+        {
+          username: username,
+          password: password,
+        },
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        return response.data;
+      });
+  }
+
+  public static async changePasswordRequest(password: string) {
+    return axios
+      .put(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/usuario/change-password`,
+        {
+          password: password,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        return response.data;
+      });
+  }
+
   public static async userRequest() {
     return axios
-      .get(`http://localhost:8080/usuario/1`, {
+      .get(`${process.env.NEXT_PUBLIC_SERVER_URL}/usuario/1`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Access-Control-Allow-Origin": "*",

@@ -1,6 +1,7 @@
 import UserService from "@/core/UserService";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 type inputsValues = {
   password: string;
@@ -12,7 +13,6 @@ const useChangePassword = () => {
     password: "",
     oldPassword: "",
   });
-  const router = useRouter();
 
   const [isVisiblePassword, setIsVisiblePassword] = useState<Boolean>(false);
   const [isVisibleOldPassword, setIsVisibleOldPassword] =
@@ -33,8 +33,20 @@ const useChangePassword = () => {
   };
 
   const handleSubmit = async () => {
-    //UserService.loginRequest(inputsValues.userName, inputsValues.password);
-    //router.push("/home");
+    await UserService.changePasswordRequest(inputsValues.password)
+      .then((data) => {
+        Swal.fire({
+          icon: "success",
+          title: "Cambio de Contraseña exitoso",
+          text: `User: ${data.username}`,
+        });
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Error en la petición:",
+        });
+      });
   };
 
   return {

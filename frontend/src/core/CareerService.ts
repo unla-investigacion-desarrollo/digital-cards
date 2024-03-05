@@ -3,7 +3,7 @@ import axios from "axios";
 class CareerService {
   public static async getAll() {
     return axios
-      .get(`http://localhost:8080/careers`, {
+      .get(`${process.env.NEXT_PUBLIC_SERVER_URL}/careers`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Access-Control-Allow-Origin": "*",

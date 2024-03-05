@@ -1,6 +1,8 @@
 import CareerService from "@/core/CareerService";
 import ProfileService from "@/core/ProfileService";
 import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 type InputsState = {
   name: string;
@@ -41,6 +43,7 @@ const useFormCard = () => {
   });
 
   const [careers, setCareers] = useState<Careers[]>([] as any);
+  const router = useRouter();
 
   const handleInputs = async (
     value: string | string[] | Blob,
@@ -53,10 +56,14 @@ const useFormCard = () => {
     }));
   };
 
-  const convertToBase64 = (file: any): string => {
+  const convertToBase64 = (file: any) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
+      reader.onload = () => {
+        // Eliminar el prefijo "data:image/png;base64,"
+        const base64Content = reader?.result?.split(",")[1];
+        resolve(base64Content);
+      };
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });
@@ -92,7 +99,12 @@ const useFormCard = () => {
 
   const onClickNewProfile = async () => {
     await ProfileService.newProfile(inputs).then((response) => {
-      alert(response);
+      Swal.fire({
+        icon: "success",
+        title: "Nueva peticion de credencial exitosa",
+        text: `${response}`,
+      });
+      router.push("/dashboard");
     });
   };
 

@@ -8,7 +8,7 @@ type inputsValues = {
   password: string;
 };
 
-const useLogin = (cookiesLogin: any) => {
+const useNewUser = (cookiesLogin: any) => {
   const [inputsValues, setInputsValues] = useState<inputsValues>({
     userName: "",
     password: "",
@@ -28,10 +28,16 @@ const useLogin = (cookiesLogin: any) => {
   };
 
   const handleSubmit = async () => {
-    await UserService.loginRequest(inputsValues.userName, inputsValues.password)
+    await UserService.createNewUserRequest(
+      inputsValues.userName,
+      inputsValues.password
+    )
       .then((data) => {
-        cookiesLogin(data.token, data.role);
-        if (data.username) router.push("/home");
+        Swal.fire({
+          icon: "success",
+          title: "Usuario Creado",
+          text: `User: ${data.username}`,
+        });
       })
       .catch((error) => {
         Swal.fire({
@@ -56,4 +62,4 @@ const useLogin = (cookiesLogin: any) => {
   };
 };
 
-export default useLogin;
+export default useNewUser;

@@ -1,10 +1,12 @@
 package com.api.unlatestcareer.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,6 +58,22 @@ public class UserController {
 	public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody UserModel model) {
 		try {
 			UserModel updatedUser = userService.update(model, id);
+			if (updatedUser != null) {
+				return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
+		}
+	}
+
+	@PutMapping("/change-password")
+	public ResponseEntity<?> changePassword(@RequestBody Map<String, String> requestBody) {
+		try {
+			UserModel userToUpdatePassword = userService.findByName(SecurityContextHolder.getContext().getAuthentication().getName());
+			userToUpdatePassword.setPassword(requestBody.get("password"));
+			UserModel updatedUser = userService.update(userToUpdatePassword, userToUpdatePassword.getId());
 			if (updatedUser != null) {
 				return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
 			} else {

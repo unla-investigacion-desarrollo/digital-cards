@@ -2,11 +2,20 @@
 import ProfileService from "@/core/ProfileService";
 import DigitalCardPage from ".";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
+import Header from "@/components/Header";
+import ErrorPage from "./ErrorPage";
 
-export const getServerSideProps = (async (id: string) => {
-  let repo = {};
-  await ProfileService.getCurrentProfile(id).then((response) => {
-    repo = {
+const getData = async (id: string) => {
+  try {
+    const response = await ProfileService.getCurrentProfile(id);
+
+    if (!response) {
+      throw new Error(
+        "No se encontraron datos para la credencial proporcionada."
+      );
+    }
+
+    const data = {
       id: response.id,
       name: response.name,
       position: response.title,
@@ -18,18 +27,23 @@ export const getServerSideProps = (async (id: string) => {
       linkedin: response.urlLinkedin,
       moreInfo: response.moreInfo,
     };
-  });
-  return repo;
-}) satisfies GetServerSideProps<{ repo: any }>;
+
+    return data;
+  } catch (error) {
+    console.error("Error al obtener los datos:", error);
+    throw new Error(
+      "No hay credenciales disponibles o se produjo un error al obtener los datos."
+    );
+  }
+};
 
 const index = async ({ params }: { params: { idPage: string } }) => {
-  const data = await getServerSideProps(params.idPage);
-
-  return (
-    <>
-      <DigitalCardPage data={data}></DigitalCardPage>
-    </>
-  );
+  try {
+    const data = await getData(params.idPage);
+    return <DigitalCardPage data={data}></DigitalCardPage>;
+  } catch (error) {
+    return <ErrorPage error={error} />;
+  }
 };
 
 export default index;

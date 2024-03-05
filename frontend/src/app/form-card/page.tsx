@@ -115,7 +115,10 @@ const index = () => {
             />
 
             {state.inputs.image ? (
-              <Avatar src={state.inputs.image} className="w-14 h-14" />
+              <Avatar
+                src={"data:image/png;base64," + state.inputs.image}
+                className="w-14 h-14"
+              />
             ) : (
               <></>
             )}

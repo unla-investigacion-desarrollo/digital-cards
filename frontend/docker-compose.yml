@@ -4,7 +4,6 @@ services:
     image: digitalfrontend
     build:
       context: ./
-      target: production
       dockerfile: Dockerfile
     volumes:
       - .:/app
