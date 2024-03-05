@@ -41,7 +41,7 @@ public class UserController {
 	public ResponseEntity<?> createUser(@RequestBody UserModel model) {
 		try {
 			model.setRole("USER");
-			model.setEnabled(true);
+			model.setEnabled(false);
 			model.setProfiles(null);
 			UserModel savedUser = userService.save(model);
 			if (savedUser != null) {
