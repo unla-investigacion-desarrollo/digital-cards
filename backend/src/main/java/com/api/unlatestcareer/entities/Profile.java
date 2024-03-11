@@ -8,14 +8,7 @@ import java.util.List;
 import com.api.unlatestcareer.helpers.ProfileStatus;
 import com.api.unlatestcareer.models.ProfileModel;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "profile")
 @AllArgsConstructor
-public class Profile implements Serializable {
+public class Profile  implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -40,6 +33,9 @@ public class Profile implements Serializable {
 	@ManyToMany
 	@JoinTable(name = "profile_career", joinColumns = @JoinColumn(name = "profile_id"), inverseJoinColumns = @JoinColumn(name = "career_id", nullable = true))
 	List<Career> careers;
+
+	@OneToMany(mappedBy = "profiles", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<Review> reviews = new ArrayList<>();
 
 	private ProfileStatus status;
 	private List<String> courses;
