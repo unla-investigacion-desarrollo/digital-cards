@@ -6,14 +6,7 @@ import java.util.Set;
 
 import com.api.unlatestcareer.models.UserModel;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,7 +31,7 @@ public class User implements Serializable {
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id")
-	private Set<Profile> profiles; 
+	private Set<Profile> profiles;
 	
 	public User(UserModel user) {
 		this.id = user.getId();
