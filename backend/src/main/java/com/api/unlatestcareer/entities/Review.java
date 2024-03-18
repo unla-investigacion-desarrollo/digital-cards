@@ -1,7 +1,8 @@
 package com.api.unlatestcareer.entities;
 
-import com.api.unlatestcareer.helpers.ProfileStatus;
-import com.api.unlatestcareer.models.ProfileModel;
+
+import com.api.unlatestcareer.models.ReviewModel;
+import com.api.unlatestcareer.models.UserModel;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -42,14 +43,18 @@ public class Review implements Serializable {
     private Profile profiles;
 
 
-    public Review(Review review) {
-        this.id = review.getId();
-        this.userReviewer= review.getUserReviewer();
-        this.userRequestReview= review.getUserRequestReview();
-        this.profiles= review.getProfiles();
+
+    public Review(String feedback) {
+        this.feedback = feedback;
+        this.userReviewer = new User();
+        this.userRequestReview = new User();
+        this.profiles = new Profile();
         this.createdAt = LocalDate.now();
         this.updateAt = LocalDate.now();
-
     }
 
+    public Review (ReviewModel model){
+        this.id = model.getId();
+        this.feedback = model.getFeedback();
+    }
 }
