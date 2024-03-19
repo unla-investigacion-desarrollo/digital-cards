@@ -1,5 +1,8 @@
+"use client";
 import React from "react";
 import ProfilesTable from "@/components/Table/ProfilesTable";
+import UserService from "@/core/UserService";
+import useDashboard from "./useDashboard";
 
 const profileItems = [
   {
@@ -39,11 +42,17 @@ const columns = [
 ];
 
 const page = () => {
+  const { profiles } = useDashboard();
+
   return (
-    <ProfilesTable
-      columns={columns}
-      profileItems={profileItems}
-    ></ProfilesTable>
+    <>
+      {profiles && (
+        <ProfilesTable
+          columns={columns}
+          profileItems={profiles}
+        ></ProfilesTable>
+      )}
+    </>
   );
 };
 

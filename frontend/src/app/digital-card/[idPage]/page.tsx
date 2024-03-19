@@ -1,8 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import ProfileService from "@/core/ProfileService";
 import DigitalCardPage from ".";
-import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
-import Header from "@/components/Header";
 import ErrorPage from "./ErrorPage";
 
 const getData = async (id: string) => {
