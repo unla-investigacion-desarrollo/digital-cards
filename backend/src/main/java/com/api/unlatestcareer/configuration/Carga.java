@@ -67,7 +67,6 @@ public class Carga implements CommandLineRunner {
 					"https://www.unla.edu.ar/carreras/grado/licenciaturas/diseno-industrial", null, null, true);
 			careerRepository.save(testCareer4);
 		}
-
 		if (careerRepository.findByName("Licenciatura en Diseño y Comunicación Visual").orElse(null) == null) {
 			Career testCareer5 = new Career("Licenciatura en Diseño y Comunicación Visual",
 					"https://www.unla.edu.ar/carreras/grado/licenciaturas/diseno-y-comunicacion-visuall", null, null,

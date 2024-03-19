@@ -10,6 +10,5 @@ public interface IReviewService {
 
     List<ReviewModel> getAll();
 
-    ReviewModel save(Review review);
-
+    ReviewModel save(ReviewModel review);
 }

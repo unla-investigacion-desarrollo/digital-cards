@@ -1,7 +1,7 @@
 package com.api.unlatestcareer.models;
 
+import com.api.unlatestcareer.entities.Profile;
 import com.api.unlatestcareer.entities.User;
-import com.api.unlatestcareer.helpers.ProfileStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

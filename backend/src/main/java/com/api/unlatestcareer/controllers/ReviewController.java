@@ -1,9 +1,9 @@
 package com.api.unlatestcareer.controllers;
 
 
+
 import com.api.unlatestcareer.entities.Review;
 import com.api.unlatestcareer.helpers.ViewRouteHelper;
-import com.api.unlatestcareer.models.ProfileModel;
 import com.api.unlatestcareer.models.ReviewModel;
 import com.api.unlatestcareer.services.impl.ProfileService;
 import com.api.unlatestcareer.services.impl.ReviewService;
@@ -12,10 +12,7 @@ import com.api.unlatestcareer.services.impl.UtilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -30,17 +27,20 @@ public class ReviewController {
     @Autowired
     private ProfileService profileService;
 
+    public ReviewController(ReviewService reviewService) {
+        this.reviewService = reviewService;
+    }
 
     @PostMapping("")
     public ResponseEntity<?> createReview(@RequestBody ReviewModel model) {
         try {
-            Review review = new Review(model.getId(),model.getFeedback(),null,null,null,
-                    null, null);
-            ReviewModel savedProfile = reviewService.save(review);
-            if (savedProfile != null) {
+            ReviewModel savedReview = reviewService.save(model);
 
-                return ResponseEntity.status(HttpStatus.OK).body("review agregado exitosamente "
-                        + SecurityContextHolder.getContext().getAuthentication().getName());
+            if (savedReview != null) {
+                reviewService.addUserRequestReviewToReview(savedReview.getId(),model.getUserRequestReviewId());
+                reviewService.addUserReviewerToReview(savedReview.getId(),model.getUserReviewerId());
+                reviewService.addProfileToReview(savedReview.getId(),model.getProfileId());
+                return ResponseEntity.status(HttpStatus.OK).body(model);
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_CREATE);
             }
@@ -49,7 +49,6 @@ public class ReviewController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ViewRouteHelper.ERROR_REQUEST);
         }
     }
-
 
     @GetMapping("")
     public ResponseEntity<?> getAllReviews() {
@@ -64,5 +63,4 @@ public class ReviewController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
         }
     }
-
 }
