@@ -31,11 +31,9 @@ public class Profile  implements Serializable {
 	private String title;
 
 	@ManyToMany
-	@JoinTable(name = "profile_career", joinColumns = @JoinColumn(name = "profile_id"), inverseJoinColumns = @JoinColumn(name = "career_id", nullable = true))
+	@JoinTable(name = "profile_career", joinColumns = @JoinColumn(name = "profile_id"),
+			   inverseJoinColumns = @JoinColumn(name = "career_id", nullable = true))
 	List<Career> careers;
-
-	@OneToMany(mappedBy = "profiles", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<Review> reviews = new ArrayList<>();
 
 	private ProfileStatus status;
 	private List<String> courses;
@@ -48,6 +46,8 @@ public class Profile  implements Serializable {
 	private List<String> institutions;
 	private LocalDate createdAt;
 	private LocalDate updateAt;
+
+
 
 	public Profile(ProfileModel profile) {
 		this.id = profile.getId();

@@ -1,7 +1,5 @@
 package com.api.unlatestcareer.controllers;
 
-
-
 import com.api.unlatestcareer.entities.Review;
 import com.api.unlatestcareer.helpers.ViewRouteHelper;
 import com.api.unlatestcareer.models.ReviewModel;
@@ -28,6 +26,7 @@ public class ReviewController {
     private ProfileService profileService;
 
     public ReviewController(ReviewService reviewService) {
+
         this.reviewService = reviewService;
     }
 
@@ -37,15 +36,14 @@ public class ReviewController {
             ReviewModel savedReview = reviewService.save(model);
 
             if (savedReview != null) {
-                reviewService.addUserRequestReviewToReview(savedReview.getId(),model.getUserRequestReviewId());
+                reviewService.addUserRequestReviewToReview(savedReview.getId(),model.getUserRequesterId());
                 reviewService.addUserReviewerToReview(savedReview.getId(),model.getUserReviewerId());
                 reviewService.addProfileToReview(savedReview.getId(),model.getProfileId());
-                return ResponseEntity.status(HttpStatus.OK).body(model);
+                return ResponseEntity.status(HttpStatus.OK).body(savedReview);
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_CREATE);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ViewRouteHelper.ERROR_REQUEST);
         }
     }
@@ -62,5 +60,11 @@ public class ReviewController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
         }
+    }
+
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllReviewsAllAttributes() {
+        return null;
     }
 }

@@ -2,17 +2,11 @@ package com.api.unlatestcareer.entities;
 
 
 import com.api.unlatestcareer.models.ReviewModel;
-import com.api.unlatestcareer.models.UserModel;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.io.Serializable;
 import java.time.LocalDate;
-
 @Entity
 @Data
 @AllArgsConstructor
@@ -27,34 +21,30 @@ public class Review implements Serializable {
     private int id;
 
     private String feedback;
-    private LocalDate createdAt;
-    private LocalDate updateAt;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "user_request_review_id")
-    private User userRequestReview;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_requester_id")
+    private User requester;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_reviewer_id")
-    private User userReviewer;
+    private User reviewer;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_id")
-    private Profile profiles;
+    private Profile profile;
 
+    private LocalDate createdAt;
+    private LocalDate updateAt;
 
-
-    public Review(String feedback) {
-        this.feedback = feedback;
-        this.userReviewer = new User();
-        this.userRequestReview = new User();
-        this.profiles = new Profile();
+    public Review (ReviewModel model,User requester,User reviewer,Profile profile){
+        this.id = model.getId();
+        this.feedback = model.getFeedback();
+        this.setReviewer(reviewer);
+        this.setRequester(requester);
+        this.setProfile(profile);
         this.createdAt = LocalDate.now();
         this.updateAt = LocalDate.now();
     }
 
-    public Review (ReviewModel model){
-        this.id = model.getId();
-        this.feedback = model.getFeedback();
-    }
 }

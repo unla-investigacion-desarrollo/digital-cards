@@ -1,6 +1,7 @@
 package com.api.unlatestcareer.models;
 
 import com.api.unlatestcareer.entities.Profile;
+import com.api.unlatestcareer.entities.Review;
 import com.api.unlatestcareer.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,8 +15,9 @@ import java.util.List;
 public class ReviewModel {
     private int id;
     private String feedback;
-    private int userRequestReviewId;
+    private int userRequesterId;
     private int userReviewerId;
     private int profileId;
+
 
 }

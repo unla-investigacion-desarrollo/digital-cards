@@ -56,7 +56,7 @@ public class ReviewService implements IReviewService {
         for (Review review : reviews) {
             ReviewModel reviewModel = mapper.map(review, ReviewModel.class);
 
-            Profile profile = review.getProfiles();
+            Profile profile = review.getProfile();
             if (profile != null) {
                 reviewModel.setProfileId(profile.getId());
             }
@@ -66,16 +66,21 @@ public class ReviewService implements IReviewService {
         return reviewModels;
     }
 
-
     @Override
-    public ReviewModel save(ReviewModel reviewModel) {
+    public ReviewModel save(ReviewModel review) {
         try {
-            Review reviewExisting = reviewRepository.findById(reviewModel.getId()).orElse(null);
-            if (reviewExisting == null) {
-                reviewExisting = new Review(reviewModel.getFeedback());
-            } else {
-                reviewExisting = new Review(reviewModel);
-            }
+            User requester = userRepository.findById(review.getUserRequesterId())
+                    .orElseThrow(() -> new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND));
+
+            User reviewer = userRepository.findById(review.getUserReviewerId())
+                    .orElseThrow(() -> new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND));
+
+            Profile profile = profileRepository.findById(review.getProfileId())
+                    .orElseThrow(() -> new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND));
+
+            Review reviewExisting = reviewRepository.findById(review.getId()).orElse(null);
+            reviewExisting = new Review(review, requester, reviewer, profile);
+
             reviewRepository.save(reviewExisting);
             return mapper.map(reviewExisting, ReviewModel.class);
         } catch (Exception e) {
@@ -85,54 +90,41 @@ public class ReviewService implements IReviewService {
 
 
     public ReviewModel addUserRequestReviewToReview(int reviewId, int userId) {
-        try {
-            Review reviewExisting = reviewRepository.findById(reviewId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
-            User userExisting = userRepository.findById(userId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
-            if (reviewExisting != null && userExisting != null) {
-                reviewExisting.setUserRequestReview(userExisting);
-                reviewRepository.save(reviewExisting);
-                return mapper.map(reviewExisting, ReviewModel.class);
-            } else {
-                throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
+        Review reviewExisting = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
+        User userExisting = userRepository.findById(userId)
+                .orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
+        if (reviewExisting != null && userExisting != null) {
+            reviewExisting.setRequester(userExisting);
+            reviewRepository.save(reviewExisting);
+
         }
+        return mapper.map(reviewExisting, ReviewModel.class);
     }
 
     public ReviewModel addUserReviewerToReview(int reviewId, int userId) {
-        try {
-            Review reviewExisting = reviewRepository.findById(reviewId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
-            User userExisting = userRepository.findById(userId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
-            if (reviewExisting != null && userExisting != null) {
-                reviewExisting.setUserReviewer(userExisting);
-                reviewRepository.save(reviewExisting);
-                return mapper.map(reviewExisting, ReviewModel.class);
-            } else {
-                throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
+
+        Review reviewExisting = reviewRepository.findById(reviewId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
+        User userExisting = userRepository.findById(userId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
+        if (reviewExisting != null && userExisting != null) {
+            reviewExisting.setReviewer(userExisting);
+            reviewRepository.save(reviewExisting);
+
         }
+        return mapper.map(reviewExisting, ReviewModel.class);
     }
 
     public ReviewModel addProfileToReview(int reviewId, int profileId) {
-       try {
-           Review reviewExisting = reviewRepository.findById(reviewId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
-           Profile profileExisting = profileRepository.findById(profileId)
-                   .orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
-           if (reviewExisting != null && profileExisting != null) {
-               reviewExisting.setProfiles(profileExisting);
-               reviewRepository.save(reviewExisting);
-               return mapper.map(reviewExisting, ReviewModel.class);
-           } else {
-               throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
-           }
-       }catch (Exception e){
-           e.printStackTrace();
-           throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
-       }
+
+        Review reviewExisting = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
+        Profile profileExisting = profileRepository.findById(profileId)
+                .orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
+        if (reviewExisting != null && profileExisting != null) {
+            reviewExisting.setProfile(profileExisting);
+            reviewRepository.save(reviewExisting);
+
+        }
+        return mapper.map(reviewExisting, ReviewModel.class);
     }
 }
