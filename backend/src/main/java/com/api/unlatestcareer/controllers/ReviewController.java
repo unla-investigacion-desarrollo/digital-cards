@@ -52,7 +52,7 @@ public class ReviewController {
     public ResponseEntity<?> getAllReviews() {
         try {
             if (UtilService.hasRole(ViewRouteHelper.ADMIN_ROLE)) {
-                List<ReviewModel> reviews = reviewService.getAll();
+                List<Review> reviews = reviewService.getAll();
                 return ResponseEntity.ok(reviews);
             } else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ViewRouteHelper.ACCESS_DENIED);
@@ -62,9 +62,4 @@ public class ReviewController {
         }
     }
 
-
-    @GetMapping("/all")
-    public ResponseEntity<?> getAllReviewsAllAttributes() {
-        return null;
-    }
 }

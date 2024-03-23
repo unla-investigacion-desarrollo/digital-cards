@@ -50,20 +50,8 @@ public class ReviewService implements IReviewService {
     }
 
     @Override
-    public List<ReviewModel> getAll() {
-        List<Review> reviews = reviewRepository.findAll();
-        List<ReviewModel> reviewModels = new ArrayList<>();
-        for (Review review : reviews) {
-            ReviewModel reviewModel = mapper.map(review, ReviewModel.class);
-
-            Profile profile = review.getProfile();
-            if (profile != null) {
-                reviewModel.setProfileId(profile.getId());
-            }
-            reviewModels.add(reviewModel);
-        }
-
-        return reviewModels;
+    public List<Review> getAll() {
+        return reviewRepository.findAll();
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.util.List;
 public interface IReviewService {
     ReviewModel findById(int id);
 
-    List<ReviewModel> getAll();
+    List<Review> getAll();
 
     ReviewModel save(ReviewModel review);
 }
