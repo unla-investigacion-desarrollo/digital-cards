@@ -51,7 +51,6 @@ public class ProfileCustomController {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_CREATE);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ViewRouteHelper.ERROR_REQUEST);
         }
     }
@@ -158,30 +157,6 @@ public class ProfileCustomController {
             } else {
                 throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
             }
-        } catch (CustomNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
-        }
-    }
-
-    @PostMapping("/{profileId}/careers/{careerId}")
-    public ResponseEntity<?> addCareerToProfile(@PathVariable int profileId, @PathVariable int careerId) {
-        try {
-            ProfileModel profileModel = profileService.addCareerToProfile(profileId, careerId);
-            return ResponseEntity.status(HttpStatus.OK).body(profileModel);
-        } catch (CustomNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
-        }
-    }
-
-    @DeleteMapping("/{profileId}/careers/{careerId}")
-    public ResponseEntity<?> removeCareerFromProfile(@PathVariable int profileId, @PathVariable int careerId) {
-        try {
-            ProfileModel profileModel = profileService.removeCareerFromProfile(profileId, careerId);
-            return ResponseEntity.status(HttpStatus.OK).body(profileModel);
         } catch (CustomNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
