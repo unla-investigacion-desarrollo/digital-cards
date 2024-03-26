@@ -41,7 +41,7 @@ const UserPage = () => {
           <div className="flex flex-row gap-[3%]">
             <ChipMenu
               image="./historial.png"
-              text="Peticiones actualizacion"
+              text="Dashboard de profiles"
               href="/dashboard"
             />
             <ChipMenu

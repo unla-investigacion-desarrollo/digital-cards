@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import ProfilesTable from "@/components/Table/ProfilesTable";
-import UserService from "@/core/UserService";
 import useDashboard from "./useDashboard";
 
 const profileItems = [

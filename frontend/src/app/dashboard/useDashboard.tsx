@@ -1,3 +1,4 @@
+import ReviewService from "@/core/ReviewService";
 import UserService from "@/core/UserService";
 import { useEffect, useState } from "react";
 
@@ -20,15 +21,26 @@ const useDashboard = () => {
           data.profiles.map((profile: any) => ({
             profileId: profile.id,
             profileName: "Generic",
-            userReview: profile?.reviews[0]?.userReviewerId || "sin reviwer",
-            review: profile?.reviews[0]?.feedback || "sin feedback",
+            userReview: profile?.reviews
+              ? profile?.reviews[0]?.userReviewerId
+              : "sin reviwer",
+            review: profile?.reviews
+              ? profile?.reviews[0]?.feedback
+              : "sin feedback",
             status: profile.status,
             isLive: profile.current,
           }))
         );
-        console.log(data.profiles);
+
+        // data.profiles.forEach(async (profile) => {
+        //   await ReviewService.reviewRequest(profile.id).then((data) => {
+        //     console.log(data);
+        //   });
+        // });
       }
     );
+
+    const profilesComplete = [];
   };
 
   useEffect(() => {

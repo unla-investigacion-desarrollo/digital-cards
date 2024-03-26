@@ -40,7 +40,12 @@ const AdminPage = () => {
           <div className="flex flex-row gap-[3%]">
             <ChipMenu
               image="./historial.png"
-              text="Peticiones actualizacion"
+              text="Dashboard de review"
+              href="review-dashboard"
+            />
+            <ChipMenu
+              image="./historial.png"
+              text="Dashboard de profiles"
               href="dashboard"
             />
             <ChipMenu

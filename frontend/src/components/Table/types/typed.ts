@@ -12,6 +12,16 @@ interface ProfileItemTable {
   isLive: boolean;
 }
 
+interface ReviewItemTable {
+  reviewId: string;
+  profileName: string;
+  userRequest: string;
+  userReviewer: string;
+  statusReview: string;
+  review: string;
+  hasFeeedback: boolean;
+}
+
 interface props {
   columns: Columns[];
   profileItems: ProfileItemTable[];
