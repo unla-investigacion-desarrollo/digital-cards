@@ -65,9 +65,9 @@ class UserService {
       });
   }
 
-  public static async userRequest() {
+  public static async userRequest(id: string) {
     return axios
-      .get(`${process.env.NEXT_PUBLIC_SERVER_URL}/usuario/1`, {
+      .get(`${process.env.NEXT_PUBLIC_SERVER_URL}/usuario/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Access-Control-Allow-Origin": "*",
@@ -75,10 +75,10 @@ class UserService {
         },
       })
       .then((response) => {
-        return response;
+        return response.data;
       })
       .catch((response) => {
-        return response;
+        return response.data;
       });
   }
 }

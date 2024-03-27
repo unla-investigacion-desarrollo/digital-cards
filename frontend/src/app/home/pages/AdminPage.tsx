@@ -1,11 +1,11 @@
 "use client";
 import Header from "@/components/Header";
 import React from "react";
-import CardQR from "@/components/CardQR";
+import CardQR from "@/components/Card/CardQR";
 import { Button } from "@nextui-org/react";
 import useHome from "../useHome";
 import ChipMenu from "@/components/ChipMenu";
-import CardReview from "@/components/CardReview";
+import CardReview from "@/components/Card/CardReview";
 
 const AdminPage = () => {
   const { state, actions } = useHome();
@@ -40,7 +40,12 @@ const AdminPage = () => {
           <div className="flex flex-row gap-[3%]">
             <ChipMenu
               image="./historial.png"
-              text="Peticiones actualizacion"
+              text="Dashboard de review"
+              href="review-dashboard"
+            />
+            <ChipMenu
+              image="./historial.png"
+              text="Dashboard de profiles"
               href="dashboard"
             />
             <ChipMenu

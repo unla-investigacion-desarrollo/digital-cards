@@ -1,10 +1,10 @@
 "use client";
-import DigitalCard from "@/components/DigitalCard";
+import DigitalCard from "@/components/DigitalCard/DigitalCard";
 import Header from "@/components/Header";
 import { Button, Switch } from "@nextui-org/react";
 import React from "react";
 import useDigitalCard from "../useDigitalCard";
-import DigitalCardFull from "@/components/DigitalCardFull";
+import DigitalCardFull from "@/components/DigitalCard/DigitalCardFull";
 
 const DigitalCardPage = ({ data }: any) => {
   const { state, actions } = useDigitalCard();

@@ -1,10 +1,10 @@
 "use client";
 import Header from "@/components/Header";
 import React from "react";
-import CardQR from "@/components/CardQR";
+import CardQR from "@/components/Card/CardQR";
 import { Button } from "@nextui-org/react";
 import useHome from "../useHome";
-import CardReview from "@/components/CardReview";
+import CardReview from "@/components/Card/CardReview";
 import ChipMenu from "@/components/ChipMenu";
 
 const UserPage = () => {
@@ -41,7 +41,7 @@ const UserPage = () => {
           <div className="flex flex-row gap-[3%]">
             <ChipMenu
               image="./historial.png"
-              text="Peticiones actualizacion"
+              text="Dashboard de profiles"
               href="/dashboard"
             />
             <ChipMenu
