@@ -1,13 +1,14 @@
 import UserService from "@/core/UserService";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 type inputsValues = {
   userName: string;
   password: string;
 };
 
-const useLogin = () => {
+const useLogin = (cookiesLogin: any) => {
   const [inputsValues, setInputsValues] = useState<inputsValues>({
     userName: "",
     password: "",
@@ -27,8 +28,18 @@ const useLogin = () => {
   };
 
   const handleSubmit = async () => {
-    UserService.loginRequest(inputsValues.userName, inputsValues.password);
-    router.push("/home");
+    await UserService.loginRequest(inputsValues.userName, inputsValues.password)
+      .then((data) => {
+        cookiesLogin(data.token, data.role);
+        if (data.username) router.push("/home");
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Error en la petición:",
+          text: error.response.data,
+        });
+      });
   };
 
   return {

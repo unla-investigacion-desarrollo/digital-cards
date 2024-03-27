@@ -1,5 +1,6 @@
 package com.api.unlatestcareer.services.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -40,12 +41,21 @@ public class CareerService implements ICareerService {
 	}
 
 	public CareerModel findByName(String name) {
-		CareerModel careerModel = careerRepository.findByName(name);
-		if (careerModel != null) {
+		try {
+		Optional<Career> optionalCareer = careerRepository.findByName(name);
+		
+		if(optionalCareer.isPresent()) {
+			Career career = optionalCareer.get();
+			CareerModel careerModel = mapper.map(career, CareerModel.class);
 			return careerModel;
+		} else { 
+			throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
 		}
-		return null;
+	} catch (Exception e) {
+		throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
+		}
 	}
+	
 
 	@Override
 	public List<CareerModel> getAll() {
@@ -76,8 +86,7 @@ public class CareerService implements ICareerService {
 			Career careerExisting = careerRepository.findById(career.getId()).orElse(null);
 
 			if (careerExisting == null) {
-				careerExisting = new Career(career.getName(), career.getLink(), career.getCreatedAt(),
-						career.getUpdateAt(), career.isEnabled());
+				careerExisting = new Career(career.getName(), career.getLink(),LocalDate.now(), LocalDate.now(), career.isEnabled());
 			} else {
 				careerExisting = new Career(career);
 			}

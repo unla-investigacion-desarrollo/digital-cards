@@ -2,93 +2,87 @@ package com.api.unlatestcareer.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.api.unlatestcareer.helpers.ProfileStatus;
 import com.api.unlatestcareer.models.ProfileModel;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name="profile")
-public class Profile implements Serializable{
-	
+@Table(name = "profile")
+@AllArgsConstructor
+public class Profile  implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private byte[] photo;
+	private String photo;
 	private boolean current;
-	
+
+	private String title;
+
 	@ManyToMany
-	@JoinTable(
-		name="profile_title",
-		joinColumns = @JoinColumn (name="profile_id"),
-		inverseJoinColumns = @JoinColumn (name="title_id")
-	)
-	List<Title> titles;
-	
-	@ManyToMany
-	@JoinTable(
-			name="profile_career",
-			joinColumns = @JoinColumn (name="profile_id"),
-			inverseJoinColumns = @JoinColumn (name="career_id")
-		)
+	@JoinTable(name = "profile_career", joinColumns = @JoinColumn(name = "profile_id"),
+			   inverseJoinColumns = @JoinColumn(name = "career_id", nullable = true))
 	List<Career> careers;
-	
+
 	private ProfileStatus status;
-	private String courses;
+	private List<String> courses;
 	private String name;
-	private String lastname;
+	private String projects;
 	private String urlLinkedin;
 	private String mail;
 	private String phone;
 	private String moreInfo;
+	private List<String> institutions;
 	private LocalDate createdAt;
 	private LocalDate updateAt;
-	
+
+
+
 	public Profile(ProfileModel profile) {
 		this.id = profile.getId();
 		this.photo = profile.getPhoto();
 		this.current = profile.isCurrent();
-		this.status = profile.getStatus();
+		this.title = profile.getTitle();
+		this.status = ProfileStatus.PENDING;
 		this.courses = profile.getCourses();
 		this.name = profile.getName();
-		this.lastname = profile.getLastname();
 		this.urlLinkedin = profile.getUrlLinkedin();
 		this.mail = profile.getMail();
 		this.phone = profile.getPhone();
+		this.institutions = profile.getInstitutions();
 		this.moreInfo = profile.getMoreInfo();
-		this.createdAt = profile.getCreatedAt();
-		this.updateAt = profile.getUpdateAt();
+		this.createdAt = LocalDate.now();
+		this.updateAt = LocalDate.now();
+		this.projects = profile.getProjects();
 	}
 
-	public Profile(byte[] photo, boolean current, ProfileStatus status, String courses, String name,
-			String lastname, String urlLinkedin, String mail, String phone, String moreInfo, LocalDate createdAt,
-			LocalDate updateAt) {
+	public Profile(String photo, boolean current, String title, ProfileStatus status, List<String> courses,List<String> institutions, String name,
+			 String urlLinkedin, String mail, String phone, String moreInfo,String projects) {
 		this.photo = photo;
 		this.current = current;
-		this.status = status;
+		this.title = title;
+		this.status = ProfileStatus.PENDING;
 		this.courses = courses;
 		this.name = name;
-		this.lastname = lastname;
 		this.urlLinkedin = urlLinkedin;
 		this.mail = mail;
 		this.phone = phone;
 		this.moreInfo = moreInfo;
-		this.createdAt = createdAt;
-		this.updateAt = updateAt;
+		this.institutions = institutions;
+		this.createdAt = LocalDate.now();
+		this.updateAt = LocalDate.now();
+		this.careers = new ArrayList<>();
+		this.projects = projects;
 	}
 }
-
