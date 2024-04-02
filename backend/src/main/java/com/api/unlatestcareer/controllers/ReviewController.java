@@ -2,6 +2,7 @@ package com.api.unlatestcareer.controllers;
 
 import com.api.unlatestcareer.entities.Review;
 import com.api.unlatestcareer.helpers.ViewRouteHelper;
+import com.api.unlatestcareer.models.ReviewGetModel;
 import com.api.unlatestcareer.models.ReviewModel;
 import com.api.unlatestcareer.services.impl.ProfileService;
 import com.api.unlatestcareer.services.impl.ReviewService;
@@ -52,7 +53,7 @@ public class ReviewController {
     public ResponseEntity<?> getAllReviews() {
         try {
             if (UtilService.hasRole(ViewRouteHelper.ADMIN_ROLE)) {
-                List<Review> reviews = reviewService.getAll();
+                List<ReviewGetModel> reviews = reviewService.getAllReviewGetModels();
                 return ResponseEntity.ok(reviews);
             } else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ViewRouteHelper.ACCESS_DENIED);
