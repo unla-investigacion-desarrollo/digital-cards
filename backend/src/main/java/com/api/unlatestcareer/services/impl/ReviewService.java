@@ -4,7 +4,9 @@ import com.api.unlatestcareer.entities.Profile;
 import com.api.unlatestcareer.entities.Review;
 import com.api.unlatestcareer.entities.User;
 import com.api.unlatestcareer.exception.CustomNotFoundException;
+import com.api.unlatestcareer.helpers.Converters;
 import com.api.unlatestcareer.helpers.ViewRouteHelper;
+import com.api.unlatestcareer.models.ReviewGetModel;
 import com.api.unlatestcareer.models.ReviewModel;
 import com.api.unlatestcareer.repositories.IProfileRepository;
 import com.api.unlatestcareer.repositories.IReviewRepository;
@@ -13,20 +15,18 @@ import com.api.unlatestcareer.services.IReviewService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.swing.text.View;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service("reviewService")
 public class ReviewService implements IReviewService {
 
     @Autowired
     private IReviewRepository reviewRepository;
+
+    Converters converters = new Converters();
 
     @Autowired
     private IProfileRepository profileRepository;
@@ -50,9 +50,17 @@ public class ReviewService implements IReviewService {
     }
 
     @Override
-    public List<Review> getAll() {
-        return reviewRepository.findAll();
+    public List<ReviewGetModel> getAllReviewGetModels() {
+        List<Review> reviews = reviewRepository.findAll();
+        List<ReviewGetModel> reviewGetModelList = new ArrayList<>();
+
+        for(Review review : reviews){
+        ReviewGetModel reviewGetModel = converters.ReviewToReviewGetModel(review);
+        reviewGetModelList.add(reviewGetModel);
+        }
+        return reviewGetModelList;
     }
+
 
     @Override
     public ReviewModel save(ReviewModel review) {
