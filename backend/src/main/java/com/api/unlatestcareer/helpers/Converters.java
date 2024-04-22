@@ -15,7 +15,9 @@ public class Converters {
 
         reviewGetModel.setId(review.getId());
         reviewGetModel.setFeedback(review.getFeedback());
-        reviewGetModel.setReviewer(mapper.map(review.getReviewer(), UserModelReview.class));
+        if(review.getReviewer() != null) {
+            reviewGetModel.setReviewer(mapper.map(review.getReviewer(), UserModelReview.class));
+        }
         reviewGetModel.setRequester(mapper.map(review.getRequester(), UserModelReview.class));
         reviewGetModel.setProfile(mapper.map(review.getProfile(), ProfileModel.class));
 

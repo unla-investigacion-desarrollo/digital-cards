@@ -38,11 +38,29 @@ public class ReviewController {
 
             if (savedReview != null) {
                 reviewService.addUserRequestReviewToReview(savedReview.getId(),model.getUserRequesterId());
-                reviewService.addUserReviewerToReview(savedReview.getId(),model.getUserReviewerId());
+                if(model.getUserReviewerId() != null ){
+                    reviewService.addUserReviewerToReview(savedReview.getId(), model.getUserReviewerId());
+                }
+
                 reviewService.addProfileToReview(savedReview.getId(),model.getProfileId());
                 return ResponseEntity.status(HttpStatus.OK).body(savedReview);
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_CREATE);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ViewRouteHelper.ERROR_REQUEST);
+        }
+    }
+
+    @PatchMapping("/{id}/addFeedback")
+    public ResponseEntity<?> addFeedback(@PathVariable int id,@RequestBody ReviewModel model) {
+        try {
+            ReviewModel updatedReview = reviewService.addFeedback(model,id);
+
+            if (updatedReview != null) {
+                return ResponseEntity.status(HttpStatus.OK).body(updatedReview);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ViewRouteHelper.ERROR_REQUEST);
