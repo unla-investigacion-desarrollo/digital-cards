@@ -30,7 +30,7 @@ interface props {
   reviewItems: ReviewItemTable[];
 }
 
-const ProfilesTable = ({ columns, reviewItems }: props) => {
+const ReviewTable = ({ columns, reviewItems }: props) => {
   const { renderCell } = useReviewTable();
   return (
     <>
@@ -62,4 +62,4 @@ const ProfilesTable = ({ columns, reviewItems }: props) => {
   );
 };
 
-export default ProfilesTable;
+export default ReviewTable;
