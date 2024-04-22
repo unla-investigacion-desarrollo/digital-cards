@@ -3,6 +3,8 @@ import React from "react";
 import { Chip, Tooltip } from "@nextui-org/react";
 import Text from "../components/Text";
 import Actions from "../components/Actions";
+import Feedback from "../components/Feedback";
+import ReviewService from "@/core/ReviewService";
 
 const statusColorMap = {
   aprobado: "success",
@@ -21,6 +23,14 @@ enum ColumsProfilesTable {
 }
 
 const useReviewTable = () => {
+  const addFeebackProfile = (
+    reviewId: any,
+    reviewerID: any,
+    feedback: string
+  ) => {
+    ReviewService.addFeedBack(reviewId, reviewerID, feedback);
+  };
+
   const renderCell = React.useCallback(
     (reviewItemTable: ReviewItemTable, columnKey: string) => {
       const cellValue = reviewItemTable[columnKey];
@@ -50,9 +60,15 @@ const useReviewTable = () => {
         case ColumsProfilesTable.HAS_FEEDBACK:
           return (
             !reviewItemTable.hasFeeedback && (
-              <Chip className="capitalize" size="sm" variant="flat">
-                Dar Feeeback
-              </Chip>
+              <Feedback
+                addFeedback={(feedback) =>
+                  addFeebackProfile(
+                    reviewItemTable.reviewId,
+                    localStorage.getItem("userId"),
+                    feedback
+                  )
+                }
+              ></Feedback>
             )
           );
         default:
