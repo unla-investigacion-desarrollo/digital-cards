@@ -30,6 +30,31 @@ class ReviewService {
         return response.data;
       });
   }
+
+  public static async addFeedBack(
+    feedbackId: number,
+    userReviewerId: any,
+    feedback: string
+  ) {
+    return axios
+      .patch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/review/${feedbackId}/addFeedback`,
+        {
+          feedback: feedback,
+          userReviewerId: userReviewerId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        return response.data;
+      });
+  }
 }
 
 export default ReviewService;

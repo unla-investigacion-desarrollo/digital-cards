@@ -1,12 +1,12 @@
 package com.api.unlatestcareer.entities;
 
-
 import com.api.unlatestcareer.models.ReviewModel;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -27,7 +27,7 @@ public class Review implements Serializable {
     private User requester;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_reviewer_id")
+    @JoinColumn(name = "user_reviewer_id", nullable = true) // Hacer reviewer opcional
     private User reviewer;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -37,7 +37,7 @@ public class Review implements Serializable {
     private LocalDate createdAt;
     private LocalDate updateAt;
 
-    public Review (ReviewModel model,User requester,User reviewer,Profile profile){
+    public Review (ReviewModel model, User requester, User reviewer, Profile profile){
         this.id = model.getId();
         this.feedback = model.getFeedback();
         this.setReviewer(reviewer);
@@ -46,5 +46,4 @@ public class Review implements Serializable {
         this.createdAt = LocalDate.now();
         this.updateAt = LocalDate.now();
     }
-
 }

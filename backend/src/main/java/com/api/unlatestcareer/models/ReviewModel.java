@@ -15,9 +15,9 @@ import java.util.List;
 public class ReviewModel {
     private int id;
     private String feedback;
-    private int userRequesterId;
-    private int userReviewerId;
-    private int profileId;
+    private Integer userRequesterId;
+    private Integer userReviewerId;
+    private Integer profileId;
 
 
 }

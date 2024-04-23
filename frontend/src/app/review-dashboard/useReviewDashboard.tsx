@@ -9,6 +9,7 @@ interface ReviewItemTable {
   statusReview: string;
   review: string;
   hasFeeedback: boolean;
+  profile: any;
 }
 
 const useReviewDasboard = () => {
@@ -16,16 +17,16 @@ const useReviewDasboard = () => {
 
   const request = async () => {
     await ReviewService.review().then((data) => {
-      console.log(data);
       setReviews(
         data.map((review: any) => ({
           reviewId: review?.id,
           profileName: "Generic",
           userRequest: review?.requester?.username,
           userReviewer: review?.reviewer?.username,
-          statusReview: review?.feedback ? "positivo" : "vacation",
+          statusReview: review?.feedback ? "aprobado" : "vacation",
           review: review?.feedback,
           hasFeeedback: review?.feedback,
+          profile: review.profile,
         }))
       );
     });

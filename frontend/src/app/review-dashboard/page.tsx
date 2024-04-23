@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import ProfilesTable from "@/components/Table/ProfilesTable";
 import ReviewTable from "@/components/Table/ReviewTable";
 import useReviewDasboard from "./useReviewDashboard";
 
@@ -32,6 +31,7 @@ const columns = [
   { name: "USER REVIEWER", uid: "USER_REVIEWER" },
   { name: "STATUS", uid: "STATUS_REVIEW" },
   { name: "REVIEW", uid: "REVIEW" },
+  { name: "PROFILE VIEW", uid: "PROFILE_VIEW" },
   { name: "HAS FEEDBACk", uid: "HAS_FEEDBACK" },
 ];
 

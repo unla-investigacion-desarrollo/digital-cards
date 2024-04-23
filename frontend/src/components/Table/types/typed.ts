@@ -20,6 +20,7 @@ interface ReviewItemTable {
   statusReview: string;
   review: string;
   hasFeeedback: boolean;
+  profile: any;
 }
 
 interface props {

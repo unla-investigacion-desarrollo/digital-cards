@@ -2,7 +2,10 @@
 import React from "react";
 import { Chip, Tooltip } from "@nextui-org/react";
 import Text from "../components/Text";
-import Actions from "../components/Actions";
+import Feedback from "../components/Feedback";
+import ReviewService from "@/core/ReviewService";
+import Swal from "sweetalert2";
+import ButtonProfileView from "../components/ButtonProfileView";
 
 const statusColorMap = {
   aprobado: "success",
@@ -17,10 +20,35 @@ enum ColumsProfilesTable {
   USER_REVIEWER = "USER_REVIEWER",
   STATUS_REVIEW = "STATUS_REVIEW",
   REVIEW = "REVIEW",
+  PROFILE_VIEW = "PROFILE_VIEW",
   HAS_FEEDBACK = "HAS_FEEDBACK",
 }
 
 const useReviewTable = () => {
+  const addFeebackProfile = async (
+    reviewId: any,
+    reviewerID: any,
+    feedback: string
+  ) => {
+    await ReviewService.addFeedBack(reviewId, reviewerID, feedback)
+      .then(() =>
+        Swal.fire({
+          icon: "success",
+          title: "Feeedback guardo con exito",
+          text: "Auto close alert!",
+          timer: 2000,
+        })
+      )
+      .catch(() =>
+        Swal.fire({
+          icon: "error",
+          title: "Feeedback no guardo con exito",
+          text: "Auto close alert!",
+          timer: 2000,
+        })
+      );
+  };
+
   const renderCell = React.useCallback(
     (reviewItemTable: ReviewItemTable, columnKey: string) => {
       const cellValue = reviewItemTable[columnKey];
@@ -47,12 +75,20 @@ const useReviewTable = () => {
               {reviewItemTable?.statusReview}
             </Chip>
           );
+        case ColumsProfilesTable.PROFILE_VIEW:
+          return <ButtonProfileView profileInfo={reviewItemTable.profile} />;
         case ColumsProfilesTable.HAS_FEEDBACK:
           return (
             !reviewItemTable.hasFeeedback && (
-              <Chip className="capitalize" size="sm" variant="flat">
-                Dar Feeeback
-              </Chip>
+              <Feedback
+                addFeedback={(feedback) =>
+                  addFeebackProfile(
+                    reviewItemTable.reviewId,
+                    localStorage.getItem("userId"),
+                    feedback
+                  )
+                }
+              ></Feedback>
             )
           );
         default:
