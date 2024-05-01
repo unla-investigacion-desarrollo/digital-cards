@@ -1,9 +1,18 @@
 package com.api.unlatestcareer.services.impl;
 
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.api.unlatestcareer.entities.User;
+import com.api.unlatestcareer.helpers.Converters;
+import com.api.unlatestcareer.models.*;
+import com.api.unlatestcareer.repositories.IUserRepository;
+import com.api.unlatestcareer.services.IReviewService;
+import com.api.unlatestcareer.services.IUserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +21,6 @@ import com.api.unlatestcareer.entities.Career;
 import com.api.unlatestcareer.entities.Profile;
 import com.api.unlatestcareer.exception.CustomNotFoundException;
 import com.api.unlatestcareer.helpers.ViewRouteHelper;
-import com.api.unlatestcareer.models.ProfileModel;
 import com.api.unlatestcareer.repositories.ICareerRepository;
 import com.api.unlatestcareer.repositories.IProfileRepository;
 import com.api.unlatestcareer.services.IProfileService;
@@ -27,6 +35,11 @@ public class ProfileService implements IProfileService {
     @Autowired
     private ICareerRepository careerRepository;
 
+    @Autowired
+    private IUserService userService;
+
+    @Autowired
+    private IReviewService reviewService;
     @Override
     public ProfileModel findById(int id) {
         try {
@@ -138,5 +151,33 @@ public class ProfileService implements IProfileService {
             profile.setCurrent(false);
             this.save(profile);
         }
+    }
+
+    public List<ProfileModelWithReviews> profilesWithReviewList(){
+        List<UserModel> userModelList = userService.getAll();
+        List<ReviewWithUserReviewerModel> reviewModelsList = reviewService.getAllReviewModel();
+        List<ProfileModelWithReviews> profileWithReviewsList = new ArrayList<>();
+        Converters converters = new Converters();
+
+        for(UserModel model : userModelList ){
+           Set<Profile> profiles = model.getProfiles();
+
+           for(Profile profile : profiles){
+               ProfileModelWithReviews profileWithReviews = new ProfileModelWithReviews();
+            profileWithReviews.setUserModelReview(converters.userModelToUserModelReview(model));
+            profileWithReviews.setProfileModel(converters.mapProfileToProfileModel(profile));
+
+            List<ReviewWithUserReviewerModel> reviewModels = new ArrayList<>();
+
+            for(ReviewWithUserReviewerModel reviewModel : reviewModelsList) {
+                if (reviewModel.getProfileId() == profile.getId()) {
+                    reviewModels.add(reviewModel);
+                }
+            }
+                profileWithReviews.setReviewList(reviewModels);
+                profileWithReviewsList.add(profileWithReviews);
+           }
+        }
+        return profileWithReviewsList;
     }
 }

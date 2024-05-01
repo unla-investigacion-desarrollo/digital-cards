@@ -1,21 +1,17 @@
 package com.api.unlatestcareer.models;
 
-import com.api.unlatestcareer.entities.Profile;
-import com.api.unlatestcareer.entities.Review;
-import com.api.unlatestcareer.entities.User;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class ReviewModel {
+@NoArgsConstructor
+public class ReviewWithUserReviewerModel {
     private int id;
     private String feedback;
     private Integer userRequesterId;
-    private Integer userReviewerId;
+    private UserModelReview userReviewer;
     private Integer profileId;
 }

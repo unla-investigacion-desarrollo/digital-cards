@@ -3,6 +3,7 @@ package com.api.unlatestcareer.controllers;
 import java.util.List;
 
 import com.api.unlatestcareer.entities.Profile;
+import com.api.unlatestcareer.models.ProfileModelWithReviews;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -159,6 +160,20 @@ public class ProfileCustomController {
             }
         } catch (CustomNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
+        }
+    }
+
+    @GetMapping("/profilewreviews")
+    public ResponseEntity<?> getProfileWithReviews(){
+        try {
+            if (UtilService.hasRole(ViewRouteHelper.ADMIN_ROLE)) {
+                List<ProfileModelWithReviews> profiles = profileService.profilesWithReviewList();
+                return ResponseEntity.ok(profiles);
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ViewRouteHelper.ACCESS_DENIED);
+            }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
         }

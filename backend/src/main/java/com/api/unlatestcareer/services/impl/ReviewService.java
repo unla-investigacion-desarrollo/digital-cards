@@ -9,6 +9,7 @@ import com.api.unlatestcareer.helpers.ViewRouteHelper;
 import com.api.unlatestcareer.models.ProfileModel;
 import com.api.unlatestcareer.models.ReviewGetModel;
 import com.api.unlatestcareer.models.ReviewModel;
+import com.api.unlatestcareer.models.ReviewWithUserReviewerModel;
 import com.api.unlatestcareer.repositories.IProfileRepository;
 import com.api.unlatestcareer.repositories.IReviewRepository;
 import com.api.unlatestcareer.repositories.IUserRepository;
@@ -62,6 +63,18 @@ public class ReviewService implements IReviewService {
         return reviewGetModelList;
     }
 
+    //----- Check mapper
+    @Override
+    public List<ReviewWithUserReviewerModel> getAllReviewModel(){
+        List<Review> reviews = reviewRepository.findAll();
+        List<ReviewWithUserReviewerModel> reviewModels = new ArrayList<>();
+
+        for(Review review : reviews){
+            ReviewWithUserReviewerModel reviewModel = mapper.map(review, ReviewWithUserReviewerModel.class);
+            reviewModels.add(reviewModel);
+        }
+        return reviewModels;
+    }
 
     @Override
     public ReviewModel save(ReviewModel review) {
