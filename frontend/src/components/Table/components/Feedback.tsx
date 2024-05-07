@@ -9,15 +9,25 @@ import {
   Button,
   useDisclosure,
   Textarea,
+  Select,
+  SelectItem,
 } from "@nextui-org/react";
 
 interface props {
-  addFeedback: (feedback: string) => void;
+  addFeedback: (feedback: string, status: string) => void;
 }
+
+const options = [
+  // { value: "PENDING", label: "PENDING" },
+  { value: "APPROVED", label: "APPROVED" },
+  { value: "REJECTED", label: "REJECTED" },
+];
 
 const Feedback = ({ addFeedback }: props) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [feedback, setFeedback] = useState<string>("");
+  const [status, setStatus] = useState<string>("");
+
   return (
     <>
       <Button onPress={onOpen}>Dar Feedback</Button>
@@ -36,6 +46,18 @@ const Feedback = ({ addFeedback }: props) => {
                   value={feedback}
                   onValueChange={(value) => setFeedback(value)}
                 />
+                <Select
+                  items={options}
+                  label="Feedback"
+                  placeholder="Select Option"
+                  className="max-w"
+                  value={status}
+                  onChange={(event) => setStatus(event.target.value)}
+                >
+                  {(option) => (
+                    <SelectItem key={option.value}>{option.label}</SelectItem>
+                  )}
+                </Select>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
@@ -45,7 +67,7 @@ const Feedback = ({ addFeedback }: props) => {
                   color="primary"
                   onPress={() => {
                     onClose();
-                    addFeedback(feedback);
+                    addFeedback(feedback, status);
                   }}
                 >
                   Save and Send

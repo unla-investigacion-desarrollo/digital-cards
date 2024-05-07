@@ -23,9 +23,9 @@ const useReviewDasboard = () => {
           profileName: "Generic",
           userRequest: review?.requester?.username,
           userReviewer: review?.reviewer?.username,
-          statusReview: review?.feedback ? "aprobado" : "vacation",
+          statusReview: review?.profile?.status,
           review: review?.feedback,
-          hasFeeedback: review?.feedback,
+          hasFeeedback: !!review?.feedback,
           profile: review.profile,
         }))
       );

@@ -6,11 +6,12 @@ import Feedback from "../components/Feedback";
 import ReviewService from "@/core/ReviewService";
 import Swal from "sweetalert2";
 import ButtonProfileView from "../components/ButtonProfileView";
+import ProfileService from "@/core/ProfileService";
 
 const statusColorMap = {
-  aprobado: "success",
-  paused: "danger",
-  vacation: "warning",
+  APPROVED: "success",
+  REJECTED: "danger",
+  PENDING: "warning",
 };
 
 enum ColumsProfilesTable {
@@ -28,17 +29,20 @@ const useReviewTable = () => {
   const addFeebackProfile = async (
     reviewId: any,
     reviewerID: any,
-    feedback: string
+    feedback: string,
+    status: string,
+    profileId: any
   ) => {
     await ReviewService.addFeedBack(reviewId, reviewerID, feedback)
-      .then(() =>
+      .then(async () => {
+        await ProfileService.updateStatusProfile(status, profileId);
         Swal.fire({
           icon: "success",
           title: "Feeedback guardo con exito",
           text: "Auto close alert!",
           timer: 2000,
-        })
-      )
+        });
+      })
       .catch(() =>
         Swal.fire({
           icon: "error",
@@ -81,11 +85,13 @@ const useReviewTable = () => {
           return (
             !reviewItemTable.hasFeeedback && (
               <Feedback
-                addFeedback={(feedback) =>
+                addFeedback={(feedback, status) =>
                   addFeebackProfile(
                     reviewItemTable.reviewId,
                     localStorage.getItem("userId"),
-                    feedback
+                    feedback,
+                    status,
+                    reviewItemTable.profile.id
                   )
                 }
               ></Feedback>

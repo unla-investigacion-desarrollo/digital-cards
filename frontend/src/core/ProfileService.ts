@@ -35,6 +35,29 @@ class ProfileService {
       });
   }
 
+  public static async updateStatusProfile(status: any, profileId: any) {
+    return axios
+      .put(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/profiles/change-status/${profileId}`,
+        {
+          status,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        return response.data;
+      })
+      .catch((response) => {
+        return response;
+      });
+  }
+
   public static async getCurrentProfile(userId: string) {
     return axios
       .get(`${process.env.NEXT_PUBLIC_SERVER_URL}/profiles/live/${userId}`, {

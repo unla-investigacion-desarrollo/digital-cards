@@ -50,11 +50,13 @@ public class Profile  implements Serializable {
 
 
 	public Profile(ProfileModel profile) {
+		ProfileStatus status =  profile.getStatus();
+		if(status == null ) status = ProfileStatus.PENDING;
 		this.id = profile.getId();
 		this.photo = profile.getPhoto();
 		this.current = profile.isCurrent();
 		this.title = profile.getTitle();
-		this.status = ProfileStatus.PENDING;
+		this.status = status;
 		this.courses = profile.getCourses();
 		this.name = profile.getName();
 		this.urlLinkedin = profile.getUrlLinkedin();
@@ -72,7 +74,7 @@ public class Profile  implements Serializable {
 		this.photo = photo;
 		this.current = current;
 		this.title = title;
-		this.status = ProfileStatus.PENDING;
+		this.status = status;
 		this.courses = courses;
 		this.name = name;
 		this.urlLinkedin = urlLinkedin;
