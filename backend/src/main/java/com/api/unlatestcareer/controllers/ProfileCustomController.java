@@ -3,6 +3,7 @@ package com.api.unlatestcareer.controllers;
 import java.util.List;
 
 import com.api.unlatestcareer.entities.Profile;
+import com.api.unlatestcareer.helpers.ProfileStatus;
 import com.api.unlatestcareer.models.ProfileModelWithReviews;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -62,6 +63,23 @@ public class ProfileCustomController {
             ProfileModel updatedProfile = profileService.update(model, id);
             if (updatedProfile != null) {
                 return ResponseEntity.status(HttpStatus.OK).body(updatedProfile);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
+        }
+    }
+
+    @PutMapping("change-status/{id}")
+    public ResponseEntity<?> changeStatus(@PathVariable int id, @RequestBody ProfileModel prueba) {
+        try {
+            ProfileModel model = profileService.findById(id);
+
+            if (model != null) {
+                model.setStatus(prueba.getStatus());
+                profileService.save(model);
+                return ResponseEntity.status(HttpStatus.OK).body(model);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
             }
