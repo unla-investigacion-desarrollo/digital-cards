@@ -35,7 +35,7 @@ public class Review implements Serializable {
     private Profile profile;
 
     private LocalDate createdAt;
-    private LocalDate updateAt;
+    private LocalDate updatedAt;
 
     public Review (ReviewModel model, User requester, User reviewer, Profile profile){
         this.id = model.getId();
@@ -44,6 +44,6 @@ public class Review implements Serializable {
         this.setRequester(requester);
         this.setProfile(profile);
         this.createdAt = LocalDate.now();
-        this.updateAt = LocalDate.now();
+        this.updatedAt = LocalDate.now();
     }
 }

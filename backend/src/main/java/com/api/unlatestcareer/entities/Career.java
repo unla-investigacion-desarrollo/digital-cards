@@ -24,22 +24,22 @@ public class Career implements Serializable{
 	private boolean enabled;
 	private String link;
 	private LocalDate createdAt;
-	private LocalDate updateAt;
+	private LocalDate updatedAt;
 
-	public Career(String name, String link, LocalDate createdAt, LocalDate updateAt, boolean enabled) {
+	public Career(String name, String link, LocalDate createdAt, LocalDate updatedAt, boolean enabled) {
 		super();
 		this.name = name;
 		this.enabled = enabled;
 		this.link = link;
 		this.createdAt = createdAt;
-		this.updateAt = updateAt;
+		this.updatedAt = updatedAt;
 	}
-	public Career(String name, String link,  LocalDate updateAt, boolean enabled) {
+	public Career(String name, String link,  LocalDate updatedAt, boolean enabled) {
 		super();
 		this.name = name;
 		this.enabled = enabled;
 		this.link = link;
-		this.updateAt = updateAt;
+		this.updatedAt = updatedAt;
 	}
 	
 	public Career(CareerModel careerModel) {

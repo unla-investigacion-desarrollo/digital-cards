@@ -31,14 +31,14 @@ public class Carga implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 
 		if (userRepository.findByUsername("admin@gmail.com").orElse(null) == null) {
-			User defaultUser = new User("admin@gmail.com", "ADMIN", encoder.encode("admin123"), true, LocalDate.now(),
-					LocalDate.now(), null);
+			User defaultUser = new User("admin@gmail.com", "ADMIN", encoder.encode("admin123"), true,
+					 null);
 			userRepository.save(defaultUser);
 		}
 
 		if (userRepository.findByUsername("user@gmail.com").orElse(null) == null) {
-			User testUser = new User("user@gmail.com", "USER", encoder.encode("user123"), true, LocalDate.now(),
-					LocalDate.now(), null);
+			User testUser = new User("user@gmail.com", "USER", encoder.encode("user123"), true,
+					null);
 			userRepository.save(testUser);
 		}
 

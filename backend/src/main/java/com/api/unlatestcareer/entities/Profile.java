@@ -34,7 +34,6 @@ public class Profile  implements Serializable {
 	@JoinTable(name = "profile_career", joinColumns = @JoinColumn(name = "profile_id"),
 			   inverseJoinColumns = @JoinColumn(name = "career_id", nullable = true))
 	List<Career> careers;
-
 	private ProfileStatus status;
 	private List<String> courses;
 	private String name;
@@ -45,7 +44,7 @@ public class Profile  implements Serializable {
 	private String moreInfo;
 	private List<String> institutions;
 	private LocalDate createdAt;
-	private LocalDate updateAt;
+	private LocalDate updatedAt;
 
 
 
@@ -65,7 +64,7 @@ public class Profile  implements Serializable {
 		this.institutions = profile.getInstitutions();
 		this.moreInfo = profile.getMoreInfo();
 		this.createdAt = LocalDate.now();
-		this.updateAt = LocalDate.now();
+		this.updatedAt = LocalDate.now();
 		this.projects = profile.getProjects();
 	}
 
@@ -83,7 +82,7 @@ public class Profile  implements Serializable {
 		this.moreInfo = moreInfo;
 		this.institutions = institutions;
 		this.createdAt = LocalDate.now();
-		this.updateAt = LocalDate.now();
+		this.updatedAt = LocalDate.now();
 		this.careers = new ArrayList<>();
 		this.projects = projects;
 	}

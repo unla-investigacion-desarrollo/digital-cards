@@ -111,7 +111,7 @@ public class UserService implements IUserService {
             User userExisting = userRepository.findById(user.getId()).orElse(null);
             if (userExisting == null) {
                 userExisting = new User(user.getUsername(), user.getRole(), encoder.encode(user.getPassword()),
-                        user.isEnabled(), null, null, user.getProfiles());
+                        user.isEnabled(), user.getProfiles());
             } else {
                 userExisting = new User(user);
             }
@@ -130,7 +130,6 @@ public class UserService implements IUserService {
             userExisting.setUsername(user.getUsername());
             userExisting.setRole(user.getRole());
             userExisting.setEnabled(user.isEnabled());
-            userExisting.setUpdateAt(LocalDate.now());
             if (user.getPassword() != null && !user.getPassword().isEmpty()) {
                 userExisting.setPassword(encoder.encode(user.getPassword()));
             }
