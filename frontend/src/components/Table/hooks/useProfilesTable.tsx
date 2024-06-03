@@ -3,6 +3,7 @@ import React from "react";
 import { Chip, Tooltip } from "@nextui-org/react";
 import Text from "../components/Text";
 import Actions from "../components/Actions";
+import { useRouter } from "next/navigation";
 
 const statusColorMap = {
   aprobado: "success",
@@ -21,6 +22,7 @@ enum ColumsProfilesTable {
 }
 
 const useProfilesTable = () => {
+  const router = useRouter();
   const renderCell = React.useCallback(
     (profileItemTable: ProfileItemTable, columnKey: string) => {
       const cellValue = profileItemTable[columnKey];
@@ -57,7 +59,14 @@ const useProfilesTable = () => {
             </Chip>
           );
         case ColumsProfilesTable.EDIT:
-          return <Actions />;
+          return (
+            <Actions
+              editProfile={() =>
+                router.push(`form-card/${profileItemTable.profileId}/`)
+              }
+              deleteProfile={() => {}}
+            />
+          );
         default:
           return cellValue;
       }

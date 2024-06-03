@@ -35,6 +35,40 @@ class ProfileService {
       });
   }
 
+  public static async editProfile(profile: any, profileId: string) {
+    return axios
+      .put(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/profiles/${profileId}`,
+        {
+          name: profile.name,
+          title: profile.subtitle,
+          photo: profile.image,
+          current: true,
+          courses: profile.subjects,
+          institutions: profile.university,
+          urlLinkedin: profile.linkedlin,
+          mail: profile.correo,
+          phone: profile.phone,
+          moreInfo: profile.aboutMe,
+          idCareer: profile.careerId,
+          projects: profile.projects,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        return response.data;
+      })
+      .catch((response) => {
+        return response;
+      });
+  }
+
   public static async updateStatusProfile(status: any, profileId: any) {
     return axios
       .put(

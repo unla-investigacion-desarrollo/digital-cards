@@ -75,7 +75,6 @@ public class ProfileCustomController {
     public ResponseEntity<?> changeStatus(@PathVariable int id, @RequestBody ProfileModel prueba) {
         try {
             ProfileModel model = profileService.findById(id);
-
             if (model != null) {
                 model.setStatus(prueba.getStatus());
                 profileService.save(model);

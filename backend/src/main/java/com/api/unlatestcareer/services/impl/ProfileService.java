@@ -110,6 +110,17 @@ public class ProfileService implements IProfileService {
         Profile profileExisting = profileRepository.findById(profileId)
                 .orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
         profileExisting.setName(profile.getName());
+        profileExisting.setTitle(profile.getTitle());
+        profileExisting.setUrlLinkedin(profile.getUrlLinkedin());
+        profileExisting.setPhone(profile.getPhone());
+      //  profileExisting.setCareers(profile.get()); mirar carrer
+        profileExisting.setMail(profile.getMail());
+        profileExisting.setCourses(profile.getCourses());
+        profileExisting.setPhoto(profile.getPhoto());
+        profileExisting.setMoreInfo(profile.getMoreInfo());
+        profileExisting.setProjects(profile.getProjects());
+        profileExisting.setInstitutions(profile.getInstitutions());
+        profileRepository.save(profileExisting);
         return mapper.map(profileExisting, ProfileModel.class);
 
     }
