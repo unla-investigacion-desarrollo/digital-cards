@@ -17,7 +17,7 @@ const AdminPage = () => {
       ) : (
         <div className="flex flex-col  sw-[1200px] h-[80vh] items-center justify-center gap-[10%]">
           <div className="flex flex-row w-[100%]">
-            <div className="flex flex-col w-1/2 mt-5 items-center justify-center">
+            <div className="flex w-[100%] items-center justify-center flex-col  mt-5 ">
               <h4 className="font-bold text-3xl mb-20">
                 Bienvenido {state?.userInfo?.name}
               </h4>
@@ -32,9 +32,9 @@ const AdminPage = () => {
                 <Button onClick={actions.generateQr}> Generate Qr</Button>
               )}
             </div>
-            <div className="flex items-center justify-cente">
+            {/* <div className="flex items-center justify-center">
               <CardReview />
-            </div>
+            </div> */}
           </div>
 
           <div className="flex flex-row gap-[3%]">
