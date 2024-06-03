@@ -4,6 +4,8 @@ import { Chip, Tooltip } from "@nextui-org/react";
 import Text from "../components/Text";
 import Actions from "../components/Actions";
 import { useRouter } from "next/navigation";
+import ProfileService from "@/core/ProfileService";
+import Swal from "sweetalert2";
 
 const statusColorMap = {
   aprobado: "success",
@@ -64,7 +66,22 @@ const useProfilesTable = () => {
               editProfile={() =>
                 router.push(`form-card/${profileItemTable.profileId}/`)
               }
-              deleteProfile={() => {}}
+              deleteProfile={async () => {
+                await ProfileService.deleteProfile(profileItemTable.profileId)
+                  .then((data) => {
+                    Swal.fire({
+                      icon: "success",
+                      title: "Eliminacion exitosa",
+                      text: `${data}`,
+                    });
+                  })
+                  .catch((error) => {
+                    Swal.fire({
+                      icon: "error",
+                      title: "Error en la petición",
+                    });
+                  });
+              }}
             />
           );
         default:
