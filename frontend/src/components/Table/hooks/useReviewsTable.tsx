@@ -61,7 +61,11 @@ const useReviewTable = () => {
         case ColumsProfilesTable.REVIEW_ID:
           return <Text text={reviewItemTable.reviewId} />;
         case ColumsProfilesTable.PROFILE_NAME:
-          return <Text text={reviewItemTable.profileName} />;
+          return (
+            <Text
+              text={`${reviewItemTable.profileName} - ${reviewItemTable.profile.id}`}
+            />
+          );
         case ColumsProfilesTable.USER_REQUEST:
           return <Text text={reviewItemTable.userRequest} />;
         case ColumsProfilesTable.USER_REVIEWER:

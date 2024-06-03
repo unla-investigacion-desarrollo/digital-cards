@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Chip, Tooltip } from "@nextui-org/react";
+import { Button, Chip, Tooltip } from "@nextui-org/react";
 import Text from "../components/Text";
 import Actions from "../components/Actions";
 import { useRouter } from "next/navigation";
@@ -51,14 +51,42 @@ const useProfilesTable = () => {
           );
         case ColumsProfilesTable.IS_LIVE:
           return (
-            <Chip
-              className="capitalize"
-              color={profileItemTable.isLive ? "success" : "warning"}
-              size="sm"
-              variant="flat"
-            >
-              {profileItemTable.isLive ? "isLive" : "no live"}
-            </Chip>
+            <>
+              {profileItemTable.isLive ? (
+                <Chip
+                  className="capitalize"
+                  color={profileItemTable.isLive ? "success" : "default"}
+                  size="sm"
+                  variant="flat"
+                >
+                  isLive
+                </Chip>
+              ) : (
+                <Chip
+                  className="capitalize"
+                  variant="flat"
+                  size="sm"
+                  onClick={() =>
+                    ProfileService.liveProfile(profileItemTable.profileId)
+                      .then((data) => {
+                        Swal.fire({
+                          icon: "success",
+                          title: "live",
+                          text: `${data.id}`,
+                        });
+                      })
+                      .catch((error) => {
+                        Swal.fire({
+                          icon: "error",
+                          title: "Error en la petición",
+                        });
+                      })
+                  }
+                >
+                  Habilitar
+                </Chip>
+              )}
+            </>
           );
         case ColumsProfilesTable.EDIT:
           return (

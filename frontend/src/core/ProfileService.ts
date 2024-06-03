@@ -86,6 +86,27 @@ class ProfileService {
       });
   }
 
+  public static async liveProfile(profileId: string) {
+    return axios
+      .put(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/profiles/enable/${profileId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        return response.data;
+      })
+      .catch((response) => {
+        return response;
+      });
+  }
+
   public static async updateStatusProfile(status: any, profileId: any) {
     return axios
       .put(
