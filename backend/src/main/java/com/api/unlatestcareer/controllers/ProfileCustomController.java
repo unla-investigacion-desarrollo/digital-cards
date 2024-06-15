@@ -3,8 +3,11 @@ package com.api.unlatestcareer.controllers;
 import java.util.List;
 
 import com.api.unlatestcareer.entities.Profile;
+import com.api.unlatestcareer.helpers.Converters;
 import com.api.unlatestcareer.helpers.ProfileStatus;
 import com.api.unlatestcareer.models.ProfileModelWithReviews;
+import jakarta.persistence.Convert;
+import jdk.jshell.execution.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -88,8 +91,8 @@ public class ProfileCustomController {
         }
     }
 
-    @PutMapping("disable/{id}")
-    public ResponseEntity<?> disableProfile(@PathVariable int id) {
+    @PutMapping("set-inactive/{id}")
+    public ResponseEntity<?> setProfileInactive(@PathVariable int id) {
         try {
             ProfileModel model = profileService.findById(id);
 
@@ -105,10 +108,10 @@ public class ProfileCustomController {
         }
     }
 
-    @PutMapping("enable/{id}")
-    public ResponseEntity<?> enableProfile(@PathVariable int id) {
+    @PutMapping("set-active/{id}")
+    public ResponseEntity<?> setProfileActive(@PathVariable int id) {
         try {
-            profileService.disableAllProfiles();
+         //   profileService.disableAllProfiles();
             ProfileModel model = profileService.findById(id);
 
             if (model != null) {
@@ -121,6 +124,17 @@ public class ProfileCustomController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
         }
+    }
+
+    @PutMapping("enable/{id}")
+    public ResponseEntity<?> enableProfile(@PathVariable int id){
+        try{
+            profileService.enableProfile(id);
+            return ResponseEntity.status(HttpStatus.OK).body(profileService.findById(id));
+        } catch (CustomNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
+        }
+
     }
 
     @GetMapping("/{id}")
@@ -144,9 +158,9 @@ public class ProfileCustomController {
     @GetMapping("/live/{userId}")
     public ResponseEntity<?> findProfileByUserIdAndEnabled(@PathVariable int userId) {
         try {
-
+            Converters converters = new Converters();
             Profile profile = userService.getCurrentProfileByUserId(userId);
-            return ResponseEntity.ok(profile);
+            return ResponseEntity.ok(converters.mapProfileToProfileModel(profile));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
@@ -166,6 +180,21 @@ public class ProfileCustomController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
         }
     }
+
+    @GetMapping("/enables")
+    public ResponseEntity<?> getEnabledProfiles(){
+        try{
+            if (UtilService.hasRole(ViewRouteHelper.ADMIN_ROLE)){
+                List<ProfileModel> profiles = profileService.findByEnabledTrue();
+                return ResponseEntity.ok(profiles);
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ViewRouteHelper.ERROR_SERVER);
+            }
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
+        }
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProfile(@PathVariable int id) {

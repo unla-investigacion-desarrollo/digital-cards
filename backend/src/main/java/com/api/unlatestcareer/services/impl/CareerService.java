@@ -55,7 +55,6 @@ public class CareerService implements ICareerService {
 		throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
 		}
 	}
-	
 
 	@Override
 	public List<CareerModel> getAll() {
@@ -86,7 +85,7 @@ public class CareerService implements ICareerService {
 			Career careerExisting = careerRepository.findById(career.getId()).orElse(null);
 
 			if (careerExisting == null) {
-				careerExisting = new Career(career.getName(), career.getLink(),LocalDate.now(), LocalDate.now(), career.isEnabled());
+				careerExisting = new Career(career.getName(), career.getLink(),career.isEnabled());
 			} else {
 				careerExisting = new Career(career);
 			}

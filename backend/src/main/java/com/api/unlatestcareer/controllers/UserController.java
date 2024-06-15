@@ -23,13 +23,14 @@ import com.api.unlatestcareer.models.UserModel;
 import com.api.unlatestcareer.security.JwtTokenUtil;
 import com.api.unlatestcareer.services.impl.UserService;
 
+import javax.swing.text.View;
+
 @RestController
 @RequestMapping(path = "/usuario")
 public class UserController {
 
 	private UserService userService;
-	
-	
+
 	@Autowired
 	JwtTokenUtil jwtService;
 
@@ -111,19 +112,39 @@ public class UserController {
 		}
 	}
 
+	@GetMapping("/enables")
+	public ResponseEntity<?> getEnabledUsers(){
+		try{
+			boolean found = false;
+			List<UserModel> users = userService.findByEnabledTrue();
+			if(users != null ){
+				found=true;
+				return ResponseEntity.status(HttpStatus.OK).body(users);
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
+			}
+		} catch (Exception e){
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
+		}
+	}
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteUser(@PathVariable int id) {
 		try {
-			boolean deleted = userService.deleteById(id);
-			if (deleted) {
-				return ResponseEntity.status(HttpStatus.OK).body(ViewRouteHelper.SUCCESS_DELETE);
-			} else {
-				throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
-			}
-		} catch (CustomNotFoundException e) {
+			userService.deleteById(id);
+			return ResponseEntity.status(HttpStatus.OK).body(ViewRouteHelper.SUCCESS_DELETE);
+		} catch (CustomNotFoundException e){
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
+		}
+	}
+
+	@PutMapping("/enable/{id}")
+	public ResponseEntity<?> enableUser(@PathVariable int id){
+		try {
+			userService.enableUser(id);
+			return ResponseEntity.status(HttpStatus.OK).body(userService.findById(id));
+		} catch (CustomNotFoundException e){
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}
 
@@ -159,7 +180,5 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
 		}
 	}
-	
-	
-	
+
 	}

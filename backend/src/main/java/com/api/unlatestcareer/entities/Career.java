@@ -12,40 +12,29 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @Table(name="career")
-public class Career implements Serializable{
-	
-	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private int id;
+public class Career extends BaseEntityAudit{
 
 	private String name;
-	private boolean enabled;
 	private String link;
-	private LocalDate createdAt;
-	private LocalDate updatedAt;
 
-	public Career(String name, String link, LocalDate createdAt, LocalDate updatedAt, boolean enabled) {
+	public Career(String name, String link, boolean enabled) {
 		super();
 		this.name = name;
-		this.enabled = enabled;
+		this.setEnabled(enabled);
 		this.link = link;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
 	}
 	public Career(String name, String link,  LocalDate updatedAt, boolean enabled) {
 		super();
 		this.name = name;
-		this.enabled = enabled;
+		this.setEnabled(enabled);
 		this.link = link;
-		this.updatedAt = updatedAt;
+		this.setUpdatedAt(updatedAt);
 	}
 	
 	public Career(CareerModel careerModel) {
 		super();
 		this.name = careerModel.getName();
-		this.enabled = careerModel.isEnabled();
+		this.setEnabled(careerModel.isEnabled());
 		this.link = careerModel.getLink();
 	}
 }

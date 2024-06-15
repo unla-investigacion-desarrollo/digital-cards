@@ -17,8 +17,10 @@ public interface IUserService {
 
 	List<UserModel> getAll();
 
+	List<UserModel> findByEnabledTrue();
 	boolean deleteById(int id);
-	
+
+	boolean enableUser(int id);
 	UserModel save(UserModel user);
 	
 	UserModel update(UserModel user, int userId);

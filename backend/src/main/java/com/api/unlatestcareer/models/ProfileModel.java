@@ -13,10 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProfileModel {
 	private int id;
+	private boolean enabled;
 	private String photo;
 	private boolean current;
 	private String title;
 	private int idCareer;
+	private String profileName;
 	private ProfileStatus status;
 	private List<String> courses;
 	private List<String> institutions;

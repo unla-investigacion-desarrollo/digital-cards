@@ -32,6 +32,7 @@ public class Converters {
         profileModel.setStatus(profile.getStatus());
         profileModel.setCourses(profile.getCourses());
         profileModel.setName(profile.getName());
+        profileModel.setProfileName(profile.getProfileName());
         profileModel.setProjects(profile.getProjects());
         profileModel.setUrlLinkedin(profile.getUrlLinkedin());
         profileModel.setMail(profile.getMail());
@@ -51,5 +52,4 @@ public class Converters {
 
         return userModelReview;
     }
-
 }

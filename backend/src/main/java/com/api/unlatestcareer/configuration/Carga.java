@@ -44,32 +44,31 @@ public class Carga implements CommandLineRunner {
 
 		if (careerRepository.findByName("Licenciatura en Audiovisión").orElse(null) == null) {
 			Career testCareer1 = new Career("Licenciatura en Audiovisión",
-					"https://www.unla.edu.ar/carreras/grado/licenciaturas/audiovision", null, null, true);
+					"https://www.unla.edu.ar/carreras/grado/licenciaturas/audiovision", true);
 			careerRepository.save(testCareer1);
 		}
 
 		if (careerRepository.findByName("Licenciatura en Ciencia Política y Gobierno").orElse(null) == null) {
 			Career testCareer2 = new Career("Licenciatura en Ciencia Política y Gobierno",
-					"https://www.unla.edu.ar/carreras/grado/licenciaturas/ciencia-politica-y-gobierno", null, null,
+					"https://www.unla.edu.ar/carreras/grado/licenciaturas/ciencia-politica-y-gobierno",
 					true);
 			careerRepository.save(testCareer2);
 		}
 
 		if (careerRepository.findByName("Licenciatura en Ciencia y Tecnología de los Alimentos").orElse(null) == null) {
 			Career testCareer3 = new Career("Licenciatura en Ciencia y Tecnología de los Alimentos",
-					"https://www.unla.edu.ar/carreras/grado/licenciaturas/ciencia-y-tecnologia-de-los-alimentos", null,
-					null, true);
+					"https://www.unla.edu.ar/carreras/grado/licenciaturas/ciencia-y-tecnologia-de-los-alimentos",true);
 			careerRepository.save(testCareer3);
 		}
 
 		if (careerRepository.findByName("Licenciatura en Diseño Industrial").orElse(null) == null) {
 			Career testCareer4 = new Career("Licenciatura en Diseño Industrial",
-					"https://www.unla.edu.ar/carreras/grado/licenciaturas/diseno-industrial", null, null, true);
+					"https://www.unla.edu.ar/carreras/grado/licenciaturas/diseno-industrial", true);
 			careerRepository.save(testCareer4);
 		}
 		if (careerRepository.findByName("Licenciatura en Diseño y Comunicación Visual").orElse(null) == null) {
 			Career testCareer5 = new Career("Licenciatura en Diseño y Comunicación Visual",
-					"https://www.unla.edu.ar/carreras/grado/licenciaturas/diseno-y-comunicacion-visuall", null, null,
+					"https://www.unla.edu.ar/carreras/grado/licenciaturas/diseno-y-comunicacion-visuall",
 					true);
 			careerRepository.save(testCareer5);
 		}

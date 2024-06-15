@@ -1,5 +1,6 @@
 package com.api.unlatestcareer.models;
 
+import java.util.List;
 import java.util.Set;
 
 import com.api.unlatestcareer.entities.Profile;
