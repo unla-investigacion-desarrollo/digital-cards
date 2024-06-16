@@ -20,7 +20,7 @@ public class Review extends BaseEntityAudit {
     @JoinColumn(name = "user_requester_id")
     private User requester;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_reviewer_id", nullable = true) // Hacer reviewer opcional
+    @JoinColumn(name = "user_reviewer_id", nullable = true)
     private User reviewer;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_id")

@@ -1,13 +1,10 @@
 package com.api.unlatestcareer.services.impl;
 
-import java.sql.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.api.unlatestcareer.entities.User;
 import com.api.unlatestcareer.helpers.Converters;
 import com.api.unlatestcareer.models.*;
-import com.api.unlatestcareer.repositories.IUserRepository;
 import com.api.unlatestcareer.services.IReviewService;
 import com.api.unlatestcareer.services.IUserService;
 import org.modelmapper.ModelMapper;
@@ -135,7 +132,7 @@ public class ProfileService implements IProfileService {
     }
 
     @Override
-    public ProfileModel addCareerToProfile(int profileId, int careerId) {
+    public void addCareerToProfile(int profileId, int careerId) {
         Profile profileExisting = profileRepository.findById(profileId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
         Career careerExisting = careerRepository.findById(careerId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
         if (profileExisting != null && careerExisting != null) {
@@ -144,7 +141,7 @@ public class ProfileService implements IProfileService {
             }
             profileRepository.save(profileExisting);
         }
-        return mapper.map(profileExisting, ProfileModel.class);
+        mapper.map(profileExisting, ProfileModel.class);
     }
 
     @Override
