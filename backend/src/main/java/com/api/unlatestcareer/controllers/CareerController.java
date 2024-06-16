@@ -73,6 +73,26 @@ public class CareerController {
 		}
 	}
 
+	@GetMapping("/enables")
+	public ResponseEntity<?> getEnabledCareers() {
+		try {
+			List<CareerModel> careers = careerService.findByEnabledTrue();
+			return ResponseEntity.ok(careers);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
+		}
+	}
+
+	@PutMapping("/enable/{id}")
+	public ResponseEntity<?> enableCareer(@PathVariable int id){
+		try {
+			careerService.enableCareer(id);
+			return ResponseEntity.status(HttpStatus.OK).body(careerService.findById(id));
+		} catch (CustomNotFoundException e){
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		}
+	}
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteCareer(@PathVariable int id) {
 		try {

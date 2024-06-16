@@ -99,7 +99,6 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
 		}
 	}
-
 	
 	@GetMapping("")
 	public ResponseEntity<?> getAllUsers() {
