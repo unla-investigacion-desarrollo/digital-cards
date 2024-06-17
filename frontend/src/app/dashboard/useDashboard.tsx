@@ -1,4 +1,3 @@
-import ReviewService from "@/core/ReviewService";
 import UserService from "@/core/UserService";
 import { useEffect, useState } from "react";
 
@@ -31,16 +30,8 @@ const useDashboard = () => {
             isLive: profile.current,
           }))
         );
-
-        // data.profiles.forEach(async (profile) => {
-        //   await ReviewService.reviewRequest(profile.id).then((data) => {
-        //     console.log(data);
-        //   });
-        // });
       }
     );
-
-    const profilesComplete = [];
   };
 
   useEffect(() => {

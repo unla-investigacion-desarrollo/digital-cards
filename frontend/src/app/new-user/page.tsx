@@ -1,14 +1,12 @@
 "use client";
-import Image from "next/image";
 import React from "react";
 import { Button, Input } from "@nextui-org/react";
 import useNewUser from "./useNewUser";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
-import { cookiesLogin } from "../../utils/cookies";
 import Header from "@/components/Header";
 
 const index = () => {
-  const { actions, state } = useNewUser(cookiesLogin);
+  const { actions, state } = useNewUser();
 
   return (
     <>

@@ -1,5 +1,4 @@
 import UserService from "@/core/UserService";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Swal from "sweetalert2";
 
@@ -8,12 +7,11 @@ type inputsValues = {
   password: string;
 };
 
-const useNewUser = (cookiesLogin: any) => {
+const useNewUser = () => {
   const [inputsValues, setInputsValues] = useState<inputsValues>({
     userName: "",
     password: "",
   });
-  const router = useRouter();
 
   const [isVisiblePassword, setIsVisiblePassword] = useState<Boolean>(false);
 
