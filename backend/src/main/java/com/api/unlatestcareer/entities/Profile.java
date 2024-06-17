@@ -71,10 +71,11 @@ public class Profile  implements Serializable {
 
 	public Profile(String photo, boolean current, String title, ProfileStatus status, List<String> courses,List<String> institutions, String name,
 			 String urlLinkedin, String mail, String phone, String moreInfo,String projects) {
+		//TODO: CADA DELETE O UPDATE DEBERIA SER PENDING EL NUEVO STATE?
 		this.photo = photo;
 		this.current = current;
 		this.title = title;
-		this.status = status;
+		this.status = ProfileStatus.PENDING;
 		this.courses = courses;
 		this.name = name;
 		this.urlLinkedin = urlLinkedin;

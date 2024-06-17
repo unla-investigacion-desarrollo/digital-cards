@@ -3,6 +3,7 @@ import ProfileService from "@/core/ProfileService";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+import ReviewService from "@/core/ReviewService";
 
 type InputsState = {
   name: string;
@@ -106,6 +107,9 @@ const useEditFormCard = ({ profileId }: { profileId: string }) => {
       });
       router.push("/dashboard");
     });
+
+    //TODO: ESTO DEBERIA ESTAR EN EL BACKEND(CADA VEZ QUE SEA HAGA UN UPDATE, SE NECESITA UN NUEVO REVIEW)
+    await ReviewService.newReview(localStorage.getItem("userId"), profileId);
   };
 
   useEffect(() => {

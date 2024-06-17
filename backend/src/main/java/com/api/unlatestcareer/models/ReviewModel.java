@@ -18,4 +18,9 @@ public class ReviewModel {
     private Integer userRequesterId;
     private Integer userReviewerId;
     private Integer profileId;
+
+    public ReviewModel(Integer userRequesterId, Integer profileId) {
+        this.userRequesterId = userRequesterId;
+        this.profileId = profileId;
+    }
 }

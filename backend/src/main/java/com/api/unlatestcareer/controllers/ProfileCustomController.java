@@ -5,6 +5,8 @@ import java.util.List;
 import com.api.unlatestcareer.entities.Profile;
 import com.api.unlatestcareer.helpers.ProfileStatus;
 import com.api.unlatestcareer.models.ProfileModelWithReviews;
+import com.api.unlatestcareer.models.ReviewModel;
+import com.api.unlatestcareer.services.impl.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,10 @@ public class ProfileCustomController {
     private ProfileService profileService;
 
     @Autowired
+    private ReviewService reviewService;
+
+
+    @Autowired
     private UserService userService;
 
     public ProfileCustomController(ProfileService profileService) {
@@ -41,13 +47,25 @@ public class ProfileCustomController {
     @PostMapping("")
     public ResponseEntity<?> createProfile(@RequestBody ProfileModel model) {
         try {
-
             ProfileModel savedProfile = profileService.save(model);
             if (savedProfile != null) {
                 // TODO: agregar expection si no se puede agregar career
                 profileService.addCareerToProfile(savedProfile.getId(), model.getIdCareer());
                 userService.addProfileToUser(SecurityContextHolder.getContext().getAuthentication().getName(), savedProfile.getId());
+                //TODO: REFACTORIZAR ESTO, copie y pegue del reviewController
+                ReviewModel rmodel = new ReviewModel(userService.findByName(SecurityContextHolder.getContext().getAuthentication().getName()).getId(),savedProfile.getId());
+                ReviewModel savedReview = reviewService.save(rmodel);
 
+                if (savedReview != null) {
+                    reviewService.addUserRequestReviewToReview(savedReview.getId(),rmodel.getUserRequesterId());
+                    if(rmodel.getUserReviewerId() != null ){
+                        reviewService.addUserReviewerToReview(savedReview.getId(), rmodel.getUserReviewerId());
+                    }
+
+                    reviewService.addProfileToReview(savedReview.getId(),rmodel.getProfileId());
+                } else {
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_CREATE);
+                }
                 return ResponseEntity.status(HttpStatus.OK).body("Perfil agregado exitosamente al usuario: " + SecurityContextHolder.getContext().getAuthentication().getName());
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_CREATE);

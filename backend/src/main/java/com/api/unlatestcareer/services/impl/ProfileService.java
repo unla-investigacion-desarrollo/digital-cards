@@ -91,8 +91,9 @@ public class ProfileService implements IProfileService {
     public ProfileModel save(ProfileModel profile) {
         try {
             Profile profileExisting = profileRepository.findById(profile.getId()).orElse(null);
+            //TODO: CURRENT SIEMPRE EN FALSE , POR DEFECTO SI NO LO MANDAS EN EL MODELO SALE TRUE
             if (profileExisting == null) {
-                profileExisting = new Profile(profile.getPhoto(), profile.isCurrent(), profile.getTitle(),
+                profileExisting = new Profile(profile.getPhoto(), false, profile.getTitle(),
                         profile.getStatus(), profile.getCourses(), profile.getInstitutions(), profile.getName(),
                         profile.getUrlLinkedin(), profile.getMail(), profile.getPhone(), profile.getMoreInfo(), profile.getProjects());
             } else {

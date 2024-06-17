@@ -1,4 +1,5 @@
 import axios from "axios";
+import { AnyPtrRecord } from "dns";
 
 class ReviewService {
   public static async reviewRequest(profileId: any) {
@@ -14,6 +15,27 @@ class ReviewService {
         return response.data.filter(
           (review: any) => review.profile.id == profileId
         );
+      });
+  }
+
+  public static async newReview(userRequesterId: any, profileId: any) {
+    return axios
+      .post(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/review`,
+        {
+          userRequesterId: userRequesterId,
+          profileId: profileId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        return response.data;
       });
   }
 
