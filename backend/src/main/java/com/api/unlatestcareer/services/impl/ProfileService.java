@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import com.api.unlatestcareer.entities.User;
 import com.api.unlatestcareer.helpers.Converters;
+import com.api.unlatestcareer.helpers.ProfileStatus;
 import com.api.unlatestcareer.models.*;
 import com.api.unlatestcareer.repositories.IUserRepository;
 import com.api.unlatestcareer.services.IReviewService;
@@ -108,6 +109,7 @@ public class ProfileService implements IProfileService {
 
     @Override
     public ProfileModel update(ProfileModel profile, int profileId) {
+        //TODO: CUANDO SE UPDATE SE CAMBIA EL STATUS A PENDING?
         Profile profileExisting = profileRepository.findById(profileId)
                 .orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
         profileExisting.setName(profile.getName());
@@ -121,6 +123,7 @@ public class ProfileService implements IProfileService {
         profileExisting.setMoreInfo(profile.getMoreInfo());
         profileExisting.setProjects(profile.getProjects());
         profileExisting.setInstitutions(profile.getInstitutions());
+        profileExisting.setStatus(ProfileStatus.PENDING);
         profileRepository.save(profileExisting);
         return mapper.map(profileExisting, ProfileModel.class);
 
