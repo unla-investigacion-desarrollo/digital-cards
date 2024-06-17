@@ -8,9 +8,9 @@ import ProfileService from "@/core/ProfileService";
 import Swal from "sweetalert2";
 
 const statusColorMap = {
-  aprobado: "success",
-  paused: "danger",
-  vacation: "warning",
+  APPROVED: "success",
+  REJECTED: "danger",
+  PENDING: "warning",
 };
 
 enum ColumsProfilesTable {
