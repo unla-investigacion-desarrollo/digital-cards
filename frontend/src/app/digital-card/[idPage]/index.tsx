@@ -40,6 +40,7 @@ const DigitalCardPage = ({ data }: any) => {
           proyectosAcademicosAndInvestigaciones={
             data.proyectosAcademicosAndInvestigaciones
           }
+          moreInfo={data.moreInfo}
         ></DigitalCardFull>
       ) : (
         <DigitalCard

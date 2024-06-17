@@ -69,7 +69,7 @@ const DigitalCard = ({
                   );
                 })}
             </ul>
-            <div className="grid  content-end ">
+            <div className="flex content-end  ">
               <Link
                 isExternal
                 showAnchorIcon
