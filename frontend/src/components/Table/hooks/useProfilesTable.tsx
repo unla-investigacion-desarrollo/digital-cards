@@ -66,6 +66,7 @@ const useProfilesTable = () => {
                   className="capitalize"
                   variant="flat"
                   size="sm"
+                  isDisabled={profileItemTable?.status !== "APPROVED"}
                   onClick={() =>
                     ProfileService.liveProfile(profileItemTable.profileId)
                       .then((data) => {
