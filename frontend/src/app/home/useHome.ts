@@ -10,6 +10,46 @@ type userInfo = {
   idPage: string;
 };
 
+type chipItem = {
+  image: string;
+  text: string;
+  href: string;
+  onlyAdmin: boolean;
+};
+
+const chipsItem: chipItem[] = [
+  {
+    image: "./historial.png",
+    text: "Dashboard de review",
+    href: "review-dashboard",
+    onlyAdmin: true,
+  },
+  {
+    image: "./historial.png",
+    text: "Dashboard de profiles",
+    href: "dashboard",
+    onlyAdmin: false,
+  },
+  {
+    image: "./form.png",
+    text: "Formulario cambio de credential",
+    href: "/form-card",
+    onlyAdmin: false,
+  },
+  {
+    image: "./changePassword.png",
+    text: "Cambiar Password",
+    href: "/change-password",
+    onlyAdmin: false,
+  },
+  {
+    image: "./newUser.png",
+    text: "Crear nuevo Usuario",
+    href: "/new-user",
+    onlyAdmin: true,
+  },
+];
+
 const useHome = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isQr, setIsQr] = useState(false);
@@ -70,6 +110,7 @@ const useHome = () => {
     actions: {
       generateQr,
     },
+    chipsItem,
   };
 };
 

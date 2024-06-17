@@ -1,76 +1,39 @@
 "use client";
 import Header from "@/components/Header";
 import React from "react";
-import CardQR from "@/components/Card/CardQR";
-import { Button } from "@nextui-org/react";
 import useHome from "../useHome";
-import ChipMenu from "@/components/ChipMenu";
-import CardReview from "@/components/Card/CardReview";
+import MobileHome from "../components/MobileHome";
+import DesktopHome from "../components/DesktopHome";
 
 const AdminPage = () => {
-  const { state, actions } = useHome();
+  const { state, actions, chipsItem } = useHome();
   return (
     <>
       <Header />
       {state.isLoading ? (
-        <h1> is Loading ..</h1>
+        <h1 className="text-center mt-5">Loading...</h1>
       ) : (
-        <div className="flex flex-col  sw-[1200px] h-[80vh] items-center justify-center gap-[10%]">
-          <div className="flex flex-row w-[100%]">
-            <div className="flex w-[100%] items-center justify-center flex-col  mt-5 ">
-              <h4 className="font-bold text-3xl mb-20">
-                Bienvenido {state?.userInfo?.name}
-              </h4>
-              {state.isQr ? (
-                <CardQR
-                  name={state.userInfo.name}
-                  position={state.userInfo.position}
-                  qr={state.userInfo.qr}
-                  imageProfile={state.userInfo.imageProfile}
-                />
-              ) : (
-                <Button onClick={actions.generateQr}> Generate Qr</Button>
-              )}
-            </div>
-            {/* <div className="flex items-center justify-center">
-              <CardReview />
-            </div> */}
-          </div>
-
-          <div className="flex flex-row gap-[3%]">
-            <ChipMenu
-              image="./historial.png"
-              text="Dashboard de review"
-              href="review-dashboard"
-            />
-            <ChipMenu
-              image="./historial.png"
-              text="Dashboard de profiles"
-              href="dashboard"
-            />
-            <ChipMenu
-              image="./form.png"
-              text="Formulario cambio de credential"
-              href="/form-card"
-            />
-            <ChipMenu
-              image="./changePassword.png"
-              text="Cambiar Password"
-              href="/change-password"
-            />
-            <ChipMenu
-              image="./credential.png"
-              text="Visualizar Crendencial"
-              href={`${
-                window.location.origin
-              }/digital-card/${localStorage.getItem("userId")}`}
-            />
-            <ChipMenu
-              image="./newUser.png"
-              text="Crear nuevo Usuario"
-              href="/new-user"
-            />
-          </div>
+        <div className="flex flex-col w-full items-center justify-center gap-10 p-5 lg:h-[80vh]">
+          {/* Mobile and small notebook view */}
+          <MobileHome
+            name={state?.userInfo?.name}
+            isQr={state?.isQr}
+            position={state?.userInfo?.position}
+            qr={state?.userInfo?.qr}
+            imageProfile={state?.userInfo?.imageProfile}
+            generateQr={actions?.generateQr}
+          />
+          {/* Larger notebook and desktop view */}
+          <DesktopHome
+            name={state?.userInfo?.name}
+            isQr={state?.isQr}
+            position={state?.userInfo?.position}
+            qr={state?.userInfo?.qr}
+            imageProfile={state?.userInfo?.imageProfile}
+            generateQr={actions?.generateQr}
+            chipsItem={chipsItem}
+            isAdmin={true}
+          />
         </div>
       )}
     </>
