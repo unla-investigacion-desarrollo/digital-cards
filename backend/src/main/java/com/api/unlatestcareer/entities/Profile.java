@@ -18,25 +18,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "profile")
 @AllArgsConstructor
-public class Profile  implements Serializable {
-
-	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	private String photo;
-	private boolean current;
-
-	private String title;
+public class Profile  extends BaseEntityAudit {
 
 	@ManyToMany
 	@JoinTable(name = "profile_career", joinColumns = @JoinColumn(name = "profile_id"),
-			   inverseJoinColumns = @JoinColumn(name = "career_id", nullable = true))
+			inverseJoinColumns = @JoinColumn(name = "career_id", nullable = true))
 	List<Career> careers;
-
+	private String photo;
+	private boolean current;
+	private String title;
 	private ProfileStatus status;
 	private List<String> courses;
+	private String profileName;
 	private String name;
 	private String projects;
 	private String urlLinkedin;
@@ -44,15 +37,12 @@ public class Profile  implements Serializable {
 	private String phone;
 	private String moreInfo;
 	private List<String> institutions;
-	private LocalDate createdAt;
-	private LocalDate updateAt;
-
-
 
 	public Profile(ProfileModel profile) {
 		ProfileStatus status =  profile.getStatus();
-		if(status == null ) status = ProfileStatus.PENDING;
-		this.id = profile.getId();
+		if(status == null) status = ProfileStatus.PENDING;
+		this.profileName = profile.getProfileName();
+		this.setId(profile.getId());
 		this.photo = profile.getPhoto();
 		this.current = profile.isCurrent();
 		this.title = profile.getTitle();
@@ -64,27 +54,23 @@ public class Profile  implements Serializable {
 		this.phone = profile.getPhone();
 		this.institutions = profile.getInstitutions();
 		this.moreInfo = profile.getMoreInfo();
-		this.createdAt = LocalDate.now();
-		this.updateAt = LocalDate.now();
 		this.projects = profile.getProjects();
 	}
 
 	public Profile(String photo, boolean current, String title, ProfileStatus status, List<String> courses,List<String> institutions, String name,
-			 String urlLinkedin, String mail, String phone, String moreInfo,String projects) {
-		//TODO: CADA DELETE O UPDATE DEBERIA SER PENDING EL NUEVO STATE?
+				   String profileName, String urlLinkedin, String mail, String phone, String moreInfo,String projects) {
 		this.photo = photo;
 		this.current = current;
 		this.title = title;
 		this.status = ProfileStatus.PENDING;
 		this.courses = courses;
 		this.name = name;
+		this.profileName = profileName;
 		this.urlLinkedin = urlLinkedin;
 		this.mail = mail;
 		this.phone = phone;
 		this.moreInfo = moreInfo;
 		this.institutions = institutions;
-		this.createdAt = LocalDate.now();
-		this.updateAt = LocalDate.now();
 		this.careers = new ArrayList<>();
 		this.projects = projects;
 	}

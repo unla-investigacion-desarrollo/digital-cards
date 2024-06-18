@@ -17,7 +17,7 @@ public interface IProfileService {
 
 	ProfileModel update(ProfileModel profile, int profileId);
 
-	ProfileModel addCareerToProfile(int profileId, int careerId);
+	void addCareerToProfile(int profileId, int careerId);
 
 	ProfileModel removeCareerFromProfile(int profileId, int careerId);
 

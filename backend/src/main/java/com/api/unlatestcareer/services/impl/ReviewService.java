@@ -18,6 +18,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.View;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -165,5 +166,37 @@ public class ReviewService implements IReviewService {
 
         }
         return mapper.map(reviewExisting, ReviewModel.class);
+    }
+
+    public boolean enableReview (int id){
+        try {
+            Optional<Review> optionalReview = reviewRepository.findById(id);
+
+            if (optionalReview.isPresent()){
+                Review review = optionalReview.get();
+                review.setEnabled(true);
+                return true;
+            } else {
+                throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
+            }
+        } catch (Exception e){
+            throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
+        }
+    }
+
+    public boolean disableReview(int id){
+        try {
+            Optional<Review> optionalReview = reviewRepository.findById(id);
+
+            if (optionalReview.isPresent()){
+                Review review = optionalReview.get();
+                review.setEnabled(false);
+                return true;
+            } else {
+                throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
+            }
+        } catch (Exception e){
+            throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
+        }
     }
 }

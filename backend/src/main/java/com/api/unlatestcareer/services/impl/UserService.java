@@ -28,18 +28,14 @@ import com.api.unlatestcareer.services.IUserService;
 public class UserService implements IUserService {
 
     private ModelMapper mapper = new ModelMapper();
-
     @Autowired
     private IUserRepository userRepository;
-
     @Autowired
     private IProfileRepository profileRepository;
     @Autowired
     private BCryptPasswordEncoder encoder;
-
     @Autowired
     JwtTokenUtil jwtService;
-
     @Autowired
     private UserSecurity userSec;
 
@@ -81,7 +77,7 @@ public class UserService implements IUserService {
             throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
         }
     }
-
+    //TODO: ver si es necesario el getAll al menos por conveniencia.
     @Override
     public List<UserModel> getAll() {
         List<User> users = userRepository.findAll();
@@ -89,19 +85,51 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public List<UserModel> findByEnabledTrue() {
+        List<User> users = userRepository.findByEnabledTrue();
+        return users.stream().map(user->mapper.map(user,UserModel.class)).collect(Collectors.toList());
+    }
+
+    @Override
     public boolean deleteById(int id) {
         try {
-            User userExisting = userRepository.findById(id).orElse(null);
-            boolean deleted = false;
-            if (userExisting != null) {
-                userRepository.deleteById(userExisting.getId());
-                deleted = true;
-                return deleted;
+            Optional<User> optionalUser = userRepository.findById(id);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                user.setEnabled(false);
+                UserModel userModel = mapper.map(user, UserModel.class);
+                userRepository.save(user);
+                return true;
             } else {
                 throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
             }
-        } catch (Exception e) {
-            return false;
+        } catch(CustomNotFoundException e){
+            throw e;
+        }
+        catch (Exception e) {
+            throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
+        }
+    }
+
+    @Override
+    public boolean enableUser(int id){
+        try {
+            Optional<User> optionalUser = userRepository.findById(id);
+
+            if (optionalUser.isPresent()) {
+               User user = optionalUser.get();
+               user.setEnabled(true);
+                UserModel userModel = mapper.map(user, UserModel.class);
+                userRepository.save(user);
+                return true;
+            } else {
+                throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
+            }
+        } catch(CustomNotFoundException e){
+            throw e;
+        }
+        catch (Exception e) {
+            throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
         }
     }
 
@@ -111,7 +139,7 @@ public class UserService implements IUserService {
             User userExisting = userRepository.findById(user.getId()).orElse(null);
             if (userExisting == null) {
                 userExisting = new User(user.getUsername(), user.getRole(), encoder.encode(user.getPassword()),
-                        user.isEnabled(), null, null, user.getProfiles());
+                        user.isEnabled(), user.getProfiles());
             } else {
                 userExisting = new User(user);
             }
@@ -127,10 +155,12 @@ public class UserService implements IUserService {
         try {
             User userExisting = userRepository.findById(userId)
                     .orElseThrow(() -> new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND));
-            userExisting.setUsername(user.getUsername());
-            userExisting.setRole(user.getRole());
-            userExisting.setEnabled(user.isEnabled());
-            userExisting.setUpdateAt(LocalDate.now());
+            if (user.getUsername() != null) {
+                userExisting.setUsername(user.getUsername());
+            }
+            if (user.getRole() != null) {
+                userExisting.setRole(user.getRole());
+            }
             if (user.getPassword() != null && !user.getPassword().isEmpty()) {
                 userExisting.setPassword(encoder.encode(user.getPassword()));
             }
@@ -140,6 +170,7 @@ public class UserService implements IUserService {
             throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
         }
     }
+
 
     @Override
     public UserView userAuthenticate(User request) {

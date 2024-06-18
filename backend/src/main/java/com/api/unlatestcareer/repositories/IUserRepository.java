@@ -1,5 +1,6 @@
 package com.api.unlatestcareer.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.api.unlatestcareer.entities.Profile;
@@ -16,6 +17,9 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
 
     @Query("SELECT p FROM User u JOIN u.profiles p WHERE u.id = :userId AND p.current = true")
     Profile getCurrentProfileByUserId(int userId);
+
+    @Query("SELECT u FROM User u WHERE u.enabled = true")
+    List<User> findByEnabledTrue();
 
     // @Query("SELECT p FROM User u JOIN u.profiles p WHERE u.id = :userId AND p.status = :status")
 }

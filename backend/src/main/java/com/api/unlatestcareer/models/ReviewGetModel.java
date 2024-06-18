@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 public class ReviewGetModel {
     private int id;
+    private boolean enabled;
     private String feedback;
     private UserModelReview requester;
     private UserModelReview reviewer;
