@@ -20,11 +20,6 @@ public interface IReviewRepository extends JpaRepository<Review, Integer> {
             "INNER JOIN ( " +
             "    SELECT profile_id, MAX(id) AS max_id " +
             "    FROM career_test.review " +
-            "    WHERE (profile_id, update_at) IN ( " +
-            "        SELECT profile_id, MAX(update_at) " +
-            "        FROM career_test.review " +
-            "        GROUP BY profile_id " +
-            "    ) " +
             "    GROUP BY profile_id " +
             ") latest_reviews " +
             "ON r.id = latest_reviews.max_id", nativeQuery = true)
