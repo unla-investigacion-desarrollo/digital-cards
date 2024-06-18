@@ -54,7 +54,7 @@ public class ReviewService implements IReviewService {
 
     @Override
     public List<ReviewGetModel> getAllReviewGetModels() {
-        List<Review> reviews = reviewRepository.findLatestReviewsByProfile();
+        List<Review> reviews = reviewRepository.findAll();
         List<ReviewGetModel> reviewGetModelList = new ArrayList<>();
 
         for(Review review : reviews){

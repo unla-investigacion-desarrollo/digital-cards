@@ -89,7 +89,7 @@ class ProfileService {
   public static async liveProfile(profileId: string) {
     return axios
       .put(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/profiles/enable/${profileId}`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/profiles/set-active/${profileId}`,
         {},
         {
           headers: {

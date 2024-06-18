@@ -185,7 +185,7 @@ public class ProfileCustomController {
         }
     }
 
-    @GetMapping("")
+    @GetMapping("/enables")
     public ResponseEntity<?> getAllProfiles() {
         try {
             if (UtilService.hasRole(ViewRouteHelper.ADMIN_ROLE)) {
@@ -199,7 +199,7 @@ public class ProfileCustomController {
         }
     }
 
-    @GetMapping("/enables")
+    @GetMapping("")
     public ResponseEntity<?> getEnabledProfiles(){
         try{
             if (UtilService.hasRole(ViewRouteHelper.ADMIN_ROLE)){

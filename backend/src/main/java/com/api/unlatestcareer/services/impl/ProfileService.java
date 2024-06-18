@@ -89,6 +89,7 @@ public class ProfileService implements IProfileService {
 
     public ProfileModel save(ProfileModel profileModel) {
         try {
+            //TODO: siempre cuando se haga save , va a ser current y status  en false/pending
             Optional<Profile> optionalProfile = profileRepository.findById(profileModel.getId());
             Profile profileToSave;
 
@@ -107,10 +108,10 @@ public class ProfileService implements IProfileService {
                 profileToSave.setPhone(profileModel.getPhone());
                 profileToSave.setMoreInfo(profileModel.getMoreInfo());
                 profileToSave.setProjects(profileModel.getProjects());
-                profileToSave.setEnabled(profileModel.isEnabled());
+                profileToSave.setEnabled(true);
             } else {
-                profileToSave = new Profile(profileModel.getPhoto(), profileModel.isCurrent(), profileModel.getTitle(),
-                        profileModel.getStatus(), profileModel.getCourses(), profileModel.getInstitutions(),
+                profileToSave = new Profile(profileModel.getPhoto(), false, profileModel.getTitle(),
+                        ProfileStatus.PENDING, profileModel.getCourses(), profileModel.getInstitutions(),
                         profileModel.getName(), profileModel.getProfileName(), profileModel.getUrlLinkedin(),
                         profileModel.getMail(), profileModel.getPhone(), profileModel.getMoreInfo(),
                         profileModel.getProjects());
@@ -141,6 +142,7 @@ public class ProfileService implements IProfileService {
         profileExisting.setProjects(profile.getProjects());
         profileExisting.setInstitutions(profile.getInstitutions());
         profileExisting.setStatus(ProfileStatus.PENDING);
+        profileExisting.setCurrent(false);
         profileRepository.save(profileExisting);
         return mapper.map(profileExisting, ProfileModel.class);
 

@@ -37,7 +37,7 @@ const useLogin = (cookiesLogin: any) => {
         Swal.fire({
           icon: "error",
           title: "Error en la petición:",
-          text: error.response.data,
+          text: "Error",
         });
       });
   };
