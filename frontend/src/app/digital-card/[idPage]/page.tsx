@@ -6,8 +6,8 @@ import ErrorPage from "./ErrorPage";
 const getData = async (id: string) => {
   try {
     const response = await ProfileService.getCurrentProfile(id);
-
-    if (!response) {
+    //TODO: LEER EL MENSAJE DE ERROR O VER LA FORMA DE ENCONTRAR UN CATCH, POR QUE ANTES NO TIRABA 404 Y AHORA SI
+    if (!response.id) {
       throw new Error(
         "No se encontraron datos para la credencial proporcionada."
       );
