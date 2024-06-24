@@ -3,14 +3,18 @@ package com.api.unlatestcareer.controllers;
 import java.util.List;
 
 import com.api.unlatestcareer.entities.Profile;
+import com.api.unlatestcareer.entities.User;
 import com.api.unlatestcareer.helpers.Converters;
 import com.api.unlatestcareer.helpers.ProfileStatus;
 import com.api.unlatestcareer.models.ProfileModelWithReviews;
+import com.api.unlatestcareer.models.ProfileReviewSummary;
 import com.api.unlatestcareer.models.ReviewModel;
+import com.api.unlatestcareer.repositories.IUserRepository;
 import com.api.unlatestcareer.services.impl.ReviewService;
 import jakarta.persistence.Convert;
 import jdk.jshell.execution.Util;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,6 +34,8 @@ import com.api.unlatestcareer.services.impl.ProfileService;
 import com.api.unlatestcareer.services.impl.UserService;
 import com.api.unlatestcareer.services.impl.UtilService;
 
+import javax.swing.text.View;
+
 @RestController
 @RequestMapping(path = "/profiles")
 public class ProfileCustomController {
@@ -39,6 +45,8 @@ public class ProfileCustomController {
     @Autowired
     private ReviewService reviewService;
 
+    @Autowired
+    private IUserRepository userRepository;
 
     @Autowired
     private UserService userService;
@@ -56,16 +64,16 @@ public class ProfileCustomController {
                 profileService.addCareerToProfile(savedProfile.getId(), model.getIdCareer());
                 userService.addProfileToUser(SecurityContextHolder.getContext().getAuthentication().getName(), savedProfile.getId());
                 //TODO: REFACTORIZAR ESTO, copie y pegue del reviewController
-                ReviewModel rmodel = new ReviewModel(userService.findByName(SecurityContextHolder.getContext().getAuthentication().getName()).getId(),savedProfile.getId());
+                ReviewModel rmodel = new ReviewModel(userService.findByName(SecurityContextHolder.getContext().getAuthentication().getName()).getId(), savedProfile.getId());
                 ReviewModel savedReview = reviewService.save(rmodel);
 
                 if (savedReview != null) {
-                    reviewService.addUserRequestReviewToReview(savedReview.getId(),rmodel.getUserRequesterId());
-                    if(rmodel.getUserReviewerId() != null ){
+                    reviewService.addUserRequestReviewToReview(savedReview.getId(), rmodel.getUserRequesterId());
+                    if (rmodel.getUserReviewerId() != null) {
                         reviewService.addUserReviewerToReview(savedReview.getId(), rmodel.getUserReviewerId());
                     }
 
-                    reviewService.addProfileToReview(savedReview.getId(),rmodel.getProfileId());
+                    reviewService.addProfileToReview(savedReview.getId(), rmodel.getProfileId());
                 } else {
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_CREATE);
                 }
@@ -145,11 +153,11 @@ public class ProfileCustomController {
     }
 
     @PutMapping("enable/{id}")
-    public ResponseEntity<?> enableProfile(@PathVariable int id){
-        try{
+    public ResponseEntity<?> enableProfile(@PathVariable int id) {
+        try {
             profileService.enableProfile(id);
             return ResponseEntity.status(HttpStatus.OK).body(profileService.findById(id));
-        } catch (CustomNotFoundException e){
+        } catch (CustomNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
         }
 
@@ -185,7 +193,7 @@ public class ProfileCustomController {
         }
     }
 
-    @GetMapping("/enables")
+    @GetMapping("/all")
     public ResponseEntity<?> getAllProfiles() {
         try {
             if (UtilService.hasRole(ViewRouteHelper.ADMIN_ROLE)) {
@@ -200,15 +208,15 @@ public class ProfileCustomController {
     }
 
     @GetMapping("")
-    public ResponseEntity<?> getEnabledProfiles(){
-        try{
-            if (UtilService.hasRole(ViewRouteHelper.ADMIN_ROLE)){
+    public ResponseEntity<?> getEnabledProfiles() {
+        try {
+            if (UtilService.hasRole(ViewRouteHelper.ADMIN_ROLE)) {
                 List<ProfileModel> profiles = profileService.findByEnabledTrue();
                 return ResponseEntity.ok(profiles);
             } else {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ViewRouteHelper.ERROR_SERVER);
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ViewRouteHelper.ACCESS_DENIED);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
         }
     }
@@ -231,13 +239,31 @@ public class ProfileCustomController {
     }
 
     @GetMapping("/profilewreviews")
-    public ResponseEntity<?> getProfileWithReviews(){
+    public ResponseEntity<?> getProfileWithReviews() {
         try {
             if (UtilService.hasRole(ViewRouteHelper.ADMIN_ROLE)) {
                 List<ProfileModelWithReviews> profiles = profileService.profilesWithReviewList();
                 return ResponseEntity.ok(profiles);
             } else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ViewRouteHelper.ACCESS_DENIED);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
+        }
+    }
+
+    @GetMapping("/summary")
+    public ResponseEntity<?> getProfilesReviewSummary() {
+        try {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            Optional<User> userOptional = userRepository.findByUsername(username);
+
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                List<ProfileReviewSummary> profilesSummary = profileService.profileReviewSummary(user.getId());
+                return ResponseEntity.ok(profilesSummary);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
