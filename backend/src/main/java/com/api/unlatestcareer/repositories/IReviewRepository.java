@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,5 +26,10 @@ public interface IReviewRepository extends JpaRepository<Review, Integer> {
             "ON r.id = latest_reviews.max_id", nativeQuery = true)
     List<Review> findLatestReviewsByProfile();
 
+    @Query("SELECT r FROM Review r "
+            + "WHERE r.profile.id = :profileId "
+            + "ORDER BY r.id DESC "
+            + "LIMIT 1")
+    Review findLatestReviewByProfileId(@Param("profileId") int profileId);
 
 }
