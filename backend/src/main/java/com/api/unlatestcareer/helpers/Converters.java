@@ -3,7 +3,12 @@ package com.api.unlatestcareer.helpers;
 import com.api.unlatestcareer.entities.Profile;
 import com.api.unlatestcareer.entities.Review;
 import com.api.unlatestcareer.models.*;
+import com.api.unlatestcareer.repositories.IReviewRepository;
+import com.api.unlatestcareer.services.impl.ReviewService;
 import org.modelmapper.ModelMapper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Converters {
 
@@ -52,4 +57,23 @@ public class Converters {
 
         return userModelReview;
     }
+
+    public ReviewSummary mapReviewGetModeltoReviewSummary(ReviewGetModel review){
+       return new ReviewSummary(review.getFeedback(),review.getReviewer());
+    }
+
+    public ReviewSummary mapReviewToReviewSummary(Review review){
+       ReviewGetModel reviewGetModel =  ReviewToReviewGetModel(review);
+      return mapReviewGetModeltoReviewSummary(reviewGetModel);
+    }
+
+    public List<ProfileModel> profileListToProfileModelList(List<Profile> profileList){
+        List<ProfileModel> profileModelList = new ArrayList<>();
+        for (Profile p : profileList){
+            ProfileModel profileModel =  mapper.map(p, ProfileModel.class);
+            profileModelList.add(profileModel);
+        }
+        return profileModelList;
+    }
+
 }

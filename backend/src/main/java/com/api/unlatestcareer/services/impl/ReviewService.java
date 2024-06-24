@@ -92,7 +92,7 @@ public class ReviewService implements IReviewService {
 
                 Review reviewExisting = reviewRepository.findById(review.getId()).orElse(null);
                 reviewExisting = new Review(review, requester, reviewer, profile);
-
+                reviewExisting.setEnabled(true);
 
                 reviewRepository.save(reviewExisting);
                 return mapper.map(reviewExisting, ReviewModel.class);
@@ -105,7 +105,7 @@ public class ReviewService implements IReviewService {
 
                 Review reviewExisting = reviewRepository.findById(review.getId()).orElse(null);
                 reviewExisting = new Review(review, requester, null, profile);
-
+                reviewExisting.setEnabled(true);
 
                 reviewRepository.save(reviewExisting);
                 return mapper.map(reviewExisting, ReviewModel.class);

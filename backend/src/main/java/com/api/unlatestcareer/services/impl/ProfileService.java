@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import com.api.unlatestcareer.helpers.Converters;
 import com.api.unlatestcareer.helpers.ProfileStatus;
 import com.api.unlatestcareer.models.*;
+import com.api.unlatestcareer.repositories.IReviewRepository;
 import com.api.unlatestcareer.services.IReviewService;
 import com.api.unlatestcareer.services.IUserService;
 import org.modelmapper.ModelMapper;
@@ -21,6 +22,8 @@ import com.api.unlatestcareer.repositories.ICareerRepository;
 import com.api.unlatestcareer.repositories.IProfileRepository;
 import com.api.unlatestcareer.services.IProfileService;
 
+import javax.swing.text.View;
+
 @Service("profileService")
 public class ProfileService implements IProfileService {
 
@@ -32,10 +35,14 @@ public class ProfileService implements IProfileService {
     private ICareerRepository careerRepository;
 
     @Autowired
+    private IReviewRepository reviewRepository;
+    @Autowired
     private IUserService userService;
 
     @Autowired
     private IReviewService reviewService;
+
+    Converters converters = new Converters();
 
     @Override
     public ProfileModel findById(int id) {
@@ -134,7 +141,7 @@ public class ProfileService implements IProfileService {
         profileExisting.setTitle(profile.getTitle());
         profileExisting.setUrlLinkedin(profile.getUrlLinkedin());
         profileExisting.setPhone(profile.getPhone());
-      //  profileExisting.setCareers(profile.get()); mirar carrer
+        //  profileExisting.setCareers(profile.get()); mirar carrer
         profileExisting.setMail(profile.getMail());
         profileExisting.setCourses(profile.getCourses());
         profileExisting.setPhoto(profile.getPhoto());
@@ -230,9 +237,43 @@ public class ProfileService implements IProfileService {
             throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
         }
     }
-        public List<ProfileModel> findByEnabledTrue(){
-            List<Profile> profiles = profileRepository.findByEnableTrue();
-            return profiles.stream().map(profile->mapper.map(profile,ProfileModel.class)).collect(Collectors.toList());
+
+    public List<ProfileModel> findByEnabledTrue() {
+        List<Profile> profiles = profileRepository.findByEnableTrue();
+        return profiles.stream().map(profile -> mapper.map(profile, ProfileModel.class)).collect(Collectors.toList());
+    }
+
+    //TODO: testear estos metodos.
+    public ProfileModel findByIdAndEnabledTrue(int id) {
+        try {
+            Optional<Profile> optionalProfile = profileRepository.findByIdAndEnableTrue(id);
+
+            if (optionalProfile.isPresent()) {
+                Profile profile = optionalProfile.get();
+                return mapper.map(profile, ProfileModel.class);
+
+            } else {
+                throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
+            }
+        } catch (Exception e) {
+            throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
         }
     }
+
+    public List<ProfileReviewSummary> profileReviewSummary(int userId) {
+        List<ProfileModel> profileModelList = converters.profileListToProfileModelList(
+                profileRepository.findProfilesByUserId(userId));
+
+        List<ProfileReviewSummary> profileReviewSummaryList = new ArrayList<>();
+
+        for (ProfileModel profileModel : profileModelList) {
+            ProfileReviewSummary profileReviewSummary = new ProfileReviewSummary(profileModel,
+                    converters.mapReviewToReviewSummary(
+                            reviewRepository.findLatestReviewByProfileId(profileModel.getId())));
+            profileReviewSummaryList.add(profileReviewSummary);
+        }
+        return profileReviewSummaryList;
+    }
+
+}
 
