@@ -6,6 +6,7 @@ class ProfileService {
       .post(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/profiles`,
         {
+          profileName: profile.profileName,
           name: profile.name,
           title: profile.subtitle,
           photo: profile.image,
@@ -40,6 +41,7 @@ class ProfileService {
       .put(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/profiles/${profileId}`,
         {
+          profileName: profile.profileName,
           name: profile.name,
           title: profile.subtitle,
           photo: profile.image,

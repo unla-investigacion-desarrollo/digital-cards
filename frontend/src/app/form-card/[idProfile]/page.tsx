@@ -15,6 +15,14 @@ const page = ({ params }: { params: { idProfile: string } }) => {
             <h1 className="text-4xl font-semibold mb-2">Perfil</h1>
             <div className="flex flex-col space-y-4">
               <Input
+                label="Nombre del Perfil"
+                value={state.inputs.profileName}
+                onChange={(e) =>
+                  actions.handleInputs(e.target.value, "profileName")
+                }
+                placeholder="Escribe el nombre para el perfil"
+              />
+              <Input
                 label="Nombre"
                 value={state.inputs.name}
                 onChange={(e) => actions.handleInputs(e.target.value, "name")}

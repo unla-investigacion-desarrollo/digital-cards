@@ -138,6 +138,7 @@ public class ProfileService implements IProfileService {
         Profile profileExisting = profileRepository.findById(profileId)
                 .orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
         profileExisting.setName(profile.getName());
+        profileExisting.setProfileName(profile.getProfileName());
         profileExisting.setTitle(profile.getTitle());
         profileExisting.setUrlLinkedin(profile.getUrlLinkedin());
         profileExisting.setPhone(profile.getPhone());

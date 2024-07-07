@@ -20,7 +20,7 @@ const useReviewDasboard = () => {
       setReviews(
         data.map((review: any) => ({
           reviewId: review?.id,
-          profileName: "Generic",
+          profileName: review?.profile?.profileName || "Generic",
           userRequest: review?.requester?.username,
           userReviewer: review?.reviewer?.username,
           statusReview: review?.profile?.status,
