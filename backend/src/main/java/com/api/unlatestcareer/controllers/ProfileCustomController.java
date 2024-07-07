@@ -129,7 +129,7 @@ public class ProfileCustomController {
     @PutMapping("set-active/{id}")
     public ResponseEntity<?> setProfileActive(@PathVariable int id) {
         try {
-         //   profileService.disableAllProfiles();
+            profileService.disableAllProfiles();
             ProfileModel model = profileService.findById(id);
 
             if (model != null) {
