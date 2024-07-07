@@ -42,6 +42,7 @@ const columns = [
 
 const page = () => {
   const { profiles } = useDashboard();
+  console.log(profiles);
 
   return (
     <>

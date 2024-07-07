@@ -1,3 +1,4 @@
+import ProfileService from "@/core/ProfileService";
 import UserService from "@/core/UserService";
 import { useEffect, useState } from "react";
 
@@ -14,24 +15,20 @@ const useDashboard = () => {
   const [profiles, setProfiles] = useState<ProfileItemTable[]>([]);
 
   const request = async () => {
-    await UserService.userRequest(localStorage.getItem("userId") as any).then(
-      (data) => {
-        setProfiles(
-          data.profiles.map((profile: any) => ({
-            profileId: profile.id,
-            profileName: "Generic",
-            userReview: profile?.reviews
-              ? profile?.reviews[0]?.userReviewerId
-              : "sin reviwer",
-            review: profile?.reviews
-              ? profile?.reviews[0]?.feedback
-              : "sin feedback",
-            status: profile.status,
-            isLive: profile.current,
-          }))
-        );
-      }
-    );
+    await ProfileService.getProfiles().then((data) => {
+      setProfiles(
+        data.map(({ profileModel, reviewSummary }: any) => ({
+          profileId: profileModel.id,
+          profileName: profileModel.profileName || "Generic",
+          userReview: reviewSummary
+            ? reviewSummary?.reviewer?.username
+            : "sin reviwer",
+          review: reviewSummary ? reviewSummary?.feedback : "sin feedback",
+          status: profileModel.status,
+          isLive: profileModel.current,
+        }))
+      );
+    });
   };
 
   useEffect(() => {
