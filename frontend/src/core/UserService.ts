@@ -1,21 +1,12 @@
-import axios from "axios";
+import { axiosInstance } from "../utils/axios";
 
 class UserService {
   public static async loginRequest(username: string, password: string) {
-    return axios
-      .post(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/usuario/login`,
-        {
-          username: username,
-          password: password,
-        },
-        {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-          },
-        }
-      )
+    return axiosInstance
+      .post(`/usuario/login`, {
+        username: username,
+        password: password,
+      })
       .then((response) => {
         localStorage.setItem("username", response.data.username);
         localStorage.setItem("token", response.data.token);
@@ -25,54 +16,29 @@ class UserService {
   }
 
   public static async createNewUserRequest(username: string, password: string) {
-    return axios
-      .post(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/usuario`,
-        {
-          username: username,
-          password: password,
-        },
-        {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-          },
-        }
-      )
+    return axiosInstance
+      .post(`/usuario`, {
+        username: username,
+        password: password,
+      })
       .then((response) => {
         return response.data;
       });
   }
 
   public static async changePasswordRequest(password: string) {
-    return axios
-      .put(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/usuario/change-password`,
-        {
-          password: password,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-          },
-        }
-      )
+    return axiosInstance
+      .put(`/usuario/change-password`, {
+        password: password,
+      })
       .then((response) => {
         return response.data;
       });
   }
 
   public static async userRequest(id: string) {
-    return axios
-      .get(`${process.env.NEXT_PUBLIC_SERVER_URL}/usuario/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-        },
-      })
+    return axiosInstance
+      .get(`/usuario/${id}`)
       .then((response) => {
         return response.data;
       })

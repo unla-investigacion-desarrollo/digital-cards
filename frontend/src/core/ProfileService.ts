@@ -1,33 +1,23 @@
-import axios from "axios";
+import { axiosInstance } from "../utils/axios";
 
 class ProfileService {
   public static async newProfile(profile: any) {
-    return axios
-      .post(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/profiles`,
-        {
-          profileName: profile.profileName,
-          name: profile.name,
-          title: profile.subtitle,
-          photo: profile.image,
-          current: true,
-          courses: profile.subjects,
-          institutions: profile.university,
-          urlLinkedin: profile.linkedlin,
-          mail: profile.correo,
-          phone: profile.phone,
-          moreInfo: profile.aboutMe,
-          idCareer: profile.careerId,
-          projects: profile.projects,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-          },
-        }
-      )
+    return axiosInstance
+      .post(`/profiles`, {
+        profileName: profile.profileName,
+        name: profile.name,
+        title: profile.subtitle,
+        photo: profile.image,
+        current: true,
+        courses: profile.subjects,
+        institutions: profile.university,
+        urlLinkedin: profile.linkedlin,
+        mail: profile.correo,
+        phone: profile.phone,
+        moreInfo: profile.aboutMe,
+        idCareer: profile.careerId,
+        projects: profile.projects,
+      })
       .then((response) => {
         return response.data;
       })
@@ -37,32 +27,22 @@ class ProfileService {
   }
 
   public static async editProfile(profile: any, profileId: string) {
-    return axios
-      .put(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/profiles/${profileId}`,
-        {
-          profileName: profile.profileName,
-          name: profile.name,
-          title: profile.subtitle,
-          photo: profile.image,
-          current: true,
-          courses: profile.subjects,
-          institutions: profile.university,
-          urlLinkedin: profile.linkedlin,
-          mail: profile.correo,
-          phone: profile.phone,
-          moreInfo: profile.aboutMe,
-          idCareer: profile.careerId,
-          projects: profile.projects,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-          },
-        }
-      )
+    return axiosInstance
+      .put(`/profiles/${profileId}`, {
+        profileName: profile.profileName,
+        name: profile.name,
+        title: profile.subtitle,
+        photo: profile.image,
+        current: true,
+        courses: profile.subjects,
+        institutions: profile.university,
+        urlLinkedin: profile.linkedlin,
+        mail: profile.correo,
+        phone: profile.phone,
+        moreInfo: profile.aboutMe,
+        idCareer: profile.careerId,
+        projects: profile.projects,
+      })
       .then((response) => {
         return response.data;
       })
@@ -72,14 +52,8 @@ class ProfileService {
   }
 
   public static async deleteProfile(profileId: string) {
-    return axios
-      .delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/profiles/${profileId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-        },
-      })
+    return axiosInstance
+      .delete(`/profiles/${profileId}`)
       .then((response) => {
         return response.data;
       })
@@ -89,18 +63,8 @@ class ProfileService {
   }
 
   public static async liveProfile(profileId: string) {
-    return axios
-      .put(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/profiles/set-active/${profileId}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-          },
-        }
-      )
+    return axiosInstance
+      .put(`/profiles/set-active/${profileId}`, {})
       .then((response) => {
         return response.data;
       })
@@ -110,20 +74,10 @@ class ProfileService {
   }
 
   public static async updateStatusProfile(status: any, profileId: any) {
-    return axios
-      .put(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/profiles/change-status/${profileId}`,
-        {
-          status,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-          },
-        }
-      )
+    return axiosInstance
+      .put(`/profiles/change-status/${profileId}`, {
+        status,
+      })
       .then((response) => {
         return response.data;
       })
@@ -133,13 +87,8 @@ class ProfileService {
   }
 
   public static async getCurrentProfile(userId: string) {
-    return axios
-      .get(`${process.env.NEXT_PUBLIC_SERVER_URL}/profiles/live/${userId}`, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-        },
-      })
+    return axiosInstance
+      .get(`/profiles/live/${userId}`)
       .then((response) => {
         return response.data;
       })
@@ -149,14 +98,8 @@ class ProfileService {
   }
 
   public static async getProfiles() {
-    return axios
-      .get(`${process.env.NEXT_PUBLIC_SERVER_URL}/profiles/summary`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-        },
-      })
+    return axiosInstance
+      .get(`/profiles/summary`)
       .then((response) => {
         return response.data;
       })

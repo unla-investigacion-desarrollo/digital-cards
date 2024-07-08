@@ -1,56 +1,29 @@
-import axios from "axios";
-import { AnyPtrRecord } from "dns";
+import { axiosInstance } from "../utils/axios";
 
 class ReviewService {
   public static async reviewRequest(profileId: any) {
-    return axios
-      .get(`${process.env.NEXT_PUBLIC_SERVER_URL}/review`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        return response.data.filter(
-          (review: any) => review.profile.id == profileId
-        );
-      });
+    return axiosInstance.get(`/review`).then((response) => {
+      return response.data.filter(
+        (review: any) => review.profile.id == profileId
+      );
+    });
   }
 
   public static async newReview(userRequesterId: any, profileId: any) {
-    return axios
-      .post(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/review`,
-        {
-          userRequesterId: userRequesterId,
-          profileId: profileId,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-          },
-        }
-      )
+    return axiosInstance
+      .post(`/review`, {
+        userRequesterId: userRequesterId,
+        profileId: profileId,
+      })
       .then((response) => {
         return response.data;
       });
   }
 
   public static async review() {
-    return axios
-      .get(`${process.env.NEXT_PUBLIC_SERVER_URL}/review`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        return response.data;
-      });
+    return axiosInstance.get(`/review`).then((response) => {
+      return response.data;
+    });
   }
 
   public static async addFeedBack(
@@ -58,21 +31,11 @@ class ReviewService {
     userReviewerId: any,
     feedback: string
   ) {
-    return axios
-      .patch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/review/${feedbackId}/addFeedback`,
-        {
-          feedback: feedback,
-          userReviewerId: userReviewerId,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-          },
-        }
-      )
+    return axiosInstance
+      .patch(`/review/${feedbackId}/addFeedback`, {
+        feedback: feedback,
+        userReviewerId: userReviewerId,
+      })
       .then((response) => {
         return response.data;
       });
