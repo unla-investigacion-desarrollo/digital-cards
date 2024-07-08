@@ -6,7 +6,7 @@ export async function middleware(request: NextRequest) {
   const protectedRoutes = [
     "/home",
     "/change-password",
-    "/form-card",
+    "/form-profile",
     "/dashboard",
   ];
   const adminRoutes = ["/new-user"];

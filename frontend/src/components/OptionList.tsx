@@ -14,12 +14,12 @@ export default function OptionList() {
     {
       title: "Historico Peticiones de Actualizacion",
       img: "/logoUnla.jpeg",
-      href: "form-card",
+      href: "form-profile",
     },
     {
       title: "Nueva peticion de cambio de credential",
       img: "/logoUnla.jpeg",
-      href: "form-card",
+      href: "form-profile",
     },
     {
       title: "Cambiar Password",

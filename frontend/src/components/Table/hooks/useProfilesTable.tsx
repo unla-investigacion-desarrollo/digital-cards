@@ -93,7 +93,7 @@ const useProfilesTable = () => {
           return (
             <Actions
               editProfile={() =>
-                router.push(`form-card/${profileItemTable.profileId}/`)
+                router.push(`form-profile/${profileItemTable.profileId}/`)
               }
               deleteProfile={async () => {
                 await ProfileService.deleteProfile(profileItemTable.profileId)

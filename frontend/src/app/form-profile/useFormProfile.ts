@@ -3,6 +3,7 @@ import ProfileService from "@/core/ProfileService";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+import ReviewService from "@/core/ReviewService";
 
 type InputsState = {
   name: string;
@@ -26,7 +27,8 @@ type Careers = {
   name: string;
 };
 
-const useFormCard = () => {
+const useFormProfile = ({ profileId }: { profileId?: string | null } = {}) => {
+  console.log(profileId);
   const [inputs, setInputs] = useState<InputsState>({
     name: "",
     subtitle: "",
@@ -99,6 +101,12 @@ const useFormCard = () => {
     handleInputs(change.target.value, "careerId");
   };
 
+  const onSave = () => {
+    if (profileId) {
+      onClickEditProfile();
+    } else onClickNewProfile();
+  };
+
   const onClickNewProfile = async () => {
     await ProfileService.newProfile(inputs).then((response) => {
       Swal.fire({
@@ -108,6 +116,20 @@ const useFormCard = () => {
       });
       router.push("/dashboard");
     });
+  };
+
+  const onClickEditProfile = async () => {
+    await ProfileService.editProfile(inputs, profileId).then((response) => {
+      Swal.fire({
+        icon: "success",
+        title: "Good Edit",
+        text: `${response}`,
+      });
+      router.push("/dashboard");
+    });
+
+    //TODO: ESTO DEBERIA ESTAR EN EL BACKEND(CADA VEZ QUE SEA HAGA UN UPDATE, SE NECESITA UN NUEVO REVIEW)
+    await ReviewService.newReview(localStorage.getItem("userId"), profileId);
   };
 
   useEffect(() => {
@@ -137,9 +159,9 @@ const useFormCard = () => {
       handleRemoveSubjectsItem,
       handleAddUniversityItem,
       handleRemoveUniversityItem,
-      onClickNewProfile,
+      onSave,
     },
   };
 };
 
-export default useFormCard;
+export default useFormProfile;

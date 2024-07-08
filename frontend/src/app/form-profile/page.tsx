@@ -1,11 +1,11 @@
 "use client";
 import React from "react";
 import { Input, Textarea, Button, Chip, Avatar } from "@nextui-org/react";
-import useFormCard from "./useFormCard";
+import useFormProfile from "./useFormProfile";
 import SelectCustom from "@/components/SelectCustom";
 
 const index = () => {
-  const { state, actions } = useFormCard();
+  const { state, actions } = useFormProfile();
 
   return (
     <div className="flex flex-col justify-center items-center h-screen">
@@ -187,7 +187,7 @@ const index = () => {
       <Button
         className="mt-4 ml-4"
         type="submit"
-        onClick={() => actions.onClickNewProfile()}
+        onClick={() => actions.onSave()}
       >
         Enviar
       </Button>

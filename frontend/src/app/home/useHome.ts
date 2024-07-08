@@ -33,7 +33,7 @@ const chipsItem: chipItem[] = [
   {
     image: "./form.png",
     text: "Formulario cambio de credential",
-    href: "/form-card",
+    href: "/form-profile",
     onlyAdmin: false,
   },
   {
