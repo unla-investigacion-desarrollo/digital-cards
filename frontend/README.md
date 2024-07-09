@@ -32,7 +32,7 @@ Step 3 - Web
 http://localhost:3000/
 ```
 
-Step 4 - Add Variable Global in .env
+Step 4 - Add Variable Global in .env.local
 
 ```bash
 NEXT_PUBLIC_SERVER_URL={insert_url}
