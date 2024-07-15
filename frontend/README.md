@@ -42,7 +42,7 @@ NEXT_PUBLIC_SERVER_URL={insert_url}
 
 - src/app: Contains the Next.js pages.
 - src/components/: Contains React components.
-- src/core: Contains the project logic following the hexagonal architecture.
+- src/core: Contains the project logic .
 - src/mocks: Contains mocks for the project
 - src/utils: Contains utils for next.js project
 - test: Contains test with project structure

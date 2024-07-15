@@ -51,6 +51,8 @@ const Header = () => {
                 <a
                   onClick={() => {
                     deleteCookies();
+                    localStorage.setItem("userId", "");
+                    localStorage.setItem("token", "");
                     router.push("/login");
                   }}
                   className="text-s font-small text-red-500 hover:text-red-700 transition-colors duration-300 hover:border-b-2 border-red-500"
