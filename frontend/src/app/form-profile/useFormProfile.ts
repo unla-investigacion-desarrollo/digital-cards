@@ -112,7 +112,7 @@ const useFormProfile = ({ profileId }: { profileId?: string | null } = {}) => {
       Swal.fire({
         icon: "success",
         title: "Nueva peticion de credencial exitosa",
-        text: `${response}`,
+        text: `${response.data || ""}`,
       });
       router.push("/dashboard");
     });
@@ -123,7 +123,7 @@ const useFormProfile = ({ profileId }: { profileId?: string | null } = {}) => {
       Swal.fire({
         icon: "success",
         title: "Good Edit",
-        text: `${response}`,
+        text: `${response.data || ""}`,
       });
       router.push("/dashboard");
     });

@@ -25,13 +25,21 @@ interface ProfileItemTable {
   isLive: boolean;
 }
 
-interface props {
+interface Props {
   columns: Columns[];
   profileItems: ProfileItemTable[];
+  deleteProfile: (profileId: string) => void;
+  enableProfile: (profileId: string) => void;
 }
 
-const ProfilesTable = ({ columns, profileItems }: props) => {
-  const { renderCell } = useProfilesTable();
+const ProfilesTable = ({
+  columns,
+  profileItems,
+  deleteProfile,
+  enableProfile,
+}: Props) => {
+  const { renderCell } = useProfilesTable({ deleteProfile, enableProfile });
+
   return (
     <>
       <Header />

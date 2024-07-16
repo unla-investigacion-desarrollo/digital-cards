@@ -1,12 +1,11 @@
 "use client";
 import React from "react";
-import { Chip, Tooltip } from "@nextui-org/react";
+import { Chip } from "@nextui-org/react";
 import Text from "../components/Text";
 import Feedback from "../components/Feedback";
-import ReviewService from "@/core/ReviewService";
-import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
+
 import ButtonProfileView from "../components/ButtonProfileView";
-import ProfileService from "@/core/ProfileService";
 
 const statusColorMap = {
   APPROVED: "success",
@@ -25,34 +24,18 @@ enum ColumsProfilesTable {
   HAS_FEEDBACK = "HAS_FEEDBACK",
 }
 
-const useReviewTable = () => {
-  const addFeebackProfile = async (
-    reviewId: any,
-    reviewerID: any,
+interface Props {
+  addFeebackProfile: (
+    reviewId: string,
+    reviewerID: string | null,
     feedback: string,
     status: string,
-    profileId: any
-  ) => {
-    await ReviewService.addFeedBack(reviewId, reviewerID, feedback)
-      .then(async () => {
-        await ProfileService.updateStatusProfile(status, profileId);
-        Swal.fire({
-          icon: "success",
-          title: "Feeedback guardo con exito",
-          text: "Auto close alert!",
-          timer: 2000,
-        });
-      })
-      .catch(() =>
-        Swal.fire({
-          icon: "error",
-          title: "Feeedback no guardo con exito",
-          text: "Auto close alert!",
-          timer: 2000,
-        })
-      );
-  };
+    profileId: string
+  ) => void;
+}
 
+const useReviewTable = ({ addFeebackProfile }: Props) => {
+  const router = useRouter();
   const renderCell = React.useCallback(
     (reviewItemTable: ReviewItemTable, columnKey: string) => {
       const cellValue = reviewItemTable[columnKey];
@@ -98,14 +81,14 @@ const useReviewTable = () => {
                     reviewItemTable.profile.id
                   )
                 }
-              ></Feedback>
+              />
             )
           );
         default:
           return cellValue;
       }
     },
-    []
+    [addFeebackProfile]
   );
   return {
     renderCell,

@@ -23,15 +23,23 @@ interface ReviewItemTable {
   userReviewer: string;
   statusReview: string;
   hasFeeedback: boolean;
+  profile: any; // Ajusta el tipo según tus necesidades
 }
 
-interface props {
+interface Props {
   columns: Columns[];
   reviewItems: ReviewItemTable[];
+  addFeebackProfile: (
+    reviewId: string,
+    reviewerID: string | null,
+    feedback: string,
+    status: string,
+    profileId: string
+  ) => void;
 }
 
-const ReviewTable = ({ columns, reviewItems }: props) => {
-  const { renderCell } = useReviewTable();
+const ReviewTable = ({ columns, reviewItems, addFeebackProfile }: Props) => {
+  const { renderCell } = useReviewTable({ addFeebackProfile });
   return (
     <>
       <Header />

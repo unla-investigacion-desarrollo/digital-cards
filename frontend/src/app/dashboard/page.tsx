@@ -13,8 +13,8 @@ const columns = [
   { name: "EDIT", uid: "EDIT" },
 ];
 
-const page = () => {
-  const { profiles } = useDashboard();
+const Page = () => {
+  const { profiles, deleteProfile, enableProfile } = useDashboard();
   console.log(profiles);
 
   return (
@@ -23,10 +23,12 @@ const page = () => {
         <ProfilesTable
           columns={columns}
           profileItems={profiles}
-        ></ProfilesTable>
+          deleteProfile={deleteProfile}
+          enableProfile={enableProfile}
+        />
       )}
     </>
   );
 };
 
-export default page;
+export default Page;

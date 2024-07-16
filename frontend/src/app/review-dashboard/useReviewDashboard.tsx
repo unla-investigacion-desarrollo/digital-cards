@@ -1,18 +1,19 @@
 import ReviewService from "@/core/ReviewService";
+import ProfileService from "@/core/ProfileService";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 interface ReviewItemTable {
   reviewId: string;
-  ProfileName: string;
+  profileName: string;
   userRequest: string;
   userReviewer: string;
   statusReview: string;
-  review: string;
   hasFeeedback: boolean;
-  profile: any;
+  profile: any; // Ajusta el tipo según tus necesidades
 }
 
-const useReviewDasboard = () => {
+const useReviewDashboard = () => {
   const [reviews, setReviews] = useState<ReviewItemTable[]>([]);
 
   const request = async () => {
@@ -32,13 +33,48 @@ const useReviewDasboard = () => {
     });
   };
 
+  const addFeebackProfile = async (
+    reviewId: string,
+    reviewerID: string | null,
+    feedback: string,
+    status: string,
+    profileId: string
+  ) => {
+    await ReviewService.addFeedBack(reviewId, reviewerID, feedback)
+      .then(async () => {
+        await ProfileService.updateStatusProfile(status, profileId);
+        setReviews((prevReviews) =>
+          prevReviews.map((review) =>
+            review.reviewId === reviewId
+              ? { ...review, hasFeeedback: true, statusReview: status }
+              : review
+          )
+        );
+        Swal.fire({
+          icon: "success",
+          title: "Feedback guardado con éxito",
+          text: "Auto close alert!",
+          timer: 2000,
+        });
+      })
+      .catch(() =>
+        Swal.fire({
+          icon: "error",
+          title: "Feedback no guardado con éxito",
+          text: "Auto close alert!",
+          timer: 2000,
+        })
+      );
+  };
+
   useEffect(() => {
     request();
   }, []);
 
   return {
     reviews,
+    addFeebackProfile,
   };
 };
 
-export default useReviewDasboard;
+export default useReviewDashboard;

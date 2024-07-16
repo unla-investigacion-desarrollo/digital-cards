@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import ReviewTable from "@/components/Table/ReviewTable";
-import useReviewDasboard from "./useReviewDashboard";
+import useReviewDashboard from "./useReviewDashboard";
 
 const columns = [
   { name: "REVIEW ID", uid: "REVIEW_ID" },
@@ -11,19 +11,23 @@ const columns = [
   { name: "STATUS", uid: "STATUS_REVIEW" },
   { name: "REVIEW", uid: "REVIEW" },
   { name: "PROFILE VIEW", uid: "PROFILE_VIEW" },
-  { name: "HAS FEEDBACk", uid: "HAS_FEEDBACK" },
+  { name: "HAS FEEDBACK", uid: "HAS_FEEDBACK" },
 ];
 
-const page = () => {
-  const { reviews } = useReviewDasboard();
+const Page = () => {
+  const { reviews, addFeebackProfile } = useReviewDashboard();
 
   return (
     <>
       {reviews && (
-        <ReviewTable columns={columns} reviewItems={reviews}></ReviewTable>
+        <ReviewTable
+          columns={columns}
+          reviewItems={reviews}
+          addFeebackProfile={addFeebackProfile}
+        />
       )}
     </>
   );
 };
 
-export default page;
+export default Page;

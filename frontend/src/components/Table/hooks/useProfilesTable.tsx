@@ -23,7 +23,12 @@ enum ColumsProfilesTable {
   EDIT = "EDIT",
 }
 
-const useProfilesTable = () => {
+interface Props {
+  deleteProfile: (profileId: string) => void;
+  enableProfile: (profileId: string) => void;
+}
+
+const useProfilesTable = ({ deleteProfile, enableProfile }: Props) => {
   const router = useRouter();
   const renderCell = React.useCallback(
     (profileItemTable: ProfileItemTable, columnKey: string) => {
@@ -67,22 +72,7 @@ const useProfilesTable = () => {
                   variant="flat"
                   size="sm"
                   isDisabled={profileItemTable?.status !== "APPROVED"}
-                  onClick={() =>
-                    ProfileService.liveProfile(profileItemTable.profileId)
-                      .then((data) => {
-                        Swal.fire({
-                          icon: "success",
-                          title: "live",
-                          text: `${data.id}`,
-                        });
-                      })
-                      .catch((error) => {
-                        Swal.fire({
-                          icon: "error",
-                          title: "Error en la petición",
-                        });
-                      })
-                  }
+                  onClick={() => enableProfile(profileItemTable.profileId)}
                 >
                   Habilitar
                 </Chip>
@@ -95,29 +85,14 @@ const useProfilesTable = () => {
               editProfile={() =>
                 router.push(`form-profile/${profileItemTable.profileId}/`)
               }
-              deleteProfile={async () => {
-                await ProfileService.deleteProfile(profileItemTable.profileId)
-                  .then((data) => {
-                    Swal.fire({
-                      icon: "success",
-                      title: "Eliminacion exitosa",
-                      text: `${data}`,
-                    });
-                  })
-                  .catch((error) => {
-                    Swal.fire({
-                      icon: "error",
-                      title: "Error en la petición",
-                    });
-                  });
-              }}
+              deleteProfile={() => deleteProfile(profileItemTable.profileId)}
             />
           );
         default:
           return cellValue;
       }
     },
-    []
+    [deleteProfile, enableProfile]
   );
   return {
     renderCell,
