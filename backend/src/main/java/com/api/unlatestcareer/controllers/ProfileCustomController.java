@@ -1,9 +1,24 @@
 package com.api.unlatestcareer.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.api.unlatestcareer.entities.Profile;
+import com.api.unlatestcareer.entities.User;
+import com.api.unlatestcareer.helpers.Converters;
+import com.api.unlatestcareer.helpers.ProfileStatus;
+import com.api.unlatestcareer.models.ProfileModelWithReviews;
+import com.api.unlatestcareer.models.ProfileReviewSummary;
+import com.api.unlatestcareer.models.ReviewModel;
+import com.api.unlatestcareer.repositories.IUserRepository;
+import com.api.unlatestcareer.services.impl.ReviewService;
+import jakarta.persistence.Convert;
+import jdk.jshell.execution.Util;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,167 +30,245 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.unlatestcareer.exception.CustomNotFoundException;
 import com.api.unlatestcareer.helpers.ViewRouteHelper;
-import com.api.unlatestcareer.models.CareerModel;
 import com.api.unlatestcareer.models.ProfileModel;
-import com.api.unlatestcareer.models.TitleModel;
 import com.api.unlatestcareer.services.impl.ProfileService;
+import com.api.unlatestcareer.services.impl.UserService;
 import com.api.unlatestcareer.services.impl.UtilService;
+
+import javax.swing.text.View;
 
 @RestController
 @RequestMapping(path = "/profiles")
 public class ProfileCustomController {
 
-	private ProfileService profileService;
+    private ProfileService profileService;
 
-	public ProfileCustomController(ProfileService profileService) {
-		this.profileService = profileService;
-	}
+    @Autowired
+    private ReviewService reviewService;
 
-	@PostMapping("")
-	public ResponseEntity<?> createProfile(@RequestBody ProfileModel model) {
-		try {
-			ProfileModel savedProfile = profileService.save(model);
-			if (savedProfile != null) {
-				return ResponseEntity.status(HttpStatus.OK).body(savedProfile);
-			} else {
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_CREATE);
-			}
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ViewRouteHelper.ERROR_REQUEST);
-		}
-	}
+    @Autowired
+    private IUserRepository userRepository;
 
-	@PutMapping("/{id}")
-	public ResponseEntity<?> updateProfile(@PathVariable int id, @RequestBody ProfileModel model) {
-		try {
-			ProfileModel updatedProfile = profileService.update(model, id);
-			if (updatedProfile != null) {
-				return ResponseEntity.status(HttpStatus.OK).body(updatedProfile);
-			} else {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
-			}
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
-		}
-	}
+    @Autowired
+    private UserService userService;
 
-	@GetMapping("/{id}")
-	public ResponseEntity<?> findProfileById(@PathVariable int id) {
-		try {
-			if (UtilService.hasRole(ViewRouteHelper.ADMIN_ROLE)) {
-				ProfileModel profile = profileService.findById(id);
-				if (profile != null) {
-					return ResponseEntity.status(HttpStatus.OK).body(profile);
-				} else {
-					return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
-				}
-			} else {
-				return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ViewRouteHelper.ACCESS_DENIED);
-			}
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
-		}
-	}
+    public ProfileCustomController(ProfileService profileService) {
+        this.profileService = profileService;
+    }
 
-	@GetMapping("")
-	public ResponseEntity<?> getAllProfiles() {
-		try {
-			if (UtilService.hasRole(ViewRouteHelper.ADMIN_ROLE)) {
-				List<ProfileModel> profiles = profileService.getAll();
-				return ResponseEntity.ok(profiles);
-			} else {
-				return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ViewRouteHelper.ACCESS_DENIED);
-			}
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
-		}
-	}
+    @PostMapping("")
+    public ResponseEntity<?> createProfile(@RequestBody ProfileModel model) {
+        try {
+            ProfileModel savedProfile = profileService.save(model);
+            if (savedProfile != null) {
+                // TODO: agregar expection si no se puede agregar career
+                profileService.addCareerToProfile(savedProfile.getId(), model.getIdCareer());
+                userService.addProfileToUser(SecurityContextHolder.getContext().getAuthentication().getName(), savedProfile.getId());
+                //TODO: REFACTORIZAR ESTO, copie y pegue del reviewController
+                ReviewModel rmodel = new ReviewModel(userService.findByName(SecurityContextHolder.getContext().getAuthentication().getName()).getId(), savedProfile.getId());
+                ReviewModel savedReview = reviewService.save(rmodel);
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteProfile(@PathVariable int id) {
-		try {
-			boolean deleted = profileService.deleteById(id);
-			if (deleted) {
-				return ResponseEntity.status(HttpStatus.OK).body(ViewRouteHelper.SUCCESS_DELETE);
-			} else {
-				throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
-			}
-		} catch (CustomNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
-		}
-	}
+                if (savedReview != null) {
+                    reviewService.addUserRequestReviewToReview(savedReview.getId(), rmodel.getUserRequesterId());
+                    if (rmodel.getUserReviewerId() != null) {
+                        reviewService.addUserReviewerToReview(savedReview.getId(), rmodel.getUserReviewerId());
+                    }
 
-	@PostMapping("/{profileId}/titles/{titleId}")
-	public ResponseEntity<?> addTitleToProfile(@PathVariable int profileId, @PathVariable int titleId) {
-		try {
-			ProfileModel profileModel = profileService.addTitleToProfile(profileId, titleId);
-			return ResponseEntity.status(HttpStatus.OK).body(profileModel);
-		} catch (CustomNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
-		}
-	}
+                    reviewService.addProfileToReview(savedReview.getId(), rmodel.getProfileId());
+                } else {
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_CREATE);
+                }
+                return ResponseEntity.status(HttpStatus.OK).body("Perfil agregado exitosamente al usuario: " + SecurityContextHolder.getContext().getAuthentication().getName());
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_CREATE);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ViewRouteHelper.ERROR_REQUEST);
+        }
+    }
 
-	@DeleteMapping("/{profileId}/titles/{titleId}")
-	public ResponseEntity<?> removeTitleFromProfile(@PathVariable int profileId, @PathVariable int titleId) {
-		try {
-			ProfileModel profileModel = profileService.removeTitleFromProfile(profileId, titleId);
-			return ResponseEntity.status(HttpStatus.OK).body(profileModel);
-		} catch (CustomNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
-		}
-	}
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateProfile(@PathVariable int id, @RequestBody ProfileModel model) {
+        try {
+            ProfileModel updatedProfile = profileService.update(model, id);
+            if (updatedProfile != null) {
+                return ResponseEntity.status(HttpStatus.OK).body(updatedProfile);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
+        }
+    }
 
-	@PostMapping("/{profileId}/careers/{careerId}")
-	public ResponseEntity<?> addCareerToProfile(@PathVariable int profileId, @PathVariable int careerId) {
-		try {
-			ProfileModel profileModel = profileService.addCareerToProfile(profileId, careerId);
-			return ResponseEntity.status(HttpStatus.OK).body(profileModel);
-		} catch (CustomNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
-		}
-	}
+    @PutMapping("change-status/{id}")
+    public ResponseEntity<?> changeStatus(@PathVariable int id, @RequestBody ProfileModel prueba) {
+        try {
+            ProfileModel model = profileService.findById(id);
 
-	@DeleteMapping("/{profileId}/careers/{careerId}")
-	public ResponseEntity<?> removeCareerFromProfile(@PathVariable int profileId, @PathVariable int careerId) {
-		try {
-			ProfileModel profileModel = profileService.removeCareerFromProfile(profileId, careerId);
-			return ResponseEntity.status(HttpStatus.OK).body(profileModel);
-		} catch (CustomNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
-		}
-	}
+            if (model != null) {
+                model.setStatus(prueba.getStatus());
+                profileService.save(model);
+                return ResponseEntity.status(HttpStatus.OK).body(model);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
+        }
+    }
 
-	@PostMapping("/{profileId}/careers")
-	public ResponseEntity<?> addCareerToProfile(@PathVariable int profileId, @RequestBody CareerModel careerModel) {
-		try {
-			ProfileModel profileModel = profileService.addCareerToProfile(profileId, careerModel);
-			return ResponseEntity.status(HttpStatus.OK).body(profileModel);
-		} catch (CustomNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
-		}
-	}
+    @PutMapping("set-inactive/{id}")
+    public ResponseEntity<?> setProfileInactive(@PathVariable int id) {
+        try {
+            ProfileModel model = profileService.findById(id);
 
-	@PostMapping("/{profileId}/titles")
-	public ResponseEntity<?> addTitleToProfile(@PathVariable int profileId, @RequestBody TitleModel titleModel) {
-		try {
-			ProfileModel profileModel = profileService.addTitleToProfile(profileId, titleModel);
-			return ResponseEntity.status(HttpStatus.OK).body(profileModel);
-		} catch (CustomNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
-		}
-	}
+            if (model != null) {
+                model.setCurrent(false);
+                profileService.save(model);
+                return ResponseEntity.status(HttpStatus.OK).body(model);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
+        }
+    }
+
+    @PutMapping("set-active/{id}")
+    public ResponseEntity<?> setProfileActive(@PathVariable int id) {
+        try {
+            profileService.disableAllProfiles();
+            ProfileModel model = profileService.findById(id);
+
+            if (model != null) {
+                model.setCurrent(true);
+                profileService.save(model);
+                return ResponseEntity.status(HttpStatus.OK).body(model);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
+        }
+    }
+
+    @PutMapping("enable/{id}")
+    public ResponseEntity<?> enableProfile(@PathVariable int id) {
+        try {
+            profileService.enableProfile(id);
+            return ResponseEntity.status(HttpStatus.OK).body(profileService.findById(id));
+        } catch (CustomNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
+        }
+
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findProfileById(@PathVariable int id) {
+        try {
+            if (UtilService.hasRole(ViewRouteHelper.ADMIN_ROLE)) {
+                ProfileModel profile = profileService.findById(id);
+                if (profile != null) {
+                    return ResponseEntity.status(HttpStatus.OK).body(profile);
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
+                }
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ViewRouteHelper.ACCESS_DENIED);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
+        }
+    }
+
+    @GetMapping("/live/{userId}")
+    public ResponseEntity<?> findProfileByUserIdAndEnabled(@PathVariable int userId) {
+        try {
+            Converters converters = new Converters();
+            Profile profile = userService.getCurrentProfileByUserId(userId);
+            return ResponseEntity.ok(converters.mapProfileToProfileModel(profile));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
+        }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllProfiles() {
+        try {
+            if (UtilService.hasRole(ViewRouteHelper.ADMIN_ROLE)) {
+                List<ProfileModel> profiles = profileService.getAll();
+                return ResponseEntity.ok(profiles);
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ViewRouteHelper.ACCESS_DENIED);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
+        }
+    }
+
+    @GetMapping("")
+    public ResponseEntity<?> getEnabledProfiles() {
+        try {
+            if (UtilService.hasRole(ViewRouteHelper.ADMIN_ROLE)) {
+                List<ProfileModel> profiles = profileService.findByEnabledTrue();
+                return ResponseEntity.ok(profiles);
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ViewRouteHelper.ACCESS_DENIED);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
+        }
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteProfile(@PathVariable int id) {
+        try {
+            boolean deleted = profileService.deleteById(id);
+            if (deleted) {
+                return ResponseEntity.status(HttpStatus.OK).body(ViewRouteHelper.SUCCESS_DELETE);
+            } else {
+                throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
+            }
+        } catch (CustomNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
+        }
+    }
+
+    @GetMapping("/profilewreviews")
+    public ResponseEntity<?> getProfileWithReviews() {
+        try {
+            if (UtilService.hasRole(ViewRouteHelper.ADMIN_ROLE)) {
+                List<ProfileModelWithReviews> profiles = profileService.profilesWithReviewList();
+                return ResponseEntity.ok(profiles);
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ViewRouteHelper.ACCESS_DENIED);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
+        }
+    }
+
+    @GetMapping("/summary")
+    public ResponseEntity<?> getProfilesReviewSummary() {
+        try {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            Optional<User> userOptional = userRepository.findByUsername(username);
+
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                List<ProfileReviewSummary> profilesSummary = profileService.profileReviewSummary(user.getId());
+                return ResponseEntity.ok(profilesSummary);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ViewRouteHelper.ERROR_NOTFOUND);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ViewRouteHelper.ERROR_SERVER);
+        }
+    }
+
 }

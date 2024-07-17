@@ -4,9 +4,10 @@ import React from "react";
 import { Button, Input } from "@nextui-org/react";
 import useLogin from "./useLogin";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
+import { cookiesLogin } from "../../utils/cookies";
 
 const index = () => {
-  const { actions, state } = useLogin();
+  const { actions, state } = useLogin(cookiesLogin);
 
   return (
     <div className="flex items-center justify-centerflex flex-col  px-6 py-12  mt-48 lg:px-8  sm:mt-26">

@@ -1,194 +1,280 @@
 package com.api.unlatestcareer.services.impl;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import com.api.unlatestcareer.helpers.Converters;
+import com.api.unlatestcareer.helpers.ProfileStatus;
+import com.api.unlatestcareer.models.*;
+import com.api.unlatestcareer.repositories.IReviewRepository;
+import com.api.unlatestcareer.services.IReviewService;
+import com.api.unlatestcareer.services.IUserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
-import com.api.unlatestcareer.entities.*;
+
+import com.api.unlatestcareer.entities.Career;
+import com.api.unlatestcareer.entities.Profile;
 import com.api.unlatestcareer.exception.CustomNotFoundException;
 import com.api.unlatestcareer.helpers.ViewRouteHelper;
-import com.api.unlatestcareer.models.CareerModel;
-import com.api.unlatestcareer.models.ProfileModel;
-import com.api.unlatestcareer.models.TitleModel;
 import com.api.unlatestcareer.repositories.ICareerRepository;
 import com.api.unlatestcareer.repositories.IProfileRepository;
-import com.api.unlatestcareer.repositories.ITitleRepository;
 import com.api.unlatestcareer.services.IProfileService;
+
+import javax.swing.text.View;
 
 @Service("profileService")
 public class ProfileService implements IProfileService {
 
-	private ModelMapper mapper = new ModelMapper();
+    private ModelMapper mapper = new ModelMapper();
 
-	@Autowired
-	private IProfileRepository profileRepository;
-	
-	@Autowired 
-	private ITitleRepository titleRepository;
-	
-	@Autowired
-	private ICareerRepository careerRepository;
+    @Autowired
+    private IProfileRepository profileRepository;
+    @Autowired
+    private ICareerRepository careerRepository;
 
-	@Override
-	public ProfileModel findById(int id) {
-		try {
-			Optional<Profile> optionalProfile = profileRepository.findById(id);
-			if (optionalProfile.isPresent()) {
-				Profile profile = optionalProfile.get();
-				ProfileModel profileModel = mapper.map(profile, ProfileModel.class);
-				return profileModel;
-			} else {
-				throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
-			}
-		} catch (Exception e) {
-			throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
-		}
-	}
+    @Autowired
+    private IReviewRepository reviewRepository;
+    @Autowired
+    private IUserService userService;
 
-	@Override
-	public ProfileModel findByName(String name) {
-		ProfileModel profileModel = profileRepository.findByName(name);
-		if (profileModel != null) {
-			return profileModel;
-		}
-		return null;
-	}
+    @Autowired
+    private IReviewService reviewService;
 
-	@Override
-	public List<ProfileModel> getAll() {
-		List<Profile> profiles = profileRepository.findAll();
-		return profiles.stream().map(profile -> mapper.map(profile, ProfileModel.class)).collect(Collectors.toList());
-	}
+    Converters converters = new Converters();
 
-	@Override
-	public boolean deleteById(int id) {
-		try {
-			Profile profileExisting = profileRepository.findById(id).orElse(null);
-			boolean deleted = false;
-			if (profileExisting != null) {
-				profileRepository.deleteById(profileExisting.getId());
-				deleted = true;
-				return deleted;
-			} else {
-				throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
-			}
-		} catch (Exception e) {
-			return false;
-		}
-	}
+    @Override
+    public ProfileModel findById(int id) {
+        try {
+            Optional<Profile> optionalProfile = profileRepository.findById(id);
+            if (optionalProfile.isPresent()) {
+                Profile profile = optionalProfile.get();
+                return mapper.map(profile, ProfileModel.class);
+            } else {
+                throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
+            }
+        } catch (Exception e) {
+            throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
+        }
+    }
 
-	@Override
-	public ProfileModel save(ProfileModel profile) {
-		try {
-			Profile profileExisting = profileRepository.findById(profile.getId()).orElse(null);
-			if (profileExisting == null) {
-				profileExisting = new Profile(profile.getPhoto(), profile.isCurrent(), profile.getStatus(),
-						profile.getCourses(), profile.getName(), profile.getLastname(), profile.getUrlLinkedin(),
-						profile.getMail(), profile.getPhone(), profile.getMoreInfo(), profile.getCreatedAt(),
-						profile.getUpdateAt());
-			} else {
-				profileExisting = new Profile(profile);
-			}
-			profileRepository.save(profileExisting);
-			return mapper.map(profileExisting, ProfileModel.class);
-		} catch (Exception e) {
-			throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
-		}
-	}
+    @Override
+    public ProfileModel findByName(String name) {
+        ProfileModel profileModel = profileRepository.findByName(name);
+        if (profileModel != null) {
+            return profileModel;
+        }
+        return null;
+    }
 
-	@Override
-	public ProfileModel update(ProfileModel profile, int profileId) {
-		try {
-			Profile profileExisting = profileRepository.findById(profileId)
-					.orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
-			profileExisting.setName(profile.getName());
-			return mapper.map(profileExisting, ProfileModel.class);
-		} catch (Exception e) {
-			return null;
-		}
-	}
+    @Override
+    public List<ProfileModel> getAll() {
+        List<Profile> profiles = profileRepository.findAll();
+        return profiles.stream().map(profile -> mapper.map(profile, ProfileModel.class)).collect(Collectors.toList());
+    }
 
-	 @Override
-	    public ProfileModel addTitleToProfile(int profileId, int titleId) {
-		 Profile profileExisting = profileRepository.findById(profileId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
-	        Title titleExisting = titleRepository.findById(titleId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));      
-	        if (profileExisting != null && titleExisting != null) {
-	            if (!profileExisting.getTitles().contains(titleExisting)) {
-	                profileExisting.getTitles().add(titleExisting);
-	            }
-	            profileRepository.save(profileExisting);
-	        }
-	        return mapper.map(profileExisting, ProfileModel.class);
-	    }
+    @Override
+    public boolean deleteById(int id) {
+        try {
+            Optional<Profile> optionalProfile = profileRepository.findById(id);
 
-	@Override
-	public ProfileModel removeTitleFromProfile(int profileId, int titleId) {
-		Profile profileExisting = profileRepository.findById(profileId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
-        Title titleExisting = titleRepository.findById(titleId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));      
-        if (profileExisting != null && titleExisting != null) {
-            if (profileExisting.getTitles().contains(titleExisting)) {
-                profileExisting.getTitles().remove(titleExisting);
+            optionalProfile.ifPresentOrElse(profile -> {
+                profile.setEnabled(false);
+                profileRepository.save(profile);
+            }, () -> {
+                throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
+            });
+            return optionalProfile.isPresent();
+
+        } catch (NoSuchElementException e) {
+            throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
+        } catch (DataAccessException e) {
+            throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
+        }
+    }
+
+    public ProfileModel save(ProfileModel profileModel) {
+        try {
+            //TODO: siempre cuando se haga save , va a ser current y status  en false/pending
+            Optional<Profile> optionalProfile = profileRepository.findById(profileModel.getId());
+            Profile profileToSave;
+
+            if (optionalProfile.isPresent()) {
+                profileToSave = optionalProfile.get();
+                profileToSave.setPhoto(profileModel.getPhoto());
+                profileToSave.setCurrent(profileModel.isCurrent());
+                profileToSave.setTitle(profileModel.getTitle());
+                profileToSave.setStatus(profileModel.getStatus());
+                profileToSave.setCourses(profileModel.getCourses());
+                profileToSave.setInstitutions(profileModel.getInstitutions());
+                profileToSave.setName(profileModel.getName());
+                profileToSave.setProfileName(profileModel.getProfileName());
+                profileToSave.setUrlLinkedin(profileModel.getUrlLinkedin());
+                profileToSave.setMail(profileModel.getMail());
+                profileToSave.setPhone(profileModel.getPhone());
+                profileToSave.setMoreInfo(profileModel.getMoreInfo());
+                profileToSave.setProjects(profileModel.getProjects());
+                profileToSave.setEnabled(true);
+            } else {
+                profileToSave = new Profile(profileModel.getPhoto(), false, profileModel.getTitle(),
+                        ProfileStatus.PENDING, profileModel.getCourses(), profileModel.getInstitutions(),
+                        profileModel.getName(), profileModel.getProfileName(), profileModel.getUrlLinkedin(),
+                        profileModel.getMail(), profileModel.getPhone(), profileModel.getMoreInfo(),
+                        profileModel.getProjects());
+                profileToSave.setEnabled(true);
+            }
+
+            profileRepository.save(profileToSave);
+            return mapper.map(profileToSave, ProfileModel.class);
+        } catch (Exception e) {
+            throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
+        }
+    }
+
+    @Override
+    public ProfileModel update(ProfileModel profile, int profileId) {
+        //TODO: CUANDO SE UPDATE SE CAMBIA EL STATUS A PENDING?
+        Profile profileExisting = profileRepository.findById(profileId)
+                .orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
+        profileExisting.setName(profile.getName());
+        profileExisting.setProfileName(profile.getProfileName());
+        profileExisting.setTitle(profile.getTitle());
+        profileExisting.setUrlLinkedin(profile.getUrlLinkedin());
+        profileExisting.setPhone(profile.getPhone());
+        //  profileExisting.setCareers(profile.get()); mirar carrer
+        profileExisting.setMail(profile.getMail());
+        profileExisting.setCourses(profile.getCourses());
+        profileExisting.setPhoto(profile.getPhoto());
+        profileExisting.setMoreInfo(profile.getMoreInfo());
+        profileExisting.setProjects(profile.getProjects());
+        profileExisting.setInstitutions(profile.getInstitutions());
+        profileExisting.setStatus(ProfileStatus.PENDING);
+        profileExisting.setCurrent(false);
+        profileRepository.save(profileExisting);
+        return mapper.map(profileExisting, ProfileModel.class);
+
+    }
+
+    @Override
+    public void addCareerToProfile(int profileId, int careerId) {
+        Profile profileExisting = profileRepository.findById(profileId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
+        Career careerExisting = careerRepository.findById(careerId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
+        if (profileExisting != null && careerExisting != null) {
+            if (!profileExisting.getCareers().contains(careerExisting)) {
+                profileExisting.getCareers().add(careerExisting);
+            }
+            profileRepository.save(profileExisting);
+        }
+        mapper.map(profileExisting, ProfileModel.class);
+    }
+
+    @Override
+    public ProfileModel removeCareerFromProfile(int profileId, int careerId) {
+        Profile profileExisting = profileRepository.findById(profileId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
+        Career careerExisting = careerRepository.findById(careerId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
+        if (profileExisting != null && careerExisting != null) {
+            if (profileExisting.getCareers().contains(careerExisting)) {
+                profileExisting.getCareers().remove(careerExisting);
             }
             profileRepository.save(profileExisting);
         }
         return mapper.map(profileExisting, ProfileModel.class);
     }
 
-	@Override
-	public ProfileModel addCareerToProfile(int profileId, int careerId) {
-		 Profile profileExisting = profileRepository.findById(profileId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
-		 Career careerExisting = careerRepository.findById(careerId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));	 
-		 if (profileExisting != null && careerExisting != null) {
-			 if(profileExisting.getTitles().contains(careerExisting)) {
-				 profileExisting.getTitles().remove(careerExisting);
-			 }
-			 profileRepository.save(profileExisting);
-		 }
-		 return mapper.map(profileExisting, ProfileModel.class);
-	}	 
+    public void disableAllProfiles() {
+        List<ProfileModel> profiles = this.getAll();
 
-	@Override
-	public ProfileModel removeCareerFromProfile(int profileId, int careerId) {
-		 Profile profileExisting = profileRepository.findById(profileId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
-		 Career careerExisting = careerRepository.findById(careerId).orElseThrow(() -> (new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND)));
-		 if (profileExisting != null && careerExisting != null) {
-	            if (profileExisting.getTitles().contains(careerExisting)) {
-	                profileExisting.getTitles().remove(careerExisting);
-	            }
-	            profileRepository.save(profileExisting);
-	        }
-	        return mapper.map(profileExisting, ProfileModel.class);
-	}
-	
-	public ProfileModel addCareerToProfile(int profileId, CareerModel careerModel) {
-	    Profile profileExisting = profileRepository.findById(profileId)
-	            .orElseThrow(() -> new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND));
-	    Career career = new Career();
-	    career.setName(careerModel.getName());
-	    career.setLink(careerModel.getLink());
-	    career.setCreatedAt(careerModel.getCreatedAt());
-	    career.setUpdateAt(careerModel.getUpdateAt());
-	    career.setEnabled(careerModel.isEnabled());
-	    profileExisting.getCareers().add(career);
-	    
-	    //Preguntar si hace falta que se guarde en este caso. 
-	    careerRepository.save(career);
+        for (ProfileModel profile : profiles) {
+            profile.setCurrent(false);
+            this.save(profile);
+        }
+    }
 
-	    // Guarda el perfil actualizado en la base de datos
-	    profileRepository.save(profileExisting);
+    public List<ProfileModelWithReviews> profilesWithReviewList() {
+        List<UserModel> userModelList = userService.findByEnabledTrue();
+        List<ReviewWithUserReviewerModel> reviewModelsList = reviewService.getAllReviewModel();
+        List<ProfileModelWithReviews> profileWithReviewsList = new ArrayList<>();
+        Converters converters = new Converters();
 
-	    return mapper.map(profileExisting, ProfileModel.class);
-	}
+        for (UserModel model : userModelList) {
+            List<Profile> profiles = model.getProfiles().stream()
+                    .filter(Profile::isEnabled).collect(Collectors.toList());
 
-	public ProfileModel addTitleToProfile (int profileId, TitleModel titleModel) {
-		Profile profileExisting = profileRepository.findById(profileId).orElseThrow(() -> new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND));			
-		Title title = new Title(titleModel.getName(), titleModel.getCreatedAt(),titleModel.getUpdateAt());
-		profileExisting.getTitles().add(title);
-		titleRepository.save(title);
-		profileRepository.save(profileExisting);
-		return mapper.map(profileExisting, ProfileModel.class);
-	}
+            for (Profile profile : profiles) {
+                ProfileModelWithReviews profileWithReviews = new ProfileModelWithReviews();
+                profileWithReviews.setUserModelReview(converters.userModelToUserModelReview(model));
+                profileWithReviews.setProfileModel(converters.mapProfileToProfileModel(profile));
+
+                List<ReviewWithUserReviewerModel> reviewModels = new ArrayList<>();
+
+                for (ReviewWithUserReviewerModel reviewModel : reviewModelsList) {
+                    if (reviewModel.getProfileId() == profile.getId()) {
+                        reviewModels.add(reviewModel);
+                    }
+                }
+                profileWithReviews.setReviewList(reviewModels);
+                profileWithReviewsList.add(profileWithReviews);
+            }
+        }
+        return profileWithReviewsList;
+    }
+
+
+    public boolean enableProfile(int id) {
+        try {
+            Optional<Profile> optionalProfile = profileRepository.findById(id);
+
+            if (optionalProfile.isPresent()) {
+                Profile profile = optionalProfile.get();
+                profile.setEnabled(true);
+                ProfileModel profileModel = mapper.map(profile, ProfileModel.class);
+                profileRepository.save(profile);
+                return true;
+            } else {
+                throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
+            }
+        } catch (Exception e) {
+            throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
+        }
+    }
+
+    public List<ProfileModel> findByEnabledTrue() {
+        List<Profile> profiles = profileRepository.findByEnableTrue();
+        return profiles.stream().map(profile -> mapper.map(profile, ProfileModel.class)).collect(Collectors.toList());
+    }
+
+    //TODO: testear estos metodos.
+    public ProfileModel findByIdAndEnabledTrue(int id) {
+        try {
+            Optional<Profile> optionalProfile = profileRepository.findByIdAndEnableTrue(id);
+
+            if (optionalProfile.isPresent()) {
+                Profile profile = optionalProfile.get();
+                return mapper.map(profile, ProfileModel.class);
+
+            } else {
+                throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
+            }
+        } catch (Exception e) {
+            throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
+        }
+    }
+
+    public List<ProfileReviewSummary> profileReviewSummary(int userId) {
+        List<ProfileModel> profileModelList = converters.profileListToProfileModelList(
+                profileRepository.findProfilesByUserId(userId));
+
+        List<ProfileReviewSummary> profileReviewSummaryList = new ArrayList<>();
+
+        for (ProfileModel profileModel : profileModelList) {
+            ProfileReviewSummary profileReviewSummary = new ProfileReviewSummary(profileModel,
+                    converters.mapReviewToReviewSummary(
+                            reviewRepository.findLatestReviewByProfileId(profileModel.getId())));
+            profileReviewSummaryList.add(profileReviewSummary);
+        }
+        return profileReviewSummaryList;
+    }
+
 }
+

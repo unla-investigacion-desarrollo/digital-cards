@@ -1,11 +1,13 @@
 package com.api.unlatestcareer.services.impl;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.api.unlatestcareer.entities.Career;
@@ -40,11 +42,19 @@ public class CareerService implements ICareerService {
 	}
 
 	public CareerModel findByName(String name) {
-		CareerModel careerModel = careerRepository.findByName(name);
-		if (careerModel != null) {
+		try {
+		Optional<Career> optionalCareer = careerRepository.findByName(name);
+		
+		if(optionalCareer.isPresent()) {
+			Career career = optionalCareer.get();
+			CareerModel careerModel = mapper.map(career, CareerModel.class);
 			return careerModel;
+		} else { 
+			throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
 		}
-		return null;
+	} catch (Exception e) {
+		throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
+		}
 	}
 
 	@Override
@@ -53,20 +63,45 @@ public class CareerService implements ICareerService {
 		return careers.stream().map(career -> mapper.map(career, CareerModel.class)).collect(Collectors.toList());
 	}
 
-	@Override
-	public boolean deleteById(int id) {
+	public List<CareerModel> findByEnabledTrue(){
+		List<Career> careers = careerRepository.findByEnabledTrue();
+		return careers.stream().map(career->mapper.map(career,CareerModel.class)).collect(Collectors.toList());
+	}
+
+	public void enableCareer(int id) {
 		try {
-			Career careerExisting = careerRepository.findById(id).orElse(null);
-			boolean deleted = false;
-			if (careerExisting != null) {
-				careerRepository.deleteById(careerExisting.getId());
-				deleted = true;
-				return deleted;
+			Optional<Career> optionalCareer = careerRepository.findById(id);
+
+			if (optionalCareer.isPresent()) {
+				Career career = optionalCareer.get();
+				career.setEnabled(true);
+				careerRepository.save(career);
 			} else {
 				throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
 			}
 		} catch (Exception e) {
-			return false;
+			throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
+		}
+	}
+
+
+	@Override
+	public boolean deleteById(int id) {
+		try {
+			Optional<Career> optionalCareer = careerRepository.findById(id);
+
+			optionalCareer.ifPresentOrElse(profile -> {
+				profile.setEnabled(false);
+				careerRepository.save(profile);
+			}, () -> {
+				throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
+			});
+			return optionalCareer.isPresent();
+
+		} catch (NoSuchElementException e) {
+			throw new CustomNotFoundException(ViewRouteHelper.ERROR_NOTFOUND);
+		} catch (DataAccessException e) {
+			throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
 		}
 	}
 
@@ -76,8 +111,7 @@ public class CareerService implements ICareerService {
 			Career careerExisting = careerRepository.findById(career.getId()).orElse(null);
 
 			if (careerExisting == null) {
-				careerExisting = new Career(career.getName(), career.getLink(), career.getCreatedAt(),
-						career.getUpdateAt(), career.isEnabled());
+				careerExisting = new Career(career.getName(), career.getLink(),career.isEnabled());
 			} else {
 				careerExisting = new Career(career);
 			}
@@ -97,7 +131,7 @@ public class CareerService implements ICareerService {
 			careerRepository.save(careerExisting);
 			return mapper.map(careerExisting, CareerModel.class);
 		} catch (Exception e) {
-			return null;
+			throw new CustomNotFoundException(ViewRouteHelper.ERROR_REQUEST);
 		}
 	}
 }
